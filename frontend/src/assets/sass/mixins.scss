@@ -1,0 +1,14 @@
+@mixin text($fontSize, $fontWeight, $color:$textColor1) {
+    font-family: $primaryFontFamily;
+    font-size: $fontSize;
+    font-weight: $fontWeight;
+    color: $color;
+  }
+  @mixin containerWidth{
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  @mixin unsetAll{
+    all: unset;
+  }
