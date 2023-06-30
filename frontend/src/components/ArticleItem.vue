@@ -65,7 +65,6 @@ export default {
 .article {
   border-radius: 5px;
   background: #fff;
-  max-width: 310px;
   .article__image-container {
     position: relative;
     background: #000;
@@ -105,6 +104,7 @@ export default {
       }
     }
     .article__image {
+      width: 100%;
     }
   }
   .article__content {

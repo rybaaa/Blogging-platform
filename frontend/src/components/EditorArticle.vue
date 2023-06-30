@@ -41,12 +41,13 @@ export default {
 .article {
   border-radius: 5px;
   background: #fff;
-  max-width: 310px;
   .article__image-container {
     position: relative;
-    background: url('@/assets/images/editorsBg1.png') center center;
+    background: url('@/assets/images/editorsBg1.png') center center no-repeat;
+    background-size: cover;
     opacity: 0.9;
     height: 350px;
+    width: 100%;
     .article__categories {
       position: absolute;
       display: flex;
