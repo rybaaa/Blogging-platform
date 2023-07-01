@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/hello-world', function (Request $request) {
     return ['hello' => 'world'];
+});
+Route::get('/articles', function (Request $request) {
+    return Article::all();
+});
+Route::get('/articles/{id}', function ($id) {
+    return Article::find($id);
+
+});
+Route::post('/articles', function (Request $request) {
+    $article = new Article($request->toArray());
+    $article->save();
+    return response($request->toArray(), 200);
+});
+
+Route::patch('/articles/{id}', function (Request $request, $id) {
+    $article = Article::find($id);
+    $article->title = $request->input('title');
+    $article->content = $request->input('content');
+    $article->timestamps = false;
+    $article->save();
+    return response("Article is updated");
+});
+Route::delete('/articles/{id}', function ($id) {
+    $article = Article::find($id);
+    $article->delete();
+    return response('Article is deleted');
 });
