@@ -1,5 +1,6 @@
 <script>
 import ArticleCategory from './ArticleCategory.vue'
+import ArticleAuthor from './ArticleAuthor.vue'
 export default {
   name: 'ArticleItem',
   props: {
@@ -7,7 +8,7 @@ export default {
     author: String,
     position: String,
   },
-  components: { ArticleCategory },
+  components: { ArticleCategory, ArticleAuthor },
 }
 </script>
 
@@ -38,17 +39,7 @@ export default {
         functionalities. The credibly productivate seamless data.
       </p>
       <div class="article__divider"></div>
-    </div>
-    <div class="article__author-container">
-      <img
-        src="@/assets/images/face1.png"
-        alt="author face"
-        class="article__author-image"
-      />
-      <div class="article__author-content">
-        <h4 class="article__author-title">{{ author }}</h4>
-        <p class="article__author-description">{{ position }}</p>
-      </div>
+      <ArticleAuthor :author="author" :position="position" />
     </div>
   </div>
 </template>
@@ -97,30 +88,6 @@ export default {
     }
     .article__divider {
       border-bottom: 1px solid $textColor3;
-    }
-  }
-  .article__author-container {
-    padding: 0 20px 20px 20px;
-    display: flex;
-    gap: 17px;
-    align-items: center;
-    .article__author-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      .article__author-title {
-        @include text(12px, 700);
-        line-height: 20px;
-        font-family: $secondaryFontFamily;
-        color: $textColor2;
-      }
-      .article__author-description {
-        @include text(12px, 400);
-        line-height: 20px;
-        font-family: $secondaryFontFamily;
-        color: $textColor2;
-      }
     }
   }
 }

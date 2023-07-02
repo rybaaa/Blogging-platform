@@ -4,14 +4,6 @@ export default {
   name: 'ArticleMain',
   components: { ArticleCategory },
 }
-/*    <ul class="mainArticle__categories">
-    <li class="mainArticle__category">
-          <a class="mainArticle__category-link" href="#">ADVENTURE</a>
-        </li>
-        <li class="mainArticle__category">
-          <a class="mainArticle__category-link" href="#">ADVENTURE2</a>
-        </li>
-      </ul> */
 </script>
 
 <template>

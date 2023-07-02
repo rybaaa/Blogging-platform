@@ -1,6 +1,8 @@
 <script>
+import { RouterLink } from 'vue-router'
 export default {
   name: 'HeaderBar',
+  components: RouterLink,
 }
 </script>
 
@@ -11,10 +13,16 @@ export default {
       <nav class="header__nav">
         <ul class="header__nav-list">
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" href="#">Home</a>
+            <RouterLink class="header__nav-itemLink" :to="{ name: 'home' }"
+              >Home</RouterLink
+            >
           </li>
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" href="#">About</a>
+            <RouterLink
+              class="header__nav-itemLink"
+              :to="{ name: 'show-article' }"
+              >About</RouterLink
+            >
           </li>
           <li class="header__nav-item">
             <a class="header__nav-itemLink" href="#">Articles</a>

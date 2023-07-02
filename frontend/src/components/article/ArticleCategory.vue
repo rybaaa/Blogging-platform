@@ -54,4 +54,26 @@ export default {
   margin: 0;
   top: 10px;
 }
+.article__category-showArticle {
+  margin-bottom: 50px;
+  .article__category {
+    display: inline-flex;
+    padding: 5px 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    &:hover {
+      opacity: 0.8;
+    }
+    .article__category-link {
+      list-style: none;
+      text-decoration: none;
+      @include text(10px, 700);
+      color: #6c757d;
+    }
+  }
+}
 </style>
