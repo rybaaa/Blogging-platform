@@ -65,7 +65,7 @@ export default {
         </div>
       </div>
     </section>
-    <EditorSection />
+    <EditorSection title="Editor’s Pick" />
   </main>
 </template>
 

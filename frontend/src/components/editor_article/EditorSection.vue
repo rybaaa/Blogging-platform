@@ -2,6 +2,9 @@
 import EditorArticle from './EditorArticle.vue'
 export default {
   name: 'EditorSection',
+  props: {
+    title: String,
+  },
   components: { EditorArticle },
 }
 </script>
@@ -9,7 +12,7 @@ export default {
 <template>
   <section class="editorSection">
     <div class="editorSection__container">
-      <h2 class="editorSection__title">Editor’s Pick</h2>
+      <h2 class="editorSection__title">{{ title }}</h2>
       <div class="editorSections">
         <EditorArticle></EditorArticle>
         <EditorArticle></EditorArticle>
@@ -38,6 +41,19 @@ export default {
       grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
       grid-column-gap: 20px;
       grid-row-gap: 50px;
+    }
+  }
+}
+.editorSection-showArticle {
+  padding: 0;
+  background: rgba(229, 229, 229, 0.3);
+  .editorSection__container {
+    padding: 100px 70px;
+    .editorSection__title {
+      @include text(18px, 700);
+      font-family: $secondaryFontFamily;
+      color: $textColor2;
+      margin-bottom: 50px;
     }
   }
 }

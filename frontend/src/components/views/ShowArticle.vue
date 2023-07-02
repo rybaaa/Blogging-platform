@@ -1,10 +1,11 @@
 <script>
 import ArticleCategory from '@/components/article/ArticleCategory.vue'
 import ArticleAuthor from '@/components/article/ArticleAuthor.vue'
+import EditorSection from '@/components/editor_article/EditorSection.vue'
 
 export default {
   name: 'ShowArticle',
-  components: { ArticleCategory, ArticleAuthor },
+  components: { ArticleCategory, ArticleAuthor, EditorSection },
 }
 </script>
 
@@ -69,6 +70,8 @@ export default {
           prospective opportunities. Continually develop leading-edge
           experiences through quality e-services.
         </p>
+      </div>
+      <div class="articleContent__info">
         <ArticleCategory class="article__category-showArticle" />
         <ArticleAuthor
           class="articleContent__author"
@@ -76,6 +79,8 @@ export default {
           position="Thinker & Designer"
         />
       </div>
+
+      <EditorSection title="Related posts" class="editorSection-showArticle" />
     </section>
   </article>
 </template>
@@ -129,6 +134,7 @@ export default {
   .articleContent__container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
     @include containerWidth();
     padding: 100px 15px 50px 15px;
@@ -137,13 +143,19 @@ export default {
       color: $textColor2;
       font-family: $secondaryFontFamily;
       line-height: 25px;
+      max-width: 860px;
     }
     blockquote {
       @include unsetAll;
       @include text(36px, 700);
       color: #d4a373;
       font-family: $secondaryFontFamily;
+      max-width: 860px;
     }
+  }
+  .articleContent__info {
+    @include containerWidth();
+    margin-bottom: 50px;
   }
 }
 </style>
