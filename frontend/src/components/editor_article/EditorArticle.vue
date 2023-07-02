@@ -1,9 +1,6 @@
 <script>
 export default {
   name: 'EditorArticle',
-  props: {
-    msg: String,
-  },
 }
 </script>
 

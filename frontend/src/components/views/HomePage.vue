@@ -1,6 +1,6 @@
 <script>
 import ArticleItem from '@/components/article/ArticleItem.vue'
-import EditorArticle from '@/components/editor_article/EditorArticle.vue'
+import EditorSection from '@/components/editor_article/EditorSection.vue'
 import ArticleMain from '@/components/article/ArticleMain.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
 
@@ -8,7 +8,7 @@ export default {
   name: 'HomePage',
   components: {
     ArticleItem,
-    EditorArticle,
+    EditorSection,
     ArticleMain,
     HomeCategories,
   },
@@ -65,16 +65,7 @@ export default {
         </div>
       </div>
     </section>
-    <section class="editorSection">
-      <div class="editorSection__container">
-        <h2 class="editorSection__title">Editor’s Pick</h2>
-        <div class="editorSections">
-          <EditorArticle msg="1"></EditorArticle>
-          <EditorArticle msg="1"></EditorArticle>
-          <EditorArticle msg="1"></EditorArticle>
-        </div>
-      </div>
-    </section>
+    <EditorSection />
   </main>
 </template>
 
@@ -90,25 +81,6 @@ export default {
     .articles {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      grid-column-gap: 20px;
-      grid-row-gap: 50px;
-    }
-  }
-}
-.editorSection {
-  background: $bgColor;
-  padding: 45px 15px 150px 15px;
-  .editorSection__container {
-    @include containerWidth();
-    .editorSection__title {
-      @include text(36px, 700);
-      font-family: $secondaryFontFamily;
-      color: $textColor2;
-      margin-bottom: 70px;
-    }
-    .editorSections {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
       grid-column-gap: 20px;
       grid-row-gap: 50px;
     }
