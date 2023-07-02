@@ -1,4 +1,5 @@
 <script>
+import ArticleCategory from './ArticleCategory.vue'
 export default {
   name: 'ArticleItem',
   props: {
@@ -6,25 +7,19 @@ export default {
     author: String,
     position: String,
   },
+  components: { ArticleCategory },
 }
 </script>
 
 <template>
   <div class="article">
     <div class="article__image-container">
-      <ul class="article__categories">
-        <li class="article__category">
-          <a href="#" class="article__category-link">ADVENTURE</a>
-        </li>
-        <li class="article__category">
-          <a href="#" class="article__category-link">FASHION</a>
-        </li>
-      </ul>
       <img
         src="@/assets/images/blogImage1.png"
         alt="article picture"
         class="article__image"
       />
+      <ArticleCategory class="article__category--card" />
     </div>
     <div class="article__content">
       <div class="article__info">
@@ -69,40 +64,6 @@ export default {
     position: relative;
     background: #000;
     opacity: 0.9;
-    .article__categories {
-      position: absolute;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      right: 20px;
-      margin: 0;
-      top: 10px;
-
-      .article__category {
-        padding: 5px 10px;
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.15);
-        @include unsetAll();
-        z-index: 10;
-
-        &:hover {
-          opacity: 0.8;
-        }
-
-        .article__category-link {
-          padding: 5px 10px;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.15);
-          list-style: none;
-          text-decoration: none;
-          @include text(10px, 700);
-        }
-      }
-    }
     .article__image {
       width: 100%;
     }
