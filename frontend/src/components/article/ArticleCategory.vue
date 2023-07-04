@@ -55,7 +55,7 @@ export default {
   top: 10px;
 }
 .article__category-showArticle {
-  margin-bottom: 50px;
+  margin: 50px 0;
   .article__category {
     display: inline-flex;
     padding: 5px 10px;
@@ -74,6 +74,9 @@ export default {
       @include text(10px, 700);
       color: #6c757d;
     }
+  }
+  @include for-phone-only {
+    margin: 20px 0;
   }
 }
 </style>

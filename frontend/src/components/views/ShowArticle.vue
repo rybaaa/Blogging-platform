@@ -70,14 +70,14 @@ export default {
           prospective opportunities. Continually develop leading-edge
           experiences through quality e-services.
         </p>
-      </div>
-      <div class="articleContent__info">
-        <ArticleCategory class="article__category-showArticle" />
-        <ArticleAuthor
-          class="articleContent__author"
-          author="By Jennifer Lawrence "
-          position="Thinker & Designer"
-        />
+        <div class="articleContent__info">
+          <ArticleCategory class="article__category-showArticle" />
+          <ArticleAuthor
+            class="articleContent__author"
+            author="By Jennifer Lawrence "
+            position="Thinker & Designer"
+          />
+        </div>
       </div>
 
       <EditorSection title="Related posts" class="editorSection-showArticle" />
@@ -137,7 +137,11 @@ export default {
     align-items: center;
     gap: 20px;
     @include containerWidth();
+    max-width: 860px;
     padding: 100px 15px 50px 15px;
+    @include for-phone-only {
+      padding: 20px 15px;
+    }
     p {
       @include text(14px, 400);
       color: $textColor2;
@@ -152,10 +156,13 @@ export default {
       font-family: $secondaryFontFamily;
       max-width: 860px;
     }
-  }
-  .articleContent__info {
-    @include containerWidth();
-    margin-bottom: 50px;
+    .articleContent__info {
+      @include containerWidth();
+      @include for-phone-only {
+        margin: 0;
+        padding: 0 15px;
+      }
+    }
   }
 }
 </style>
