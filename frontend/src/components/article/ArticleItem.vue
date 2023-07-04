@@ -13,35 +13,36 @@ export default {
 </script>
 
 <template>
-  <div class="article">
-    <div class="article__image-container">
-      <img
-        src="@/assets/images/blogImage1.png"
-        alt="article picture"
-        class="article__image"
-      />
-      <ArticleCategory class="article__category--card" />
-    </div>
-    <div class="article__content">
-      <div class="article__info">
-        <time class="article__info-time">08.08.2021</time>
+  <RouterLink class="article-link" :to="{ name: 'show-article' }"
+    ><div class="article">
+      <div class="article__image-container">
         <img
-          src="@/assets/images/gem.svg"
-          alt="gem image"
-          class="article__info-gem"
+          src="@/assets/images/blogImage1.png"
+          alt="article picture"
+          class="article__image"
         />
+        <ArticleCategory class="article__category--card" />
       </div>
-      <h3 class="article__title">
-        {{ title }}
-      </h3>
-      <p class="article__text">
-        Progressively incentivize cooperative systems through technically sound
-        functionalities. The credibly productivate seamless data.
-      </p>
-      <div class="article__divider"></div>
-      <ArticleAuthor :author="author" :position="position" />
-    </div>
-  </div>
+      <div class="article__content">
+        <div class="article__info">
+          <time class="article__info-time">08.08.2021</time>
+          <img
+            src="@/assets/images/gem.svg"
+            alt="gem image"
+            class="article__info-gem"
+          />
+        </div>
+        <h3 class="article__title">
+          {{ title }}
+        </h3>
+        <p class="article__text">
+          Progressively incentivize cooperative systems through technically
+          sound functionalities. The credibly productivate seamless data.
+        </p>
+        <div class="article__divider"></div>
+        <ArticleAuthor :author="author" :position="position" />
+      </div></div
+  ></RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -89,6 +90,13 @@ export default {
     .article__divider {
       border-bottom: 1px solid $textColor3;
     }
+  }
+}
+.article-link {
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline #000;
   }
 }
 </style>

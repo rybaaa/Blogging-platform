@@ -12,3 +12,27 @@
   @mixin unsetAll{
     all: unset;
   }
+
+  @mixin for-phone-only{
+    @media screen and (max-width:768px){
+      @content;
+    }
+  }
+
+  @mixin for-tablet-down{
+    @media screen and (max-width:1200px){
+      @content;
+    }
+  }
+
+  @mixin for-destkop-down{
+    @media screen and (max-width:1512px){
+      @content;
+    }
+  }
+
+  @mixin for-large-screen-only{
+    @media screen and (min-width:1200px){
+      @content;
+    }
+  }

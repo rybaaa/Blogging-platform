@@ -39,6 +39,13 @@ export default {
     flex-direction: column;
     justify-content: center;
     @include containerWidth();
+    @include for-phone-only {
+      align-items: center;
+      text-align: center;
+    }
+    @include for-destkop-down {
+      padding: 0 15px;
+    }
 
     .mainArticle__title {
       @include text(36px, 700);
@@ -50,6 +57,12 @@ export default {
     .mainArticle__content {
       display: flex;
       gap: 10px;
+      @include for-phone-only {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        padding: 0 20px;
+      }
 
       .mainArticle__content-time {
         @include text(12px, 400);

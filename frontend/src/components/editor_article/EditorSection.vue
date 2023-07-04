@@ -38,9 +38,15 @@ export default {
     }
     .editorSections {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       grid-column-gap: 20px;
       grid-row-gap: 50px;
+      @include for-tablet-down {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @include for-phone-only {
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
   }
 }

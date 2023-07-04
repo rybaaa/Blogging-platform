@@ -45,6 +45,11 @@ export default {
   @include unsetAll();
   display: flex;
   margin-bottom: 30px;
+  @include for-phone-only {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
   .section__category {
     @include unsetAll();
     @include text(12px, 700);
@@ -56,6 +61,9 @@ export default {
       color: #d4a373;
       cursor: pointer;
     }
+    @include for-phone-only {
+      margin: 0;
+    }
   }
   .section__category-active {
     color: #d4a373;
@@ -63,6 +71,9 @@ export default {
   .section__category-last {
     margin-left: auto;
     margin-right: 0;
+    @include for-phone-only {
+      margin: 0;
+    }
   }
 }
 </style>
