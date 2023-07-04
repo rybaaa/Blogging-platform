@@ -55,6 +55,10 @@ export default {
     justify-content: space-between;
     align-items: center;
 
+    @include for-destkop-down {
+      padding: 0 15px;
+    }
+
     .header__title {
       @include text(20px, 700);
       font-family: 'Spartan', sans-serif;
