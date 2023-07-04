@@ -13,33 +13,33 @@ export default {
 </script>
 
 <template>
-  <RouterLink class="article-link" :to="{ name: 'show-article' }"
-    ><div class="article">
-      <div class="article__image-container">
+  <RouterLink class="articleItem-link" :to="{ name: 'show-article' }"
+    ><div class="articleItem">
+      <div class="articleItem__image-container">
         <img
           src="@/assets/images/blogImage1.png"
           alt="article picture"
-          class="article__image"
+          class="articleItem__image"
         />
-        <ArticleCategory class="article__category--card" />
+        <ArticleCategory class="articleItem__category--card" />
       </div>
-      <div class="article__content">
-        <div class="article__info">
-          <time class="article__info-time">08.08.2021</time>
+      <div class="articleItem__content">
+        <div class="articleItem__info">
+          <time class="articleItem__info-time">08.08.2021</time>
           <img
             src="@/assets/images/gem.svg"
             alt="gem image"
-            class="article__info-gem"
+            class="articleItem__info-gem"
           />
         </div>
-        <h3 class="article__title">
+        <h3 class="articleItem__title">
           {{ title }}
         </h3>
-        <p class="article__text">
+        <p class="articleItem__text">
           Progressively incentivize cooperative systems through technically
           sound functionalities. The credibly productivate seamless data.
         </p>
-        <div class="article__divider"></div>
+        <div class="articleItem__divider"></div>
         <ArticleAuthor :author="author" :position="position" />
       </div></div
   ></RouterLink>
@@ -49,29 +49,29 @@ export default {
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
 
-.article {
+.articleItem {
   border-radius: 5px;
   background: #fff;
-  .article__image-container {
+  .articleItem__image-container {
     position: relative;
     background: #000;
     opacity: 0.9;
-    .article__image {
+    .articleItem__image {
       width: 100%;
     }
   }
-  .article__content {
+  .articleItem__content {
     padding: 20px;
-    .article__info {
+    .articleItem__info {
       display: flex;
       justify-content: space-between;
-      .article__info-time {
+      .articleItem__info-time {
         @include text(12px, 400);
         font-family: $secondaryFontFamily;
         color: #6c757d;
       }
     }
-    .article__title {
+    .articleItem__title {
       margin: 15px 0;
       @include text(18px, 700);
       font-family: $secondaryFontFamily;
@@ -79,7 +79,7 @@ export default {
       line-height: 25px;
       max-width: 270px;
     }
-    .article__text {
+    .articleItem__text {
       @include text(12px, 400);
       font-family: $secondaryFontFamily;
       color: #6c757d;
@@ -87,12 +87,12 @@ export default {
       max-width: 270px;
       margin: 15px 0;
     }
-    .article__divider {
+    .articleItem__divider {
       border-bottom: 1px solid $textColor3;
     }
   }
 }
-.article-link {
+.articleItem-link {
   text-decoration: none;
   &:hover {
     cursor: pointer;

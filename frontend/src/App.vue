@@ -1,13 +1,13 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/layouts/HeaderBar.vue'
-import FooterApp from '@/components/layouts/FooterApp.vue'
+import MainFooter from '@/components/layouts/MainFooter.vue'
 </script>
 
 <template>
   <HeaderBar />
   <RouterView />
-  <FooterApp />
+  <MainFooter />
 </template>
 
 <style>

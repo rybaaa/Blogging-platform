@@ -6,11 +6,11 @@ export default {
 
 <template>
   <ul class="article__categories">
-    <li class="article__category">
-      <a class="article__category-link" href="#">ADVENTURE</a>
+    <li class="articleCategory">
+      <a class="articleCategory-link" href="#">ADVENTURE</a>
     </li>
-    <li class="article__category">
-      <a class="article__category-link" href="#">ADVENTURE2</a>
+    <li class="articleCategory">
+      <a class="articleCategory-link" href="#">ADVENTURE2</a>
     </li>
   </ul>
 </template>
@@ -24,7 +24,7 @@ export default {
   display: flex;
   gap: 20px;
 
-  .article__category {
+  .articleCategory {
     display: inline-flex;
     padding: 5px 10px;
     flex-direction: column;
@@ -38,14 +38,14 @@ export default {
       opacity: 0.8;
     }
 
-    .article__category-link {
+    .articleCategory-link {
       list-style: none;
       text-decoration: none;
       @include text(10px, 700);
     }
   }
 }
-.article__category--card {
+.articleItem__category--card {
   position: absolute;
   display: flex;
   justify-content: flex-end;
@@ -54,9 +54,9 @@ export default {
   margin: 0;
   top: 10px;
 }
-.article__category-showArticle {
+.articleCategory-showArticle {
   margin: 50px 0;
-  .article__category {
+  .articleCategory {
     display: inline-flex;
     padding: 5px 10px;
     flex-direction: column;
@@ -68,7 +68,7 @@ export default {
     &:hover {
       opacity: 0.8;
     }
-    .article__category-link {
+    .articleCategory-link {
       list-style: none;
       text-decoration: none;
       @include text(10px, 700);

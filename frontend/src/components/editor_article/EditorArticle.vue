@@ -5,24 +5,24 @@ export default {
 </script>
 
 <template>
-  <div class="article">
-    <div class="article__image-container">
-      <ul class="article__categories">
-        <li class="article__category">
-          <a href="#" class="article__category-link">ADVENTURE</a>
+  <div class="editorArticle">
+    <div class="editorArticle__image-container">
+      <ul class="editorArticle__categories">
+        <li class="editorArticle__category">
+          <a href="#" class="editorArticle__category-link">ADVENTURE</a>
         </li>
       </ul>
-      <div class="article__content">
+      <div class="editorArticle__content">
         <img
           src="@/assets/images/gem.svg"
           alt="gem image"
-          class="article__image"
+          class="editorArticle__image"
         />
-        <time class="article__time">08.08.2021</time>
-        <h3 class="article__title">
+        <time class="editorArticle__time">08.08.2021</time>
+        <h3 class="editorArticle__title">
           Richird Norton photorealistic rendering as real photos
         </h3>
-        <p class="article__text">
+        <p class="editorArticle__text">
           Progressively incentivize cooperative systems through technically
           sound functionalities. The credibly productivate seamless data.
         </p>
@@ -35,17 +35,17 @@ export default {
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
 
-.article {
+.editorArticle {
   border-radius: 5px;
   background: #fff;
-  .article__image-container {
+  .editorArticle__image-container {
     position: relative;
     background: url('@/assets/images/editorsBg1.png') center center no-repeat;
     background-size: cover;
     opacity: 0.9;
     height: 350px;
     width: 100%;
-    .article__categories {
+    .editorArticle__categories {
       position: absolute;
       display: flex;
       justify-content: flex-end;
@@ -54,7 +54,7 @@ export default {
       margin: 0;
       top: 10px;
 
-      .article__category {
+      .editorArticle__category {
         padding: 5px 10px;
         display: inline-flex;
         flex-direction: column;
@@ -69,7 +69,7 @@ export default {
           opacity: 0.8;
         }
 
-        .article__category-link {
+        .editorArticle__category-link {
           padding: 5px 10px;
           border-radius: 8px;
           background: rgba(255, 255, 255, 0.15);
@@ -80,26 +80,26 @@ export default {
       }
     }
   }
-  .article__content {
+  .editorArticle__content {
     display: flex;
     gap: 15px;
     flex-direction: column;
     padding: 120px 0 0 37px;
-    .article__image {
+    .editorArticle__image {
       width: 20px;
     }
-    .article__time {
+    .editorArticle__time {
       @include text(12px, 400);
       font-family: $secondaryFontFamily;
       color: $textColor3;
     }
-    .article__title {
+    .editorArticle__title {
       @include text(18px, 700);
       font-family: $secondaryFontFamily;
       line-height: 25px;
       max-width: 270px;
     }
-    .article__text {
+    .editorArticle__text {
       @include text(12px, 400);
       font-family: $secondaryFontFamily;
       color: $textColor3;

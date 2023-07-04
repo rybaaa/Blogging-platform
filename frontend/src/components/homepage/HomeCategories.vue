@@ -5,28 +5,28 @@ export default {
 </script>
 
 <template>
-  <h2 class="section__title">Popular topics</h2>
-  <ul class="section__categories">
-    <li class="section__category section__category-active">
-      <a href="#" class="section__category-link"></a>All
+  <h2 class="homeCategories__title">Popular topics</h2>
+  <ul class="homeCategories">
+    <li class="homeCategories__category homeCategories__category-active">
+      <a href="#" class="homeCategories__category-link"></a>All
     </li>
-    <li class="section__category">
-      <a href="#" class="section__category-link"></a>Adventure
+    <li class="homeCategories__category">
+      <a href="#" class="homeCategories__category-link"></a>Adventure
     </li>
-    <li class="section__category">
-      <a href="#" class="section__category-link"></a>Travel
+    <li class="homeCategories__category">
+      <a href="#" class="homeCategories__category-link"></a>Travel
     </li>
-    <li class="section__category">
-      <a href="#" class="section__category-link"></a>Fashion
+    <li class="homeCategories__category">
+      <a href="#" class="homeCategories__category-link"></a>Fashion
     </li>
-    <li class="section__category">
-      <a href="#" class="section__category-link"></a>Technology
+    <li class="homeCategories__category">
+      <a href="#" class="homeCategories__category-link"></a>Technology
     </li>
-    <li class="section__category">
-      <a href="#" class="section__category-link"></a>Branding
+    <li class="homeCategories__category">
+      <a href="#" class="homeCategories__category-link"></a>Branding
     </li>
-    <li class="section__category section__category-last">
-      <a href="#" class="section__category-link"></a>View all
+    <li class="homeCategories__category homeCategories__category-last">
+      <a href="#" class="homeCategories__category-link"></a>View all
     </li>
   </ul>
 </template>
@@ -35,13 +35,13 @@ export default {
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
 
-.section__title {
+.homeCategories__title {
   @include text(36px, 700);
   font-family: $secondaryFontFamily;
   color: $textColor2;
   margin-bottom: 30px;
 }
-.section__categories {
+.homeCategories {
   @include unsetAll();
   display: flex;
   margin-bottom: 30px;
@@ -50,7 +50,7 @@ export default {
     flex-wrap: wrap;
     gap: 10px;
   }
-  .section__category {
+  .homeCategories__category {
     @include unsetAll();
     @include text(12px, 700);
     color: $textColor2;
@@ -65,10 +65,10 @@ export default {
       margin: 0;
     }
   }
-  .section__category-active {
+  .homeCategories__category-active {
     color: #d4a373;
   }
-  .section__category-last {
+  .homeCategories__category-last {
     margin-left: auto;
     margin-right: 0;
     @include for-phone-only {

@@ -9,15 +9,15 @@ export default {
 </script>
 
 <template>
-  <div class="article__author-container">
+  <div class="articleAuthor-container">
     <img
       src="@/assets/images/face1.png"
       alt="author face"
       class="article__author-image"
     />
-    <div class="article__author-content">
-      <h4 class="article__author-title">{{ author }}</h4>
-      <p class="article__author-description">{{ position }}</p>
+    <div class="articleAuthor-content">
+      <h4 class="articleAuthor-title">{{ author }}</h4>
+      <p class="articleAuthor-description">{{ position }}</p>
     </div>
   </div>
 </template>
@@ -25,24 +25,24 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
-.article__author-container {
+.articleAuthor-container {
   padding-top: 20px;
   display: flex;
   gap: 17px;
   align-items: center;
-  .article__author-content {
+  .articleAuthor-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
     height: 100%;
-    .article__author-title {
+    .articleAuthor-title {
       @include text(12px, 700);
       line-height: 20px;
       font-family: $secondaryFontFamily;
       color: $textColor2;
     }
-    .article__author-description {
+    .articleAuthor-description {
       @include text(12px, 400);
       line-height: 20px;
       font-family: $secondaryFontFamily;

@@ -71,7 +71,7 @@ export default {
           experiences through quality e-services.
         </p>
         <div class="articleContent__info">
-          <ArticleCategory class="article__category-showArticle" />
+          <ArticleCategory class="articleCategory-showArticle" />
           <ArticleAuthor
             class="articleContent__author"
             author="By Jennifer Lawrence "
