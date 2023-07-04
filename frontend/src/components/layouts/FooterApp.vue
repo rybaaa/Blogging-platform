@@ -53,8 +53,11 @@ export default {
     .mainFooter__upper-container {
       height: 400px;
       @include containerWidth;
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      @include for-phone-only {
+        grid-template-columns: repeat(2, 1fr);
+      }
       .mainFooter__upper-col {
         display: flex;
         flex-direction: column;
