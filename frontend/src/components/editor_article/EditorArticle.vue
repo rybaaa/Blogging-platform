@@ -38,74 +38,75 @@ export default {
 .editorArticle {
   border-radius: 5px;
   background: #fff;
-  .editorArticle__image-container {
-    position: relative;
-    background: url('@/assets/images/editorsBg1.png') center center no-repeat;
-    background-size: cover;
-    opacity: 0.9;
-    height: 350px;
-    width: 100%;
-    .editorArticle__categories {
-      position: absolute;
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      right: 20px;
-      margin: 0;
-      top: 10px;
+}
+.editorArticle__image-container {
+  position: relative;
+  background: url('@/assets/images/editorsBg1.png') center center no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+  height: 350px;
+  width: 100%;
+}
+.editorArticle__categories {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  right: 20px;
+  margin: 0;
+  top: 10px;
+}
 
-      .editorArticle__category {
-        padding: 5px 10px;
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.15);
-        @include unsetAll();
-        z-index: 10;
+.editorArticle__category {
+  padding: 5px 10px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  @include unsetAll();
+  z-index: 10;
 
-        &:hover {
-          opacity: 0.8;
-        }
-
-        .editorArticle__category-link {
-          padding: 5px 10px;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.15);
-          list-style: none;
-          text-decoration: none;
-          @include text(10px, 700);
-        }
-      }
-    }
+  &:hover {
+    opacity: 0.8;
   }
-  .editorArticle__content {
-    display: flex;
-    gap: 15px;
-    flex-direction: column;
-    padding: 120px 0 0 37px;
-    .editorArticle__image {
-      width: 20px;
-    }
-    .editorArticle__time {
-      @include text(12px, 400);
-      font-family: $secondaryFontFamily;
-      color: $textColor3;
-    }
-    .editorArticle__title {
-      @include text(18px, 700);
-      font-family: $secondaryFontFamily;
-      line-height: 25px;
-      max-width: 270px;
-    }
-    .editorArticle__text {
-      @include text(12px, 400);
-      font-family: $secondaryFontFamily;
-      color: $textColor3;
-      line-height: 20px;
-      max-width: 340px;
-    }
-  }
+}
+
+.editorArticle__category-link {
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  list-style: none;
+  text-decoration: none;
+  @include text(10px, 700);
+}
+
+.editorArticle__content {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  padding: 120px 0 0 37px;
+}
+.editorArticle__image {
+  width: 20px;
+}
+.editorArticle__time {
+  @include text(12px, 400);
+  font-family: $secondaryFontFamily;
+  color: $textColor3;
+}
+.editorArticle__title {
+  @include text(18px, 700);
+  font-family: $secondaryFontFamily;
+  line-height: 25px;
+  max-width: 270px;
+}
+.editorArticle__text {
+  @include text(12px, 400);
+  font-family: $secondaryFontFamily;
+  color: $textColor3;
+  line-height: 20px;
+  max-width: 340px;
 }
 </style>

@@ -1,5 +1,5 @@
 <script>
-import ArticleCategory from './ArticleCategory.vue'
+import ArticleCategories from './ArticleCategories.vue'
 import ArticleAuthor from './ArticleAuthor.vue'
 export default {
   name: 'ArticleItem',
@@ -8,7 +8,7 @@ export default {
     author: String,
     position: String,
   },
-  components: { ArticleCategory, ArticleAuthor },
+  components: { ArticleCategories, ArticleAuthor },
 }
 </script>
 
@@ -21,7 +21,7 @@ export default {
           alt="article picture"
           class="articleItem__image"
         />
-        <ArticleCategory class="articleItem__category--card" />
+        <ArticleCategories class="articleItem__category--card" />
       </div>
       <div class="articleItem__content">
         <div class="articleItem__info">
@@ -52,46 +52,49 @@ export default {
 .articleItem {
   border-radius: 5px;
   background: #fff;
-  .articleItem__image-container {
-    position: relative;
-    background: #000;
-    opacity: 0.9;
-    .articleItem__image {
-      width: 100%;
-    }
-  }
-  .articleItem__content {
-    padding: 20px;
-    .articleItem__info {
-      display: flex;
-      justify-content: space-between;
-      .articleItem__info-time {
-        @include text(12px, 400);
-        font-family: $secondaryFontFamily;
-        color: #6c757d;
-      }
-    }
-    .articleItem__title {
-      margin: 15px 0;
-      @include text(18px, 700);
-      font-family: $secondaryFontFamily;
-      color: $textColor2;
-      line-height: 25px;
-      max-width: 270px;
-    }
-    .articleItem__text {
-      @include text(12px, 400);
-      font-family: $secondaryFontFamily;
-      color: #6c757d;
-      line-height: 20px;
-      max-width: 270px;
-      margin: 15px 0;
-    }
-    .articleItem__divider {
-      border-bottom: 1px solid $textColor3;
-    }
-  }
 }
+.articleItem__image-container {
+  position: relative;
+  background: #000;
+  opacity: 0.9;
+}
+.articleItem__image {
+  width: 100%;
+}
+
+.articleItem__content {
+  padding: 20px;
+}
+.articleItem__info {
+  display: flex;
+  justify-content: space-between;
+}
+.articleItem__info-time {
+  @include text(12px, 400);
+  font-family: $secondaryFontFamily;
+  color: #6c757d;
+}
+
+.articleItem__title {
+  margin: 15px 0;
+  @include text(18px, 700);
+  font-family: $secondaryFontFamily;
+  color: $textColor2;
+  line-height: 25px;
+  max-width: 270px;
+}
+.articleItem__text {
+  @include text(12px, 400);
+  font-family: $secondaryFontFamily;
+  color: #6c757d;
+  line-height: 20px;
+  max-width: 270px;
+  margin: 15px 0;
+}
+.articleItem__divider {
+  border-bottom: 1px solid $textColor3;
+}
+
 .articleItem-link {
   text-decoration: none;
   &:hover {

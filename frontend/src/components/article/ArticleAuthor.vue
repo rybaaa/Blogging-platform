@@ -9,15 +9,15 @@ export default {
 </script>
 
 <template>
-  <div class="articleAuthor-container">
+  <div class="articleAuthor">
     <img
       src="@/assets/images/face1.png"
       alt="author face"
-      class="article__author-image"
+      class="articleAuthor__image"
     />
-    <div class="articleAuthor-content">
-      <h4 class="articleAuthor-title">{{ author }}</h4>
-      <p class="articleAuthor-description">{{ position }}</p>
+    <div class="articleAuthor__content">
+      <h4 class="articleAuthor__title">{{ author }}</h4>
+      <p class="articleAuthor__description">{{ position }}</p>
     </div>
   </div>
 </template>
@@ -25,30 +25,30 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
-.articleAuthor-container {
+.articleAuthor {
   padding-top: 20px;
   display: flex;
   gap: 17px;
   align-items: center;
-  .articleAuthor-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    height: 100%;
-    .articleAuthor-title {
-      @include text(12px, 700);
-      line-height: 20px;
-      font-family: $secondaryFontFamily;
-      color: $textColor2;
-    }
-    .articleAuthor-description {
-      @include text(12px, 400);
-      line-height: 20px;
-      font-family: $secondaryFontFamily;
-      color: $textColor2;
-    }
-  }
+}
+.articleAuthor__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  height: 100%;
+}
+.articleAuthor__title {
+  @include text(12px, 700);
+  line-height: 20px;
+  font-family: $secondaryFontFamily;
+  color: $textColor2;
+}
+.articleAuthor__description {
+  @include text(12px, 400);
+  line-height: 20px;
+  font-family: $secondaryFontFamily;
+  color: $textColor2;
 }
 .articleContent__author {
   padding: 0;
