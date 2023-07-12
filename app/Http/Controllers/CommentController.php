@@ -13,7 +13,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return Comment::all();
+        return Comment::query()->with(['author', 'article'])->get();
     }
 
     /**
@@ -31,6 +31,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
+        $comment->load(['article', 'author']);
         return $comment;
     }
 

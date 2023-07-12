@@ -25,7 +25,6 @@ class StoreCommentRequest extends FormRequest
             'content' => ['required', 'string'],
             'author_id' => ['required', 'exists:users,id'],
             'article_id' => ['required', 'exists:articles,id']
-
         ];
     }
 }

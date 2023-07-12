@@ -12,7 +12,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::query()->with(['comments'])->get();
+        $articles = Article::query()->with(['comments', 'author'])->get();
         return $articles;
     }
 
@@ -21,7 +21,11 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article($request->all());
+        $article = new Article($request->validate([
+            'author_id' => ['required', 'int', 'exists:users,id'],
+            'content' => ['required', 'string'],
+            'title' => ['required', 'string']
+        ]));
         $article->save();
         return response()->noContent();
     }
@@ -31,7 +35,7 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        $article = Article::where('id', $id)->firstOrFail();
+        $article = Article::where('id', $id)->with(['author', 'comments'])->firstOrFail();
         return $article;
     }
 
@@ -41,7 +45,10 @@ class ArticleController extends Controller
     public function update(Request $request, string $id)
     {
         $article = Article::where('id', $id)->firstOrFail();
-        $article->update($request->all());
+        $article->update($request->validate([
+            'content' => ['required', 'string'],
+            'title' => ['required', 'string']
+        ]));
         return response()->noContent();
     }
 
