@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class ArticleFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraph(),
-            'author_id' => User::factory()
+            'author_id' => User::factory(),
         ];
     }
 }

@@ -12,7 +12,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::query()->with(['comments', 'author'])->get();
+        $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
         return $articles;
     }
 
