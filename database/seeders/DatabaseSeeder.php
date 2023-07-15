@@ -25,5 +25,4 @@ class DatabaseSeeder extends Seeder
             $article->tags()->attach($tags->pluck('id'));
         }
     }
-
 }
