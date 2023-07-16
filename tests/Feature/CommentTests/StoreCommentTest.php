@@ -21,7 +21,7 @@ class StoreCommentTest extends TestCase
         'content' => 'testing tests'
     ]);
 
-        $response->assertStatus(204);
+        $response->assertStatus(201);
         $comments = Comment::all();
         $this->assertCount(1, $comments);
     }
@@ -41,5 +41,31 @@ class StoreCommentTest extends TestCase
         $response->assertStatus(422);
         $comments = Comment::all();
         $this->assertEmpty($comments);
+    }
+
+    public function test_comment_store_with_debug_middleware(): void
+    {
+        $author = User::factory()->createOne();
+        $article = Article::factory()->createOne();
+        $response = $this->postJson(route('comments.store'),
+    [
+        'author_id' => $author->id,
+        'article_id' => $article->id,
+        'content' => 'laravel'
+    ]);
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>['content', 'author_id', 'article_id']
+            ],
+        ]);
+        $response->assertJsonFragment([
+            'requested-post-body' => [
+                'content' => 'laravel',
+                'author_id' => $author->id,
+                'article_id' => $article->id
+            ],
+        ]);
     }
 }

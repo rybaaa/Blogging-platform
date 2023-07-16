@@ -17,4 +17,17 @@ class IndexCommentTest extends TestCase
         $response->assertStatus(200);
         $this->assertCount(5, $comments);
     }
+
+    public function test_comment_index_with_debug_middleware(): void
+    {
+        $response = $this->get(route('comments.index'));
+
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>[]
+            ],
+        ]);
+    }
 }
