@@ -19,4 +19,20 @@ class ShowArticleTest extends TestCase
         $this->assertCount(5, $articles);
         $this->assertEquals( $requiredArticle->id, $articles[0]->id);
     }
+
+    public function test_article_show_with_debug_middleware(): void
+    {
+        $articles = Article::factory()->count(5)->create();
+        $requiredArticle = $articles[0];
+
+        $response = $this->get(route('articles.show', [$requiredArticle->id]));
+
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>[]
+            ],
+        ]);
+    }
 }

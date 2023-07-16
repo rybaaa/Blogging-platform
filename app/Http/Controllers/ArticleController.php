@@ -27,7 +27,11 @@ class ArticleController extends Controller
             'title' => ['required', 'string']
         ]));
         $article->save();
-        return response()->noContent();
+        return response()->json([
+            'status'=>201,
+            'message'=>'Article was created',
+            'data' => $article
+        ], 201);
     }
 
     /**
@@ -35,7 +39,7 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        $article = Article::where('id', $id)->with(['author', 'comments'])->firstOrFail();
+        $article = Article::where('id', $id)->with(['author', 'comments', 'tags'])->firstOrFail();
         return $article;
     }
 
@@ -49,7 +53,11 @@ class ArticleController extends Controller
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
         ]));
-        return response()->noContent();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Article was updated',
+            'data' => $article
+        ], 200);
     }
 
     /**
@@ -59,6 +67,9 @@ class ArticleController extends Controller
     {
         $article = Article::where('id', $id)->firstOrFail();
         $article->delete();
-        return response()->noContent();
+        return response()->json([
+            'status' => 204,
+            'message' => 'Article was deleted',
+        ], 204);
     }
 }

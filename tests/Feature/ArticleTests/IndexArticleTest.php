@@ -17,4 +17,17 @@ class IndexArticleTest extends TestCase
         $response->assertStatus(200);
         $this->assertCount(5, $articles);
     }
+
+    public function test_article_index_with_debug_middleware(): void
+    {
+        $response = $this->get(route('articles.index'));
+
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>[]
+            ],
+        ]);
+    }
 }

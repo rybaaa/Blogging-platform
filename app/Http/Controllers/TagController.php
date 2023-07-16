@@ -36,6 +36,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
+        $tag->load(['articles']);
         return $tag;
     }
 
