@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Tag;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
@@ -17,5 +16,19 @@ class IndexTagTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertCount(5, $tags);
+    }
+
+    public function test_tag_index_with_debug_middleware():void 
+    {
+        $response = $this->get(route('tags.index'));
+
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>[]
+            ],
+        ]);
+
     }
 }

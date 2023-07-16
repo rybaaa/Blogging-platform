@@ -25,4 +25,25 @@ class ShowTagTest extends TestCase
         $this->assertCount(1, $tags);
         $this->assertEquals( 'laravel', $requiredTag->title);
     }
+
+    public function test_tag_show_with_debug_middleware():void 
+    {
+        $this->postJson(route('tags.store'),
+    [
+        'title' => 'laravel'
+    ]);
+
+        $requiredTag = Tag::where('title', 'laravel')->firstOrFail();
+
+        $response = $this->get(route('tags.show', [$requiredTag->id]));
+
+        $response->assertJsonStructure([
+            'debug-info' => [
+                'execution-time-milliseconds',
+                'requested-get-parameters'=>[],
+                'requested-post-body'=>[]
+            ],
+        ]);
+
+    }
 }

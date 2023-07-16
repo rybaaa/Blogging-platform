@@ -24,7 +24,11 @@ class TagController extends Controller
     {
         $tag = new Tag($request->validated());
         $tag->save();
-        return response()->noContent();
+        return response()->json([
+            'status'=>201,
+            'message'=>'Tag was created',
+            'data' => $tag
+        ], 201);
     }
 
     /**
@@ -49,7 +53,11 @@ class TagController extends Controller
     public function update(UpdateTagRequest $request, Tag $tag)
     {
         $tag->update($request->validated());
-        return response()->noContent();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Tag was updated',
+            'data' => $tag
+        ], 200);
     }
 
     /**
@@ -58,6 +66,9 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
-        return response()->noContent();
+        return response()->json([
+            'status' => 204,
+            'message' => 'Tag was deleted',
+        ], 204);
     }
 }
