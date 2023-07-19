@@ -13,7 +13,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return Comment::query()->with(['author'])->get();
+        return Comment::query()->with(['author', 'article'])->get();
     }
 
     /**

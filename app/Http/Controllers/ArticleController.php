@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Article::class, options: ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -21,12 +25,18 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article($request->validate([
-            'author_id' => ['required', 'int', 'exists:users,id'],
+        $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
-        ]));
+        ]);
+
+        $user = auth()->user();
+
+        $data['author_id'] = $user->id;
+
+        $article = new Article($data);
         $article->save();
+
         return response()->json([
             'status'=>201,
             'message'=>'Article was created',
@@ -49,6 +59,7 @@ class ArticleController extends Controller
     public function update(Request $request, string $id)
     {
         $article = Article::where('id', $id)->firstOrFail();
+        
         $article->update($request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
@@ -63,10 +74,10 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Article $article)
     {
-        $article = Article::where('id', $id)->firstOrFail();
         $article->delete();
+
         return response()->json([
             'status' => 204,
             'message' => 'Article was deleted',
