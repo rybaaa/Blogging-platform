@@ -56,14 +56,13 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Article $article)
     {
-        $article = Article::where('id', $id)->firstOrFail();
-        
         $article->update($request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
         ]));
+
         return response()->json([
             'status' => 200,
             'message' => 'Article was updated',
