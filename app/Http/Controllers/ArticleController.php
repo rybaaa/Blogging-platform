@@ -78,8 +78,8 @@ class ArticleController extends Controller
         $article->delete();
 
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Article was deleted',
-        ], 204);
+        ], 200);
     }
 }

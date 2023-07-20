@@ -64,8 +64,8 @@ class CommentController extends Controller
     {
         $comment->delete();
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Comment was deleted',
-        ], 204);
+        ], 200);
     }
 }
