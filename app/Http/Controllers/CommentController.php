@@ -27,6 +27,7 @@ class CommentController extends Controller
     {
         $comment = new Comment($request->validated());
         $comment->save();
+
         return response()->json([
             'status' => 201,
             'message' => 'Comment was created',
@@ -44,6 +45,7 @@ class CommentController extends Controller
             'status' => 200,
             'data' => $comment
         ]);
+
     }
 
     /**
@@ -52,6 +54,7 @@ class CommentController extends Controller
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
         $comment->update($request->validated());
+      
         return response()->json([
             'status' => 200,
             'message' => 'Comment was updated',
@@ -65,6 +68,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
+      
         return response()->json([
             'status' => 204,
             'message' => 'Comment was deleted',

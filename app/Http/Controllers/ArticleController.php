@@ -13,6 +13,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
+      
         return response()->json([
             'status' => 200,
             'data' => $articles
@@ -30,6 +31,7 @@ class ArticleController extends Controller
             'title' => ['required', 'string']
         ]));
         $article->save();
+      
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
@@ -59,6 +61,7 @@ class ArticleController extends Controller
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
         ]));
+      
         return response()->json([
             'status' => 200,
             'message' => 'Article was updated',
@@ -73,6 +76,7 @@ class ArticleController extends Controller
     {
         $article = Article::where('id', $id)->firstOrFail();
         $article->delete();
+      
         return response()->json([
             'status' => 204,
             'message' => 'Article was deleted',
