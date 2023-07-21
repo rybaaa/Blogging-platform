@@ -21,11 +21,13 @@ class StoreCommentTest extends TestCase
             ->createOne();
         $response = $this
             ->actingAs($author, 'api')
-            ->postJson(route('comments.store'),
+            ->postJson(
+                route('comments.store'),
                 [
                     'article_id' => $article->id,
                     'content' => 'testing tests'
-                ]);
+                ]
+            );
 
         $response->assertStatus(201);
         $comments = Comment::all();
@@ -57,19 +59,21 @@ class StoreCommentTest extends TestCase
             ->set('email', 'test@test.com')
             ->createOne();
         $article = Article::factory()->createOne();
-        
+
         $response = $this
             ->actingAs($author, 'api')
-            ->postJson(route('comments.store'),
+            ->postJson(
+                route('comments.store'),
                 [
                     'article_id' => $article->id,
                     'content' => 'testing tests'
-                ]);
+                ]
+            );
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>['content', 'article_id']
+                'requested-get-parameters' => [],
+                'requested-post-body' => ['content', 'article_id']
             ],
         ]);
         $response->assertJsonFragment([
