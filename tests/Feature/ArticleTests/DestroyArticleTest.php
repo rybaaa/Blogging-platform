@@ -47,6 +47,7 @@ class DestroyArticleTest extends TestCase
             ->actingAs($author, 'api')
             ->deleteJson(route('articles.destroy', [$article->id]));
 
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',

@@ -21,10 +21,12 @@ class UpdateCommentTest extends TestCase
 
         $response = $this
             ->actingAs($author, 'api')
-            ->patchJson(route('comments.update', [$comment->id]),
+            ->patchJson(
+                route('comments.update', [$comment->id]),
                 [
                     'content' => 'update comment'
-                ]);
+                ]
+            );
 
         $response->assertStatus(200);
         $comment->refresh();
@@ -45,16 +47,19 @@ class UpdateCommentTest extends TestCase
 
         $response = $this
             ->actingAs($author, 'api')
-            ->patchJson(route('comments.update', [$comment->id]),
+            ->patchJson(
+                route('comments.update', [$comment->id]),
                 [
                     'content' => 'update comment'
-                ]);
+                ]
+            );
 
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>['content']
+                'requested-get-parameters' => [],
+                'requested-post-body' => ['content']
             ],
         ]);
         $response->assertJsonFragment([
@@ -91,10 +96,12 @@ class UpdateCommentTest extends TestCase
 
         $response = $this
             ->actingAs($author, 'api')
-            ->patchJson(route('comments.update', [$comment->id]),
+            ->patchJson(
+                route('comments.update', [$comment->id]),
                 [
                     'content' => 'update comment'
-                ]);
+                ]
+            );
 
         $response->assertStatus(403);
     }

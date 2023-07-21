@@ -45,14 +45,17 @@ class UpdateArticleTest extends TestCase
             ->set('author_id', $author->id)
             ->createOne();
 
-        $response = $this->patchJson(
-            route('articles.update', [$article->id]),
-            [
-                'content' => 'update article',
-                'title' => 'test title'
-            ]
-        );
+        $response = $this
+            ->actingAs($author, 'api')
+            ->patchJson(
+                route('articles.update', [$article->id]),
+                [
+                    'content' => 'update article',
+                    'title' => 'test title'
+                ]
+            );
 
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',

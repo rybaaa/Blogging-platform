@@ -52,14 +52,17 @@ class StoreArticleTest extends TestCase
             ->set('password', '12345678')
             ->set('email', 'test@test.com')
             ->createOne();
-        $response = $this->postJson(
-            route('articles.store'),
-            [
-                'content' => 'testing article',
-                'title' => 'test title'
-            ]
-        );
+        $response = $this
+            ->actingAs($author, 'api')
+            ->postJson(
+                route('articles.store'),
+                [
+                    'content' => 'testing article',
+                    'title' => 'test title'
+                ]
+            );
 
+        $response->assertStatus(201);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
@@ -86,6 +89,7 @@ class StoreArticleTest extends TestCase
                 ]
             );
 
+        $response->assertStatus(401);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',

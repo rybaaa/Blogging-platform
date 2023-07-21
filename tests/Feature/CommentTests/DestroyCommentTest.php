@@ -19,7 +19,7 @@ class DestroyCommentTest extends TestCase
             ->set('author_id', $author->id)
             ->set('id', 10)
             ->createOne();
-        Comment::factory()->count(5)->create();       
+        Comment::factory()->count(5)->create();
 
         $response = $this
             ->actingAs($author, 'api')
@@ -41,18 +41,19 @@ class DestroyCommentTest extends TestCase
             ->set('author_id', $author->id)
             ->set('id', 100)
             ->createOne();
-        
-        Comment::factory()->count(5)->create();   
+
+        Comment::factory()->count(5)->create();
 
         $response = $this
             ->actingAs($author, 'api')
             ->deleteJson(route('comments.destroy', [$comment->id]));
 
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>[]
+                'requested-get-parameters' => [],
+                'requested-post-body' => []
             ],
         ]);
     }
@@ -62,7 +63,8 @@ class DestroyCommentTest extends TestCase
         $comment = Comment::factory()->createOne();
 
         $response = $this->deleteJson(
-            route('comments.destroy',  [$comment->id]));
+            route('comments.destroy',  [$comment->id])
+        );
 
         $response->assertStatus(401);
     }
@@ -80,7 +82,7 @@ class DestroyCommentTest extends TestCase
 
         $response = $this
             ->actingAs($author, 'api')
-            ->patchJson(route('comments.destroy', [$comment->id]));
+            ->deleteJson(route('comments.destroy', [$comment->id]));
 
         $response->assertStatus(403);
     }

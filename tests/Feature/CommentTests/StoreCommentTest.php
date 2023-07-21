@@ -69,6 +69,8 @@ class StoreCommentTest extends TestCase
                     'content' => 'testing tests'
                 ]
             );
+
+        $response->assertStatus(201);
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
