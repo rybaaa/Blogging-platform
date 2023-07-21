@@ -15,20 +15,19 @@ class IndexTagTest extends TestCase
         $response = $this->get(route('tags.index'));
 
         $response->assertStatus(200);
-        $this->assertCount(5, $tags);
+        $response->assertJsonCount(5, 'data');
     }
 
-    public function test_tag_index_with_debug_middleware():void 
+    public function test_tag_index_with_debug_middleware(): void
     {
         $response = $this->get(route('tags.index'));
 
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>[]
+                'requested-get-parameters' => [],
+                'requested-post-body' => []
             ],
         ]);
-
     }
 }

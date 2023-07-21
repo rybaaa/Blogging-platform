@@ -13,8 +13,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        return Tag::query()->with(['articles'])->get();
-
+        $tags = Tag::query()->with(['articles'])->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $tags
+        ]);
     }
 
     /**
@@ -25,8 +28,8 @@ class TagController extends Controller
         $tag = new Tag($request->validated());
         $tag->save();
         return response()->json([
-            'status'=>201,
-            'message'=>'Tag was created',
+            'status' => 201,
+            'message' => 'Tag was created',
             'data' => $tag
         ], 201);
     }
@@ -37,7 +40,10 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         $tag->load(['articles']);
-        return $tag;
+        return response()->json([
+            'status' => 200,
+            'data' => $tag
+        ]);
     }
 
     /**
