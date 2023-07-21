@@ -17,7 +17,11 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return Comment::query()->with(['author', 'article'])->get();
+        $comments = Comment::query()->with(['author'])->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $comments
+        ]);
     }
 
     /**
@@ -29,8 +33,8 @@ class CommentController extends Controller
         $comment->author_id = auth()->user()->id;
         $comment->save();
         return response()->json([
-            'status'=>201,
-            'message'=>'Comment was created',
+            'status' => 201,
+            'message' => 'Comment was created',
             'data' => $comment
         ], 201);
     }
@@ -41,7 +45,10 @@ class CommentController extends Controller
     public function show(Comment $comment)
     {
         $comment->load(['article', 'author']);
-        return $comment;
+        return response()->json([
+            'status' => 200,
+            'data' => $comment
+        ]);
     }
 
     /**

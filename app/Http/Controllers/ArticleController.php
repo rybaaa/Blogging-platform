@@ -17,7 +17,10 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
-        return $articles;
+        return response()->json([
+            'status' => 200,
+            'data' => $articles
+        ]);
     }
 
     /**
@@ -38,8 +41,8 @@ class ArticleController extends Controller
         $article->save();
 
         return response()->json([
-            'status'=>201,
-            'message'=>'Article was created',
+            'status' => 201,
+            'message' => 'Article was created',
             'data' => $article
         ], 201);
     }
@@ -50,7 +53,10 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         $article = Article::where('id', $id)->with(['author', 'comments', 'tags'])->firstOrFail();
-        return $article;
+        return response()->json([
+            'status' => 200,
+            'data' => $article
+        ]);
     }
 
     /**

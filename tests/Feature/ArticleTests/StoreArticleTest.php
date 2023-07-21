@@ -12,12 +12,14 @@ class StoreArticleTest extends TestCase
     public function test_article_store(): void
     {
         $author = User::factory()->createOne();
-        $response = $this->postJson(route('articles.store'),
-    [
-        'author_id' => $author->id,
-        'content' => 'testing article',
-        'title' => 'test title'
-    ]);
+        $response = $this->postJson(
+            route('articles.store'),
+            [
+                'author_id' => $author->id,
+                'content' => 'testing article',
+                'title' => 'test title'
+            ]
+        );
 
         $response->assertStatus(201);
         $articles = Article::all();
@@ -43,18 +45,20 @@ class StoreArticleTest extends TestCase
     public function test_article_store_with_debug_middleware(): void
     {
         $author = User::factory()->createOne();
-        $response = $this->postJson(route('articles.store'),
-    [
-        'author_id' => $author->id,
-        'content' => 'testing article',
-        'title' => 'test title'
-    ]);
+        $response = $this->postJson(
+            route('articles.store'),
+            [
+                'author_id' => $author->id,
+                'content' => 'testing article',
+                'title' => 'test title'
+            ]
+        );
 
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>['title', 'content', 'author_id']
+                'requested-get-parameters' => [],
+                'requested-post-body' => ['title', 'content', 'author_id']
             ],
         ]);
         $response->assertJsonFragment([
@@ -80,8 +84,8 @@ class StoreArticleTest extends TestCase
         $response->assertJsonStructure([
             'debug-info' => [
                 'execution-time-milliseconds',
-                'requested-get-parameters'=>[],
-                'requested-post-body'=>['title', 'content']
+                'requested-get-parameters' => [],
+                'requested-post-body' => ['title', 'content']
             ],
         ]);
         $response->assertJsonFragment([

@@ -18,14 +18,15 @@ class DebugMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $result = $next($request);
-        if($result instanceof JsonResponse){            
+        if ($result instanceof JsonResponse) {
             $responseData = $result->getData(true);
 
             $execution_time_milliseconds = (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000;
-            $responseData['debug-info'] = ['execution-time-milliseconds'=>$execution_time_milliseconds, 
-                                            'requested-get-parameters'=>$request->query->all(),
-                                            'requested-post-body'=>$request->request->all()
-        ];
+            $responseData['debug-info'] = [
+                'execution-time-milliseconds' => $execution_time_milliseconds,
+                'requested-get-parameters' => $request->query->all(),
+                'requested-post-body' => $request->request->all()
+            ];
             $result->setData($responseData);
         }
 
