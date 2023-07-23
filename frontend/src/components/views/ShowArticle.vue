@@ -10,6 +10,7 @@ import CommentsList from '@/components/comment/CommentsList.vue'
 let article = ref(null)
 let relatedArticles = ref([])
 const route = useRoute()
+//let comments = article.value.comments
 
 onMounted(async () => {
   await fetchArticle(route.params.id)
@@ -24,10 +25,15 @@ watch(
 async function fetchArticle(id) {
   let response = await Articles.show(id)
   article.value = response.data.data
+  article.value.comments.reverse()
 }
 async function fetchRelatedArticles() {
   let response = await Articles.index()
   relatedArticles.value = response.data.data.slice(0, 3)
+}
+
+function addNewComment(comment) {
+  article.value.comments.unshift(comment)
 }
 </script>
 
@@ -58,7 +64,7 @@ async function fetchRelatedArticles() {
             :email="article.author.email"
           />
         </div>
-        <CommentsList :comments="article.comments" />
+        <CommentsList :comments="article.comments" @cb="addNewComment" />
       </div>
       <EditorSection
         title="Related posts"

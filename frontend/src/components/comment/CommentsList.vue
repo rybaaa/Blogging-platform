@@ -4,9 +4,6 @@ import CommentItem from './CommentItem.vue'
 import Comments from '@/api/Comments'
 import { useRoute } from 'vue-router'
 
-let commentText = ref('')
-const route = useRoute()
-
 defineProps({
   comments: {
     type: Object,
@@ -14,12 +11,24 @@ defineProps({
   },
 })
 
+let commentText = ref('')
+const route = useRoute()
+const emit = defineEmits(['cb'])
+let error = ref('')
+
 const sendComment = async () => {
-  await Comments.store({
-    content: commentText.value,
-    author_id: 1,
-    article_id: route.params.id,
-  })
+  try {
+    error.value = ''
+    let response = await Comments.store({
+      content: commentText.value,
+      author_id: 1,
+      article_id: route.params.id,
+    })
+    emit('cb', response.data.data)
+    commentText.value = ''
+  } catch (errorMsg) {
+    error.value = errorMsg.response.data.message
+  }
 }
 </script>
 
@@ -38,6 +47,7 @@ const sendComment = async () => {
         placeholder="Write a comment..."
         class="commentsList__input"
       ></textarea>
+      <p class="commentsList__error">{{ error }}</p>
       <button type="submit" class="commentsList__button">Send</button>
     </form>
     <div v-if="comments.length" class="commentsList__list">
@@ -47,7 +57,7 @@ const sendComment = async () => {
         :key="comment.id"
       />
     </div>
-    <span class="commentsList__noComment" v-else>No comments yet</span>
+    <span v-else class="commentsList__noComment">No comments yet</span>
   </div>
 </template>
 
@@ -89,6 +99,12 @@ const sendComment = async () => {
   resize: none;
   border: none;
   outline: none;
+}
+.commentsList__error {
+  position: absolute;
+  bottom: 0;
+  @include text(12px, 700);
+  color: red;
 }
 .commentsList__button {
   position: absolute;
