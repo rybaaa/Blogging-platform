@@ -1,9 +1,13 @@
-<script>
+<script setup>
 import ArticleCategories from './ArticleCategories.vue'
-export default {
-  name: 'ArticleMain',
-  components: { ArticleCategories },
-}
+
+defineProps({
+  article: {
+    type: Object,
+    required: true,
+  },
+})
+import { format } from 'date-fns'
 </script>
 
 <template>
@@ -11,15 +15,21 @@ export default {
     <div class="articleMain__container">
       <ArticleCategories />
       <h2 class="articleMain__title">
-        Richird Norton photorealistic rendering as real photos
+        <RouterLink
+          class="articleMain-link"
+          :to="{ name: 'article', params: { id: article.id } }"
+        >
+          {{ article.title }}
+        </RouterLink>
       </h2>
       <div class="articleMain__content">
-        <time class="articleMain__content-time">08.08.2021</time>
+        <time class="articleMain__content-time">{{
+          format(new Date(article.created_at), 'H:mm')
+        }}</time>
         <div class="articleMain__content-divider"></div>
-        <span class="articleMain__content-description"
-          >Progressively incentivize cooperative systems through technically
-          sound functionalities. The credibly productivate seamless data.</span
-        >
+        <span class="articleMain__content-description">{{
+          article.content
+        }}</span>
       </div>
     </div>
   </article>
@@ -86,5 +96,10 @@ export default {
   line-height: 20px;
   font-family: $secondaryFontFamily;
   max-width: 420px;
+}
+
+.articleMain-link {
+  @include link();
+  color: $textColor1;
 }
 </style>

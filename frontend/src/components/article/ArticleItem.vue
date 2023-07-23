@@ -1,19 +1,20 @@
-<script>
+<script setup>
 import ArticleCategories from './ArticleCategories.vue'
 import ArticleAuthor from './ArticleAuthor.vue'
-export default {
-  name: 'ArticleItem',
-  props: {
-    title: String,
-    author: String,
-    position: String,
+import { format } from 'date-fns'
+
+defineProps({
+  article: {
+    type: Object,
+    required: true,
   },
-  components: { ArticleCategories, ArticleAuthor },
-}
+})
 </script>
 
 <template>
-  <RouterLink class="articleItem-link" :to="{ name: 'show-article' }"
+  <RouterLink
+    class="articleItem-link"
+    :to="{ name: 'article', params: { id: article.id } }"
     ><div class="articleItem">
       <div class="articleItem__image-container">
         <img
@@ -25,7 +26,9 @@ export default {
       </div>
       <div class="articleItem__content">
         <div class="articleItem__info">
-          <time class="articleItem__info-time">08.08.2021</time>
+          <time class="articleItem__info-time">{{
+            format(new Date(article.created_at), 'dd.MM.yyyy')
+          }}</time>
           <img
             src="@/assets/images/gem.svg"
             alt="gem image"
@@ -33,14 +36,16 @@ export default {
           />
         </div>
         <h3 class="articleItem__title">
-          {{ title }}
+          {{ article.title }}
         </h3>
         <p class="articleItem__text">
-          Progressively incentivize cooperative systems through technically
-          sound functionalities. The credibly productivate seamless data.
+          {{ article.content }}
         </p>
         <div class="articleItem__divider"></div>
-        <ArticleAuthor :author="author" :position="position" />
+        <ArticleAuthor
+          :author="article.author.name"
+          :email="article.author.email"
+        />
       </div></div
   ></RouterLink>
 </template>
@@ -96,10 +101,6 @@ export default {
 }
 
 .articleItem-link {
-  text-decoration: none;
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline #000;
-  }
+  @include link();
 }
 </style>

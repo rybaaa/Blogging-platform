@@ -1,28 +1,19 @@
 <script setup>
 import ArticleItem from '@/components/article/ArticleItem.vue'
-import EditorSection from '@/components/editor_article/EditorSection.vue'
-import ArticleMain from '@/components/article/ArticleMain.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Articles from '@/api/Articles'
 
 let articles = ref([])
-let editorsPickArticles = ref([])
 
 onMounted(async () => {
   let response = await Articles.index()
   articles.value = response.data.data
-  editorsPickArticles.value = response.data.data.slice(0, 3)
-})
-
-let featuredArticle = computed(() => {
-  return articles.value[0]
 })
 </script>
 
 <template>
   <main>
-    <ArticleMain v-if="featuredArticle" :article="featuredArticle" />
     <section class="section">
       <div class="section__container">
         <HomeCategories />
@@ -35,7 +26,6 @@ let featuredArticle = computed(() => {
         </div>
       </div>
     </section>
-    <EditorSection title="Editor’s Pick" :articles="editorsPickArticles" />
   </main>
 </template>
 

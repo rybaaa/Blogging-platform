@@ -1,29 +1,45 @@
-<script>
+<script setup>
 import ArticleCategories from '@/components/article/ArticleCategories.vue'
 import ArticleAuthor from '@/components/article/ArticleAuthor.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
+import { ref, onMounted, watch } from 'vue'
+import Articles from '@/api/Articles'
+import { useRoute } from 'vue-router'
 
-export default {
-  name: 'ShowArticle',
-  components: { ArticleCategories, ArticleAuthor, EditorSection },
+let article = ref(null)
+let articles = ref([])
+const route = useRoute()
+
+onMounted(async () => {
+  await fetchArticle(route.params.id)
+  await fetchRelatedArticles()
+})
+watch(
+  () => route.params.id,
+  async () => {
+    await fetchArticle(route.params.id)
+  }
+)
+async function fetchArticle(id) {
+  let response = await Articles.show(id)
+  article.value = response.data.data
+}
+async function fetchRelatedArticles() {
+  let response = await Articles.index()
+  articles.value = response.data.data.slice(0, 3)
 }
 </script>
 
 <template>
-  <article>
+  <article v-if="article">
     <section class="mainArticle">
       <div class="mainArticle__container">
         <h2 class="mainArticle__title">
-          Richird Norton photorealistic rendering as real photos
+          {{ article.title }}
         </h2>
         <div class="mainArticle__content">
-          <span class="mainArticle__content-description"
-            >Progressively incentivize cooperative systems through technically
-            sound functionalities. The credibly productivate seamless
-            data.</span
-          >
           <span class="mainArticle__content-author">
-            By Jennifer Lawrence
+            By {{ article.author.name }}
           </span>
         </div>
       </div>
@@ -31,56 +47,22 @@ export default {
     <section class="articleContent">
       <div class="articleContent__container">
         <p>
-          Seamlessly syndicate cutting-edge architectures rather than
-          collaborative collaboration and idea-sharing. Proactively incubate
-          visionary interfaces whereas premium benefits. Seamlessly negotiate
-          ubiquitous leadership skills rather than parallel ideas. Dramatically
-          visualize superior interfaces for best-of-breed alignments.
-          Synergistically formulate performance based users through customized
-          relationships. Interactively deliver cross-platform ROI via granular
-          systems. Intrinsicly enhance effective initiatives vis-a-vis
-          orthogonal outsourcing. Rapidiously monetize market-driven
-          opportunities with multifunctional users. Collaboratively enhance
-          visionary opportunities through revolutionary schemas. Progressively
-          network just in time customer service without real-time scenarios.
-        </p>
-        <p>
-          Synergistically drive e-business leadership with unique synergy.
-          Compellingly seize market positioning ROI and bricks-and-clicks
-          e-markets. Proactively myocardinate timely platforms through
-          distributed ideas. Professionally optimize enabled core competencies
-          for leading-edge sources. Professionally enhance stand-alone
-          leadership with innovative synergy. Rapidiously generate backend
-          experiences vis-a-vis long-term high-impact relationships.
-          Authoritatively supply market-driven mindshare and bricks-and-clicks
-          opportunities. Holisticly create diverse innovation through adaptive
-          communities. Efficiently empower seamless meta-services with impactful
-          opportunities. Distinctively transition virtual outsourcing with
-          focused e-tailers.
-        </p>
-        <blockquote>
-          “ Monotonectally seize superior mindshare rather than efficient
-          technology. ”
-        </blockquote>
-        <p>
-          Compellingly enhance seamless resources through competitive content.
-          Continually actualize 24/365 alignments for resource-leveling
-          platforms. Energistically enhance high standards in models and
-          professional expertise. Intrinsicly iterate extensible metrics for
-          prospective opportunities. Continually develop leading-edge
-          experiences through quality e-services.
+          {{ article.content }}
         </p>
         <div class="articleContent__info">
           <ArticleCategories class="articleCategory-showArticle" />
           <ArticleAuthor
             class="articleContent__author"
-            author="By Jennifer Lawrence "
-            position="Thinker & Designer"
+            :author="article.author.name"
+            :email="article.author.email"
           />
         </div>
       </div>
-
-      <EditorSection title="Related posts" class="editorSection-showArticle" />
+      <EditorSection
+        title="Related posts"
+        :articles="articles"
+        class="editorSection-showArticle"
+      />
     </section>
   </article>
 </template>
