@@ -5,9 +5,10 @@ import EditorSection from '@/components/editor_article/EditorSection.vue'
 import { ref, onMounted, watch } from 'vue'
 import Articles from '@/api/Articles'
 import { useRoute } from 'vue-router'
+import CommentsList from '@/components/comment/CommentsList.vue'
 
 let article = ref(null)
-let articles = ref([])
+let relatedArticles = ref([])
 const route = useRoute()
 
 onMounted(async () => {
@@ -26,7 +27,7 @@ async function fetchArticle(id) {
 }
 async function fetchRelatedArticles() {
   let response = await Articles.index()
-  articles.value = response.data.data.slice(0, 3)
+  relatedArticles.value = response.data.data.slice(0, 3)
 }
 </script>
 
@@ -57,10 +58,11 @@ async function fetchRelatedArticles() {
             :email="article.author.email"
           />
         </div>
+        <CommentsList :comments="article.comments" />
       </div>
       <EditorSection
         title="Related posts"
-        :articles="articles"
+        :articles="relatedArticles"
         class="editorSection-showArticle"
       />
     </section>
@@ -118,7 +120,6 @@ async function fetchRelatedArticles() {
 .articleContent__container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
   @include containerWidth();
   max-width: 860px;
