@@ -42,7 +42,7 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        $article = Article::where('id', $id)->with(['author', 'comments', 'tags'])->firstOrFail();
+        $article = Article::where('id', $id)->with(['author', 'comments.author', 'tags'])->firstOrFail();
         return response()->json([
             'status' => 200,
             'data' => $article
