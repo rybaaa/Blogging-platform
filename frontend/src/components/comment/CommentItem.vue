@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted } from 'vue'
 import { format, intlFormatDistance } from 'date-fns'
 
 const props = defineProps({
@@ -7,9 +6,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-})
-onMounted(() => {
-  console.log(props.comment)
 })
 </script>
 

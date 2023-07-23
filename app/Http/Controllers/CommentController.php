@@ -27,6 +27,7 @@ class CommentController extends Controller
     {
         $comment = new Comment($request->validated());
         $comment->save();
+        $comment->load('author');
         return response()->json([
             'status' => 201,
             'message' => 'Comment was created',
