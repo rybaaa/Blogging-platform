@@ -27,37 +27,39 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 $guestRoutes = ['index', 'show'];
 
 Route::apiResource('/articles', ArticleController::class)
-    ->middleware('auth:api')
+    ->middleware('auth:sanctum')
     ->except($guestRoutes);
 
 Route::apiResource('/articles', ArticleController::class)
     ->only($guestRoutes);
 
 Route::apiResource('/comments', CommentController::class)
-    ->middleware('auth:api')
+    ->middleware('auth:sanctum')
     ->except($guestRoutes);
 
 Route::apiResource('/comments', CommentController::class)
     ->only($guestRoutes);
 
 Route::apiResource('/tags', TagController::class)
-    ->middleware('auth:api')
+    ->middleware('auth:sanctum')
     ->except($guestRoutes);
 
 Route::apiResource('/tags', TagController::class)
     ->only($guestRoutes);
 
 
-Route::post('/auth', function(Request $request)
-{
+Route::post('/auth', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required', Password::min(8)]
     ]);
 
     $user = User::query()->firstWhere('email', $credentials['email']);
-    if(!Auth::attempt($credentials)){
+    if (!Auth::attempt($credentials)) {
         return response()->json(['status' => 403, 'message' => 'invalid credentials'], 403);
     }
-    return base64_encode('supertoken-' . $user->id);
+
+    $token = $user->createToken('user token')->plainTextToken;
+
+    return ['token' => $token];
 });

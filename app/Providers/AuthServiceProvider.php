@@ -26,22 +26,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Auth::viaRequest('custom-token', function (Request $request): ?User {
-            $bearerToken = $request->bearerToken();
-            if (is_null($bearerToken)) {
-                return null;
-            }
-
-            $token = explode(' ', $bearerToken)[1] ?? null;
-            if (is_null($token)) {
-                return null;
-            }
-            $token = Str::of(base64_decode($token));
-            [$secret, $userId] = $token->explode('-');
-
-            $user = User::query()->firstWhere('id', $userId);
-
-            return $user;
-        });
     }
 }
