@@ -17,6 +17,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
+      
         return response()->json([
             'status' => 200,
             'data' => $articles
@@ -39,7 +40,7 @@ class ArticleController extends Controller
 
         $article = new Article($data);
         $article->save();
-
+      
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
