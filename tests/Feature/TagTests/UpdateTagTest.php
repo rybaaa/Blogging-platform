@@ -21,7 +21,7 @@ class UpdateTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('tags.update', [$tag->id]),
                 [
@@ -48,7 +48,7 @@ class UpdateTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('tags.update', [$tag->id]),
                 [
@@ -97,7 +97,7 @@ class UpdateTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('tags.update', [$tag->id]),
                 [
