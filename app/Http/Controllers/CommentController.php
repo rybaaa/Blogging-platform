@@ -8,6 +8,10 @@ use App\Models\Comment;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, options: ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,6 +30,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request)
     {
         $comment = new Comment($request->validated());
+        $comment->author_id = auth()->user()->id;
         $comment->save();
 
         return response()->json([
@@ -70,8 +75,8 @@ class CommentController extends Controller
         $comment->delete();
       
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Comment was deleted',
-        ], 204);
+        ], 200);
     }
 }
