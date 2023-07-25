@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TagController;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Validation\Rules\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +18,6 @@ use Illuminate\Validation\Rules\Password;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 $guestRoutes = ['index', 'show'];
 
@@ -47,19 +42,9 @@ Route::apiResource('/tags', TagController::class)
 Route::apiResource('/tags', TagController::class)
     ->only($guestRoutes);
 
+Route::apiResource('/tags', TagController::class)
+    ->only($guestRoutes);
 
-Route::post('/auth', function (Request $request) {
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required', Password::min(8)]
-    ]);
-
-    $user = User::query()->firstWhere('email', $credentials['email']);
-    if (!Auth::attempt($credentials)) {
-        return response()->json(['status' => 403, 'message' => 'invalid credentials'], 403);
-    }
-
-    $token = $user->createToken('user token')->plainTextToken;
-
-    return ['token' => $token];
-});
+Route::post('/auth', [UserController::class, 'auth']);
+Route::post('/register', [UserController::class, 'register']);
+Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
