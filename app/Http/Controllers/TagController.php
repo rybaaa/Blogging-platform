@@ -8,6 +8,10 @@ use App\Models\Tag;
 
 class TagController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Tag::class, options: ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +30,9 @@ class TagController extends Controller
     public function store(StoreTagRequest $request)
     {
         $tag = new Tag($request->validated());
+        $tag->author_id = auth()->user()->id;
         $tag->save();
+
         return response()->json([
             'status' => 201,
             'message' => 'Tag was created',
@@ -74,8 +80,8 @@ class TagController extends Controller
     {
         $tag->delete();
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Tag was deleted',
-        ], 204);
+        ], 200);
     }
 }
