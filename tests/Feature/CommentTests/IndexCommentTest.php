@@ -30,4 +30,25 @@ class IndexCommentTest extends TestCase
             ],
         ]);
     }
+
+    public function test_comment_index_with_pagination(): void
+    {
+        Comment::factory()->count(100)->create();
+
+        $response = $this->get(route('comments.index'));
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(15, 'data.data');
+        $response->assertJsonStructure([
+            'data' => [
+                'current_page',
+                'data',
+                'from',
+                'last_page',
+                'next_page_url',
+                'per_page',
+                'total'
+            ]
+        ]);
+    }
 }

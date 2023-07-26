@@ -30,4 +30,25 @@ class IndexArticleTest extends TestCase
             ],
         ]);
     }
+
+    public function test_article_index_with_pagination(): void
+    {
+        Article::factory()->count(100)->create();
+
+        $response = $this->get(route('articles.index'));
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(15, 'data.data');
+        $response->assertJsonStructure([
+            'data' => [
+                'current_page',
+                'data',
+                'from',
+                'last_page',
+                'next_page_url',
+                'per_page',
+                'total'
+            ]
+        ]);
+    }
 }
