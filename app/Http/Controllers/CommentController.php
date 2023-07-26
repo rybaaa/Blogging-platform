@@ -17,7 +17,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::query()->with(['author'])->get();
+        $comments = Comment::query()
+            ->with(['author'])
+            ->paginate();
         return response()->json([
             'status' => 200,
             'data' => $comments

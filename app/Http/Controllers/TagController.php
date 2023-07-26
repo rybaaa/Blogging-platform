@@ -17,7 +17,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::query()->with(['articles'])->get();
+        $tags = Tag::query()
+            ->with(['articles'])
+            ->paginate();
         return response()->json([
             'status' => 200,
             'data' => $tags
