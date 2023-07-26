@@ -15,7 +15,7 @@ class IndexCommentTest extends TestCase
         $response = $this->get(route('comments.index'));
 
         $response->assertStatus(200);
-        $response->assertJsonCount(5, 'data');
+        $response->assertJsonCount(5, 'data.data');
     }
 
     public function test_comment_index_with_debug_middleware(): void

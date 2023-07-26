@@ -15,7 +15,7 @@ class IndexTagTest extends TestCase
         $response = $this->get(route('tags.index'));
 
         $response->assertStatus(200);
-        $response->assertJsonCount(5, 'data');
+        $response->assertJsonCount(5, 'data.data');
     }
 
     public function test_tag_index_with_debug_middleware(): void
