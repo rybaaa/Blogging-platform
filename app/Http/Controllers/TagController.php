@@ -19,6 +19,12 @@ class TagController extends Controller
     {
         $tags = Tag::query()
             ->with(['articles'])
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
             ->paginate();
         return response()->json([
             'status' => 200,

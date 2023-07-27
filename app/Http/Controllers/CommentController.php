@@ -19,6 +19,18 @@ class CommentController extends Controller
     {
         $comments = Comment::query()
             ->with(['author'])
+            ->when(
+                request('article_id'),
+                function ($query, $articleId) {
+                    $query->where('article_id', $articleId);
+                }
+            )
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
             ->paginate();
         return response()->json([
             'status' => 200,

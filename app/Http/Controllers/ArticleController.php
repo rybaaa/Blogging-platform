@@ -18,6 +18,12 @@ class ArticleController extends Controller
     {
         $articles = Article::query()
             ->with(['comments', 'author', 'tags'])
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
             ->paginate();
         return response()->json([
             'status' => 200,
