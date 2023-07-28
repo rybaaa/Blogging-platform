@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -50,5 +51,30 @@ class IndexCommentTest extends TestCase
                 'total'
             ]
         ]);
+    }
+    public function test_comment_index_with_filtering(): void
+    {
+        $article1 = Article::factory()
+            ->has(Comment::factory(5)->set('author_id', 888), 'comments')
+            ->createOne();
+
+        $article2 = Article::factory()
+            ->has(Comment::factory(2)->set('author_id', 888), 'comments')
+            ->createOne();
+
+        $this->assertDatabaseCount('comments', 7);
+
+        $response = $this->getJson(
+            route(
+                'comments.index',
+                [
+                    'article_id' => $article1->id,
+                    'author_id' => 888
+                ],
+            )
+        );
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(5, 'data.data');
     }
 }

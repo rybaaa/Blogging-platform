@@ -51,4 +51,28 @@ class IndexTagTest extends TestCase
             ]
         ]);
     }
+
+    public function test_comment_index_with_filtering(): void
+    {
+        $tag1 = Tag::factory()
+            ->set('author_id', 888)
+            ->createOne();
+        $tag2 = Tag::factory()
+            ->set('author_id', 888)
+            ->createOne();
+
+        $this->assertDatabaseCount('tags', 2);
+
+        $response = $this->getJson(
+            route(
+                'tags.index',
+                [
+                    'author_id' => 888
+                ],
+            )
+        );
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(2, 'data.data');
+    }
 }
