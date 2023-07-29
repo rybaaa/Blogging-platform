@@ -6,14 +6,15 @@ import SubmitButton from '../general/SubmitButton.vue'
 
 let email = ref('')
 let password = ref('')
-const login = () => {
+let name = ref('')
+const register = () => {
   alert(email.value + '-' + password.value)
 }
 </script>
 <template>
   <div class="logIn__wrapper">
     <ModalComponent>
-      <h4 class="logIn__title">Log in</h4>
+      <h4 class="logIn__title">Register</h4>
       <InputComponent
         :value="email"
         label="Email"
@@ -22,13 +23,20 @@ const login = () => {
         :placeholder="'your-email@email.com'"
       />
       <InputComponent
+        :value="name"
+        label="Name"
+        name="name"
+        type="text"
+        :placeholder="'Your name'"
+      />
+      <InputComponent
         :value="password"
         label="Password"
         name="password"
         type="password"
         :placeholder="'Password'"
       />
-      <SubmitButton @submit="login" :type="submit">Log in</SubmitButton>
+      <SubmitButton @submit="register" :type="submit">Log in</SubmitButton>
     </ModalComponent>
   </div>
 </template>

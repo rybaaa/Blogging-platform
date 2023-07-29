@@ -7,10 +7,7 @@ const app = appStore()
   <div class="modalComponent__wrapper">
     <div class="modalComponent">
       <div class="modalComponent__form">
-        <button
-          @click="app.closeLoginModal"
-          class="modalComponent__closeButton"
-        >
+        <button @click="app.closeModal" class="modalComponent__closeButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="38"

@@ -4,10 +4,8 @@ defineProps({
   name: String,
   type: String,
   label: String,
+  placeholder: String,
 })
-//import { appStore } from '../../stores/app'
-
-//const modal = appStore()
 </script>
 <template>
   <div class="inputComponent__group">
@@ -16,6 +14,7 @@ defineProps({
       :value="value"
       :type="type"
       :name="name"
+      :placeholder="placeholder"
       class="inputComponent__input"
     />
   </div>

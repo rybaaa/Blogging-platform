@@ -4,6 +4,7 @@ import HeaderBar from '@/components/layouts/HeaderBar.vue'
 import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
 import { appStore } from './stores/app'
+import RegisterModal from './components/register/RegisterModal.vue'
 
 const app = appStore()
 </script>
@@ -12,6 +13,7 @@ const app = appStore()
   <HeaderBar />
   <RouterView />
   <LogIn v-if="app.isLoginModalOpened" />
+  <RegisterModal v-if="app.isRegisterModalOpened" />
   <MainFooter />
 </template>
 

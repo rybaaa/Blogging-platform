@@ -17,15 +17,13 @@ const app = appStore()
             >
           </li>
           <li class="header__nav-item">
-            <RouterLink
-              class="header__nav-itemLink"
-              :to="{ name: 'article', params: { id: 1 } }"
-              >Article</RouterLink
+            <RouterLink class="header__nav-itemLink" :to="{ name: 'articles' }"
+              >Articles</RouterLink
             >
           </li>
           <li class="header__nav-item">
-            <RouterLink class="header__nav-itemLink" :to="{ name: 'articles' }"
-              >Articles</RouterLink
+            <a class="header__nav-itemLink" @click="app.openRegisterModal"
+              >Register</a
             >
           </li>
           <li class="header__nav-item">
@@ -79,9 +77,8 @@ const app = appStore()
 .header__nav-item {
   padding: 6px;
   list-style: none;
-
+  cursor: pointer;
   border-bottom: 2px solid transparent;
-
   &:hover {
     border-bottom: 2px solid #d4a373;
   }
