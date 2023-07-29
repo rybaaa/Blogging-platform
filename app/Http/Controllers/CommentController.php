@@ -8,12 +8,30 @@ use App\Models\Comment;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, options: ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $comments = Comment::query()->with(['author'])->get();
+        $comments = Comment::query()
+            ->with(['author'])
+            ->when(
+                request('article_id'),
+                function ($query, $articleId) {
+                    $query->where('article_id', $articleId);
+                }
+            )
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
+            ->paginate();
         return response()->json([
             'status' => 200,
             'data' => $comments
@@ -26,6 +44,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request)
     {
         $comment = new Comment($request->validated());
+        $comment->author_id = auth()->user()->id;
         $comment->save();
         $comment->load('author');
         return response()->json([
@@ -67,8 +86,8 @@ class CommentController extends Controller
     {
         $comment->delete();
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Comment was deleted',
-        ], 204);
+        ], 200);
     }
 }

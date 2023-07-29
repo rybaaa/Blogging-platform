@@ -15,7 +15,7 @@ class IndexTagTest extends TestCase
         $response = $this->get(route('tags.index'));
 
         $response->assertStatus(200);
-        $response->assertJsonCount(5, 'data');
+        $response->assertJsonCount(5, 'data.data');
     }
 
     public function test_tag_index_with_debug_middleware(): void
@@ -29,5 +29,50 @@ class IndexTagTest extends TestCase
                 'requested-post-body' => []
             ],
         ]);
+    }
+
+    public function test_tag_index_with_pagination(): void
+    {
+        Tag::factory()->count(100)->create();
+
+        $response = $this->get(route('tags.index'));
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(15, 'data.data');
+        $response->assertJsonStructure([
+            'data' => [
+                'current_page',
+                'data',
+                'from',
+                'last_page',
+                'next_page_url',
+                'per_page',
+                'total'
+            ]
+        ]);
+    }
+
+    public function test_comment_index_with_filtering(): void
+    {
+        $tag1 = Tag::factory()
+            ->set('author_id', 888)
+            ->createOne();
+        $tag2 = Tag::factory()
+            ->set('author_id', 888)
+            ->createOne();
+
+        $this->assertDatabaseCount('tags', 2);
+
+        $response = $this->getJson(
+            route(
+                'tags.index',
+                [
+                    'author_id' => 888
+                ],
+            )
+        );
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(2, 'data.data');
     }
 }
