@@ -1,9 +1,8 @@
-<script>
+<script setup>
 import { RouterLink } from 'vue-router'
-export default {
-  name: 'HeaderBar',
-  components: RouterLink,
-}
+import { appStore } from '../../stores/app'
+
+const app = appStore()
 </script>
 
 <template>
@@ -30,7 +29,9 @@ export default {
             >
           </li>
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" href="#">Sign in</a>
+            <a class="header__nav-itemLink" @click="app.openLoginModal"
+              >Sign in</a
+            >
           </li>
         </ul>
       </nav>
