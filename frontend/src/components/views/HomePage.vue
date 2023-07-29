@@ -11,8 +11,8 @@ let editorsPickArticles = ref([])
 
 onMounted(async () => {
   let response = await Articles.index()
-  articles.value = response.data.data
-  editorsPickArticles.value = response.data.data.slice(0, 3)
+  articles.value = response.data.data.data
+  editorsPickArticles.value = response.data.data.data.slice(0, 3)
 })
 
 let featuredArticle = computed(() => {

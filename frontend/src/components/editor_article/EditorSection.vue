@@ -63,7 +63,7 @@ defineProps({
   background: rgba(229, 229, 229, 0.3);
 }
 .editorSection__container {
-  padding: 100px 15px;
+  padding: 0 15px;
   @include for-phone-only {
     padding: 20px 15px;
   }
