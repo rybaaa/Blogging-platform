@@ -59,7 +59,7 @@ defineProps({
 }
 
 .editorSection-showArticle {
-  padding: 0;
+  padding: 100px 0;
   background: rgba(229, 229, 229, 0.3);
 }
 .editorSection__container {
