@@ -3,32 +3,37 @@ import ModalComponent from '@/components/general/ModalComponent.vue'
 import InputComponent from '../general/InputComponent.vue'
 import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
+import { userStore } from '../../stores/user'
 
-let email = ref('')
-let password = ref('')
-const login = () => {
-  alert(email.value + '-' + password.value)
-}
+const form = ref({
+  email: '',
+  password: '',
+})
+const user = userStore()
 </script>
 <template>
   <div class="logIn__wrapper">
     <ModalComponent>
       <h4 class="logIn__title">Log in</h4>
       <InputComponent
-        :value="email"
+        v-model:value="form.email"
         label="Email"
         name="email"
         type="email"
         :placeholder="'your-email@email.com'"
+        :error="user.errors.email"
       />
       <InputComponent
-        :value="password"
+        v-model:value="form.password"
         label="Password"
         name="password"
         type="password"
         :placeholder="'Password'"
+        :error="user.errors.password"
       />
-      <SubmitButton @submit="login" :type="submit">Log in</SubmitButton>
+      <SubmitButton @submit="user.login(form)" :type="submit"
+        >Log in</SubmitButton
+      >
     </ModalComponent>
   </div>
 </template>

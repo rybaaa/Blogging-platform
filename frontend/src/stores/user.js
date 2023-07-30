@@ -24,7 +24,25 @@ export const userStore = defineStore('user', () => {
       }
     catch (error){
         setErrors(error)
-        errorAlert('Error occured')
+        errorAlert(error.response.data.message)
+    }
+    finally{
+        app.setSubmitting('idle')
+    }
+  }
+
+  async function login(params) {
+    app.setSubmitting('isLoading')
+    eraseErrors()
+    try{
+        await User.login(params)
+        app.closeModal()
+        successAlert('You logged in!')
+      }
+    catch (error){
+      console.log(error);
+      errorAlert(error.response.data.message)
+      setErrors(error)
     }
     finally{
         app.setSubmitting('idle')
@@ -44,5 +62,5 @@ export const userStore = defineStore('user', () => {
 
   }
 
-  return { registerUser, errors, eraseErrors }
+  return { registerUser, errors, eraseErrors, login }
 })
