@@ -3,40 +3,48 @@ import ModalComponent from '@/components/general/ModalComponent.vue'
 import InputComponent from '../general/InputComponent.vue'
 import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
+import { userStore } from '../../stores/user'
 
-let email = ref('')
-let password = ref('')
-let name = ref('')
-const register = () => {
-  alert(email.value + '-' + password.value)
-}
+const form = ref({
+  email: '',
+  password: '',
+  name: '',
+})
+
+const user = userStore()
 </script>
 <template>
   <div class="logIn__wrapper">
     <ModalComponent>
       <h4 class="logIn__title">Register</h4>
+      <form @submit.prevent=""></form>
       <InputComponent
-        :value="email"
+        v-model:value="form.email"
         label="Email"
         name="email"
         type="email"
         :placeholder="'your-email@email.com'"
+        :error="user.errors.email"
       />
       <InputComponent
-        :value="name"
+        v-model:value="form.name"
         label="Name"
         name="name"
         type="text"
         :placeholder="'Your name'"
+        :error="user.errors.name"
       />
       <InputComponent
-        :value="password"
+        v-model:value="form.password"
         label="Password"
         name="password"
         type="password"
         :placeholder="'Password'"
+        :error="user.errors.password"
       />
-      <SubmitButton @submit="register" :type="submit">Log in</SubmitButton>
+      <SubmitButton @submit="user.registerUser(form)" :type="submit"
+        >Register</SubmitButton
+      >
     </ModalComponent>
   </div>
 </template>

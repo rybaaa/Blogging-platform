@@ -1,4 +1,6 @@
 <script setup>
+import { appStore } from '../../stores/app'
+
 defineProps({
   type: {
     type: String,
@@ -6,9 +8,15 @@ defineProps({
   },
 })
 const emit = defineEmits(['submit'])
+const app = appStore()
 </script>
 <template>
-  <button @click="emit('submit')" :type="type" class="submitButton">
+  <button
+    @click="emit('submit')"
+    :disabled="app.status === 'isLoading'"
+    :type="type"
+    class="submitButton"
+  >
     <slot></slot>
   </button>
 </template>
@@ -29,6 +37,9 @@ const emit = defineEmits(['submit'])
   cursor: pointer;
   &:hover {
     opacity: 0.8;
+  }
+  &:disabled {
+    background-color: rgba(175, 181, 187, 0.301);
   }
 }
 </style>

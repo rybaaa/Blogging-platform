@@ -5,18 +5,25 @@ defineProps({
   type: String,
   label: String,
   placeholder: String,
+  error: String,
 })
+
+const emits = defineEmits(['update:value'])
+const changeValue = (event) => {
+  emits('update:value', event.target.value)
+}
 </script>
 <template>
   <div class="inputComponent__group">
     <label :for="name" class="inputComponent__label">{{ label }}</label>
     <input
-      :value="value"
       :type="type"
       :name="name"
       :placeholder="placeholder"
       class="inputComponent__input"
+      @input="changeValue"
     />
+    <span class="inputComponent__error">{{ error }}</span>
   </div>
 </template>
 
@@ -43,5 +50,9 @@ defineProps({
   padding: 7px 14px;
   border: 1px solid #495057;
   outline: none;
+}
+.inputComponent__error {
+  @include text(12px, 700, #f30a0a);
+  font-family: $secondaryFontFamily;
 }
 </style>

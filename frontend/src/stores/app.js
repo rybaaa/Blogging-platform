@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const appStore = defineStore('app', () => {
   let isLoginModalOpened = ref(false)
   let isRegisterModalOpened = ref(false)
+  let status = ref('idle')
 
   function openLoginModal() {
     isLoginModalOpened.value = true
@@ -18,5 +19,9 @@ export const appStore = defineStore('app', () => {
     isRegisterModalOpened.value = true
   }
 
-  return { isLoginModalOpened, openLoginModal, closeModal, isRegisterModalOpened, openRegisterModal }
+  function setSubmitting(value){
+    status.value = value
+  }
+
+  return { isLoginModalOpened, openLoginModal, closeModal, isRegisterModalOpened, openRegisterModal, status, setSubmitting }
 })
