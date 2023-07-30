@@ -1,4 +1,6 @@
 <script setup>
+import { userStore } from '../../stores/user'
+
 defineProps({
   value: String,
   name: String,
@@ -8,9 +10,12 @@ defineProps({
   error: String,
 })
 
+const user = userStore()
+
 const emits = defineEmits(['update:value'])
 const changeValue = (event) => {
   emits('update:value', event.target.value)
+  user.eraseErrors()
 }
 </script>
 <template>

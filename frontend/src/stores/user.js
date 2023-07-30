@@ -32,6 +32,7 @@ export const userStore = defineStore('user', () => {
   }
 
   function eraseErrors(){
+    console.log('test');
     errors.value.email = ''
     errors.value.password = ''
     errors.value.name = ''
@@ -43,5 +44,5 @@ export const userStore = defineStore('user', () => {
 
   }
 
-  return { registerUser, errors }
+  return { registerUser, errors, eraseErrors }
 })

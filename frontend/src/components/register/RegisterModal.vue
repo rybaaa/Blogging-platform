@@ -17,34 +17,35 @@ const user = userStore()
   <div class="logIn__wrapper">
     <ModalComponent>
       <h4 class="logIn__title">Register</h4>
-      <form @submit.prevent=""></form>
-      <InputComponent
-        v-model:value="form.email"
-        label="Email"
-        name="email"
-        type="email"
-        :placeholder="'your-email@email.com'"
-        :error="user.errors.email"
-      />
-      <InputComponent
-        v-model:value="form.name"
-        label="Name"
-        name="name"
-        type="text"
-        :placeholder="'Your name'"
-        :error="user.errors.name"
-      />
-      <InputComponent
-        v-model:value="form.password"
-        label="Password"
-        name="password"
-        type="password"
-        :placeholder="'Password'"
-        :error="user.errors.password"
-      />
-      <SubmitButton @submit="user.registerUser(form)" :type="submit"
-        >Register</SubmitButton
-      >
+      <form @submit.prevent="user.registerUser(form)">
+        <InputComponent
+          v-model:value="form.email"
+          label="Email"
+          name="email"
+          type="email"
+          :placeholder="'your-email@email.com'"
+          :error="user.errors.email"
+        />
+        <InputComponent
+          v-model:value="form.name"
+          label="Name"
+          name="name"
+          type="text"
+          :placeholder="'Your name'"
+          :error="user.errors.name"
+        />
+        <InputComponent
+          v-model:value="form.password"
+          label="Password"
+          name="password"
+          type="password"
+          :placeholder="'Password'"
+          :error="user.errors.password"
+        />
+        <SubmitButton @submit="user.registerUser(form)" :type="submit"
+          >Register</SubmitButton
+        >
+      </form>
     </ModalComponent>
   </div>
 </template>
