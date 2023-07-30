@@ -35,7 +35,8 @@ export const userStore = defineStore('user', () => {
     app.setSubmitting('isLoading')
     eraseErrors()
     try{
-        await User.login(params)
+        const response = await User.login(params)
+        localStorage.setItem('token', response.data.token)
         app.closeModal()
         successAlert('You logged in!')
       }
