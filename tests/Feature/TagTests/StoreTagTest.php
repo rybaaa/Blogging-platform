@@ -17,7 +17,7 @@ class StoreTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('tags.store'),
                 [
@@ -40,7 +40,7 @@ class StoreTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('tags.store'),
                 [

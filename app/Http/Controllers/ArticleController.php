@@ -16,7 +16,15 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
+        $articles = Article::query()
+            ->with(['comments', 'author', 'tags'])
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
+            ->paginate();
         return response()->json([
             'status' => 200,
             'data' => $articles

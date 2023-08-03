@@ -20,7 +20,7 @@ class StoreCommentTest extends TestCase
             ->set('author_id', $author->id)
             ->createOne();
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('comments.store'),
                 [
@@ -61,7 +61,7 @@ class StoreCommentTest extends TestCase
         $article = Article::factory()->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('comments.store'),
                 [
