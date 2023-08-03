@@ -23,6 +23,7 @@ $guestRoutes = ['index', 'show'];
 Route::post('/auth', [UserController::class, 'auth']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
+Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::apiResource('/articles', ArticleController::class)
     ->middleware('auth:sanctum')

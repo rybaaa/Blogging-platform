@@ -122,4 +122,16 @@ class UserController extends Controller
             'message' => 'User has been deleted'
         ]);
     }
+
+    public function logout()
+    {
+        $user = request()->user();
+
+        $user->tokens()->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'You are logged out'
+        ]);
+    }
 }
