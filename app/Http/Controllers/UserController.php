@@ -35,23 +35,7 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', Password::min(8)],
-            'name' => ['required', 'string']
-        ]);
-
-        $user = User::query()->firstWhere('email', $credentials['email']);
-        if (!is_null($user)) {
-            throw ValidationException::withMessages(['User with this email already exists']);
-        }
-
-        $user = new User($credentials);
-        $user->save();
-
-        $token = $user->createToken('user token')->plainTextToken;
-
-        return ['token' => $token];
+        return $this->store($request);
     }
 
     public function me(Request $request)
@@ -69,7 +53,7 @@ class UserController extends Controller
         return $user;
     }
 
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
