@@ -55,4 +55,26 @@ class StoreUserTest extends TestCase
         $this->assertCount(1, $users);
         $this->assertNotNull($user->avatar);
     }
+
+    public function test_user_store_throws_error_when_avatar_not_img(): void
+    {
+        Storage::fake('public/avatars');
+        $avatar = UploadedFile::fake()->image('avatar1.pdf');
+
+        $response = $this
+            ->postJson(
+                route('users.store'),
+                [
+                    'name' => 'test name',
+                    'email' => 'test@test.com',
+                    'password' => '123456789',
+                    'avatar' => $avatar
+                ]
+            );
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'message' => 'The avatar field must be an image.'
+        ]);
+    }
 }
