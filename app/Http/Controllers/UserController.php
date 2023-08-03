@@ -11,6 +11,11 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, options: ['except' => ['index', 'show', 'store']]);
+    }
+
     public function auth(Request $request)
     {
         $credentials = $request->validate([
@@ -54,11 +59,6 @@ class UserController extends Controller
         return $request->user();
     }
 
-    public function __construct()
-    {
-        $this->authorizeResource(User::class, options: ['except' => ['index', 'show', 'store']]);
-    }
-
     public function index()
     {
         return User::paginate();
@@ -95,7 +95,7 @@ class UserController extends Controller
         $token = $user->createToken('user token')->plainTextToken;
 
         return response()->json([
-            'status' => 201,
+            'status' => 200,
             'message' => 'User has been created',
             'token' => $token,
             'data' => $user
