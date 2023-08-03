@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreUserTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
     public function test_user_store(): void
     {
         $response = $this
