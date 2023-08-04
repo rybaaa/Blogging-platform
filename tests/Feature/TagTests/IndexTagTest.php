@@ -33,7 +33,7 @@ class IndexTagTest extends TestCase
 
     public function test_tag_index_with_pagination(): void
     {
-        Tag::factory()->count(100)->create();
+        Tag::factory()->count(21)->create();
 
         $response = $this->get(route('tags.index'));
 
@@ -50,6 +50,13 @@ class IndexTagTest extends TestCase
                 'total'
             ]
         ]);
+
+        $responseData = $response->json();
+        $nextPage = $responseData['data']['next_page_url'];
+
+        $nextResponse = $this->get($nextPage);
+
+        $nextResponse->assertJsonCount(6, 'data.data');
     }
 
     public function test_comment_index_with_filtering(): void

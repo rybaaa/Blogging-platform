@@ -34,7 +34,7 @@ class IndexCommentTest extends TestCase
 
     public function test_comment_index_with_pagination(): void
     {
-        Comment::factory()->count(100)->create();
+        Comment::factory()->count(17)->create();
 
         $response = $this->get(route('comments.index'));
 
@@ -51,6 +51,13 @@ class IndexCommentTest extends TestCase
                 'total'
             ]
         ]);
+
+        $responseData = $response->json();
+        $nextPage = $responseData['data']['next_page_url'];
+
+        $nextResponse = $this->get($nextPage);
+
+        $nextResponse->assertJsonCount(2, 'data.data');
     }
     public function test_comment_index_with_filtering(): void
     {

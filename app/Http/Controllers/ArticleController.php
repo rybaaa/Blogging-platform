@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -47,6 +48,12 @@ class ArticleController extends Controller
 
         $article = new Article($data);
         $article->save();
+
+        if ($coverPhoto = request()->file('cover_photo')) {
+            $filePath = $coverPhoto->storePublicly('public/covers');
+            $article->cover_url = Storage::url($filePath);
+            $article->save();
+        }
 
         return response()->json([
             'status' => 201,
