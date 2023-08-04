@@ -1,10 +1,13 @@
 <script setup>
 import { format } from 'date-fns'
+import update from '@/assets/images/Vector.svg'
+
 defineProps({
   article: {
     type: Object,
     required: true,
   },
+  type: String,
 })
 </script>
 
@@ -15,6 +18,12 @@ defineProps({
       :to="{ name: 'article', params: { id: article.id } }"
     >
       <div class="editorArticle__image-container">
+        <img
+          v-if="type === 'profile'"
+          :src="update"
+          alt="update article"
+          class="editorArticle__image-update"
+        />
         <ul class="editorArticle__categories">
           <li class="editorArticle__category">
             <a href="#" class="editorArticle__category-link">ADVENTURE</a>
@@ -56,6 +65,15 @@ defineProps({
   opacity: 0.9;
   height: 350px;
   width: 100%;
+}
+.editorArticle__image-update {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  &:hover {
+    filter: invert(79%) sepia(7%) saturate(2281%) hue-rotate(342deg)
+      brightness(87%) contrast(90%);
+  }
 }
 .editorArticle__categories {
   position: absolute;
