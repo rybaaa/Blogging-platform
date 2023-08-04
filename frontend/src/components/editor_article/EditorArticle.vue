@@ -1,33 +1,43 @@
-<script>
-export default {
-  name: 'EditorArticle',
-}
+<script setup>
+import { format } from 'date-fns'
+defineProps({
+  article: {
+    type: Object,
+    required: true,
+  },
+})
 </script>
 
 <template>
   <div class="editorArticle">
-    <div class="editorArticle__image-container">
-      <ul class="editorArticle__categories">
-        <li class="editorArticle__category">
-          <a href="#" class="editorArticle__category-link">ADVENTURE</a>
-        </li>
-      </ul>
-      <div class="editorArticle__content">
-        <img
-          src="@/assets/images/gem.svg"
-          alt="gem image"
-          class="editorArticle__image"
-        />
-        <time class="editorArticle__time">08.08.2021</time>
-        <h3 class="editorArticle__title">
-          Richird Norton photorealistic rendering as real photos
-        </h3>
-        <p class="editorArticle__text">
-          Progressively incentivize cooperative systems through technically
-          sound functionalities. The credibly productivate seamless data.
-        </p>
-      </div>
-    </div>
+    <RouterLink
+      class="editorArticle-link"
+      :to="{ name: 'article', params: { id: article.id } }"
+    >
+      <div class="editorArticle__image-container">
+        <ul class="editorArticle__categories">
+          <li class="editorArticle__category">
+            <a href="#" class="editorArticle__category-link">ADVENTURE</a>
+          </li>
+        </ul>
+        <div class="editorArticle__content">
+          <img
+            src="@/assets/images/gem.svg"
+            alt="gem image"
+            class="editorArticle__image"
+          />
+          <time class="editorArticle__time">{{
+            format(new Date(article.created_at), 'dd.MM.yyyy')
+          }}</time>
+          <h3 class="editorArticle__title">
+            {{ article.title }}
+          </h3>
+          <p class="editorArticle__text">
+            {{ article.content.slice(0, 100) + '...' }}
+          </p>
+        </div>
+      </div></RouterLink
+    >
   </div>
 </template>
 
@@ -108,5 +118,10 @@ export default {
   color: $textColor3;
   line-height: 20px;
   max-width: 340px;
+  word-wrap: break-word;
+}
+
+.editorArticle-link {
+  @include link();
 }
 </style>

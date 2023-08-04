@@ -1,11 +1,8 @@
-<script>
-export default {
-  name: 'ArticleAuthor',
-  props: {
-    author: String,
-    position: String,
-  },
-}
+<script setup>
+defineProps({
+  author: String,
+  email: String,
+})
 </script>
 
 <template>
@@ -17,7 +14,7 @@ export default {
     />
     <div class="articleAuthor__content">
       <h4 class="articleAuthor__title">{{ author }}</h4>
-      <p class="articleAuthor__description">{{ position }}</p>
+      <p class="articleAuthor__description">{{ email }}</p>
     </div>
   </div>
 </template>

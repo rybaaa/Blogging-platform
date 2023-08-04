@@ -20,12 +20,14 @@ export default {
           <li class="header__nav-item">
             <RouterLink
               class="header__nav-itemLink"
-              :to="{ name: 'show-article' }"
-              >About</RouterLink
+              :to="{ name: 'article', params: { id: 1 } }"
+              >Article</RouterLink
             >
           </li>
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" href="#">Articles</a>
+            <RouterLink class="header__nav-itemLink" :to="{ name: 'articles' }"
+              >Articles</RouterLink
+            >
           </li>
           <li class="header__nav-item">
             <a class="header__nav-itemLink" href="#">Sign in</a>
