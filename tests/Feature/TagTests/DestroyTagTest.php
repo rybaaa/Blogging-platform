@@ -25,7 +25,7 @@ class DestroyTagTest extends TestCase
         Tag::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('tags.destroy', [$tag->id]));
 
         $response->assertStatus(200);
@@ -47,7 +47,7 @@ class DestroyTagTest extends TestCase
         Tag::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('tags.destroy', [$tag->id]));
 
         $response->assertStatus(200);
@@ -83,7 +83,7 @@ class DestroyTagTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('tags.destroy', [$tag->id]));
 
         $response->assertStatus(403);

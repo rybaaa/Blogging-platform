@@ -16,7 +16,7 @@ class StoreArticleTest extends TestCase
             ->set('email', 'test@test.com')
             ->createOne();
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('articles.store'),
                 [
@@ -53,7 +53,7 @@ class StoreArticleTest extends TestCase
             ->set('email', 'test@test.com')
             ->createOne();
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->postJson(
                 route('articles.store'),
                 [

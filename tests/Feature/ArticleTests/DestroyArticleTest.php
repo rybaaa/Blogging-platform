@@ -22,7 +22,7 @@ class DestroyArticleTest extends TestCase
         Article::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('articles.destroy', [$article->id]));
 
         $response->assertStatus(200);
@@ -44,7 +44,7 @@ class DestroyArticleTest extends TestCase
         Article::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('articles.destroy', [$article->id]));
 
         $response->assertStatus(200);
@@ -80,7 +80,7 @@ class DestroyArticleTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('articles.destroy', [$article->id]));
 
         $response->assertStatus(403);

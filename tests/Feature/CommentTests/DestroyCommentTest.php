@@ -22,7 +22,7 @@ class DestroyCommentTest extends TestCase
         Comment::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('comments.destroy', [$comment->id]));
 
         $response->assertStatus(200);
@@ -45,7 +45,7 @@ class DestroyCommentTest extends TestCase
         Comment::factory()->count(5)->create();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('comments.destroy', [$comment->id]));
 
         $response->assertStatus(200);
@@ -81,7 +81,7 @@ class DestroyCommentTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->deleteJson(route('comments.destroy', [$comment->id]));
 
         $response->assertStatus(403);

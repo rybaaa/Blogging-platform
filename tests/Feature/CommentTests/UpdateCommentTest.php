@@ -20,7 +20,7 @@ class UpdateCommentTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('comments.update', [$comment->id]),
                 [
@@ -46,7 +46,7 @@ class UpdateCommentTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('comments.update', [$comment->id]),
                 [
@@ -95,7 +95,7 @@ class UpdateCommentTest extends TestCase
             ->createOne();
 
         $response = $this
-            ->actingAs($author, 'api')
+            ->actingAs($author)
             ->patchJson(
                 route('comments.update', [$comment->id]),
                 [
