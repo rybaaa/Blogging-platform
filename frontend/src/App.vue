@@ -20,7 +20,7 @@ onMounted(async () => {
 
 <template>
   <HeaderBar />
-  <RouterView v-if="user.isLoggedIn" />
+  <RouterView />
   <LogIn v-if="app.isLoginModalOpened" />
   <RegisterModal v-if="app.isRegisterModalOpened" />
   <MainFooter />
