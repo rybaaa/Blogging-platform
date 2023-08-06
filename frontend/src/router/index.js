@@ -3,6 +3,7 @@ import HomePage from '@/components/views/HomePage.vue';
 import ShowArticle from '@/components/views/ShowArticle.vue';
 import IndexArticle from '@/components/views/IndexArticle.vue';
 import ProfilePage from '@/components/views/ProfilePage.vue'
+import EditProfile from '@/components/views/EditProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfilePage,
+    },
+    {
+      path: '/edit-profile',
+      name: 'edit profile',
+      component: EditProfile,
     },
   ],
   scrollBehavior() {
