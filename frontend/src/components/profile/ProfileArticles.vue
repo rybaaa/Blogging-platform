@@ -1,14 +1,15 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import Articles from '@/api/Articles'
 import EditorArticle from '../editor_article/EditorArticle.vue'
 import AddArticleFromProfile from '../profile/AddArticleFromProfile.vue'
+import { userStore } from '../../stores/user'
 
-let myArticles = ref([])
+const user = userStore()
 
 onMounted(async () => {
-  let response = await Articles.index()
-  myArticles.value = response.data.data.data.slice(0, 3)
+  let response = await Articles.index(user.user.id)
+  user.user.articles = response.data.data.data
 })
 </script>
 
@@ -19,7 +20,7 @@ onMounted(async () => {
       <div class="profileArticles__list">
         <AddArticleFromProfile />
         <EditorArticle
-          v-for="article in myArticles"
+          v-for="article in user.user.articles"
           :key="article.id"
           :article="article"
           type="profile"

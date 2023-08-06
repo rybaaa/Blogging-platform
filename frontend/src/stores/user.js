@@ -12,9 +12,11 @@ export const userStore = defineStore('user', () => {
         name: ''
     })
     let user = ref({
-      name: '',
-      email: '',
-      avatar:''
+      id: null,
+      name: null,
+      email: null,
+      avatar: null,
+      articles: null
     })
     let isLoggedIn = ref(false)
 
@@ -64,7 +66,7 @@ export const userStore = defineStore('user', () => {
     app.setSubmitting('isLoading')
     try{
       const response = await User.me()
-      setUserInfo(response.data.name, response.data.email, response.data.avatar)
+      setUserInfo(response.data.id, response.data.name, response.data.email, response.data.avatar)
       isLoggedIn.value = true
     } catch(error){
       errorAlert('You are not logged in!')
@@ -80,14 +82,29 @@ export const userStore = defineStore('user', () => {
       const response = await User.logout()
       successAlert(response.data.message)
       localStorage.removeItem('token')
-      setUserInfo('', '', '')
+      setUserInfo(null, null, null, null, null)
       isLoggedIn.value = false
     } catch(error){
       errorAlert('Something went wrong')
-    }
-    finally{
+    } finally{
       app.setSubmitting('idle')
+    }
   }
+
+  async function update(data){
+    console.log(data);
+    app.setSubmitting('isLoading')
+    try{
+      const response = await User.update(user.value.id, data)
+      updateUserInfo(response.data.data.name, response.data.data.email)
+      successAlert(response.data.message)
+    } catch(error){
+      errorAlert(error.response.data.message)
+      setErrors(error)
+    } finally{
+      app.setSubmitting('idle')
+    }
+
   }
 
   //updating state
@@ -105,11 +122,18 @@ export const userStore = defineStore('user', () => {
 
   }
 
-  function setUserInfo(name, email, avatar){
+  function setUserInfo(id, name, email, avatar, articles){
+    user.value.id = id
     user.value.email = email
     user.value.name = name
     user.value.avatar = avatar
+    user.value.articles = articles
   }
 
-  return { registerUser, errors, eraseErrors, login, user, isLoggedIn, me, logout }
+  function updateUserInfo(name, email){
+    user.value.email = email
+    user.value.name = name
+  }
+
+  return { registerUser, errors, eraseErrors, login, user, isLoggedIn, me, logout, update }
 })

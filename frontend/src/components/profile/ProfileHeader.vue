@@ -1,7 +1,11 @@
 <script setup>
+import { userStore } from '../../stores/user'
+
 defineProps({
   type: String,
 })
+
+const user = userStore()
 </script>
 
 <template>
@@ -14,13 +18,21 @@ defineProps({
           class="profileHeader__avatar"
         />
       </div>
-      <h2 class="profileHeader__name">Name</h2>
-      <h4 class="profileHeader__email">123@test.com</h4>
+      <h2 class="profileHeader__name">{{ user.user.name }}</h2>
+      <h4 class="profileHeader__email">
+        {{ user.user.email }}
+      </h4>
       <span class="profileHeader__divider"></span>
-      <span v-if="type === 'profile'" class="profileHeader__edit"
-        >Edit profile</span
-      >
-      <span v-else class="profileHeader__edit">Back to profile</span>
+      <RouterLink
+        v-if="type === 'profile'"
+        class="profileHeader__link"
+        :to="{ name: 'edit profile' }"
+        ><span class="profileHeader__edit">Edit profile</span>
+      </RouterLink>
+      <RouterLink v-else class="profileHeader__link" :to="{ name: 'profile' }">
+        <span class="profileHeader__edit">Back to profile</span>
+      </RouterLink>
+
       <span class="profileHeader__subscription">Manage subscription</span>
     </section>
   </div>
@@ -88,5 +100,8 @@ defineProps({
     color: #fff;
     background-color: $textColor4;
   }
+}
+.profileHeader__link {
+  text-decoration: none;
 }
 </style>

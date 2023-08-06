@@ -9,6 +9,10 @@ export default{
         return await http.post('auth', params)
     },
 
+    async update(id, params){
+        return await http.put(`users/${id}`, params)
+    },
+
     async me(){
         return await http.get('me')
     },

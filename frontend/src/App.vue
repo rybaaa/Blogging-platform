@@ -5,21 +5,22 @@ import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
 import { appStore } from './stores/app'
 import RegisterModal from './components/register/RegisterModal.vue'
-//import { onMounted } from 'vue'
-//import { userStore } from './stores/user'
+import { userStore } from './stores/user'
+import { onMounted } from 'vue'
 
 const app = appStore()
-//const user = userStore()
-/*onMounted(() => {
+const user = userStore()
+
+onMounted(async () => {
   if (localStorage.getItem('token')) {
-    user.me()
+    await user.me()
   }
-})*/
+})
 </script>
 
 <template>
   <HeaderBar />
-  <RouterView />
+  <RouterView v-if="user.isLoggedIn" />
   <LogIn v-if="app.isLoginModalOpened" />
   <RegisterModal v-if="app.isRegisterModalOpened" />
   <MainFooter />

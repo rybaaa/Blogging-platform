@@ -89,7 +89,8 @@ class UserController extends Controller
     public function update(User $user, Request $request)
     {
         $user->update($request->validate([
-            'name' => ['required', 'string']
+            'name' => ['required', 'string'],
+            'email' => ['email'],
         ]));
 
         if ($avatar = request()->file('avatar')) {

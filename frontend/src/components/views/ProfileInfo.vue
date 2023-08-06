@@ -1,25 +1,21 @@
 <script setup>
 import InputComponent from '../general/InputComponent.vue'
-import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
 import { userStore } from '../../stores/user'
+import { ref } from 'vue'
 
-const form = ref({
-  email: '',
-  name: '',
-  password: '',
-})
 const user = userStore()
-const submitUpdate = () => {
-  alert('updated')
-}
+let form = ref({
+  name: user.user.name,
+  email: user.user.email,
+})
 </script>
 
 <template>
   <div class="profileInfo__container">
     <section class="profileInfo">
       <h3 class="profileInfo__header">Edit profile</h3>
-      <form class="profileInfo__form" @submit.prevent="submitUpdate">
+      <form class="profileInfo__form" @submit.prevent="user.update(form)">
         <InputComponent
           v-model:value="form.email"
           label="Email"
@@ -36,15 +32,7 @@ const submitUpdate = () => {
           :placeholder="'Your name'"
           :error="user.errors.name"
         />
-        <InputComponent
-          v-model:value="form.password"
-          label="Password"
-          name="password"
-          type="password"
-          :placeholder="'Password'"
-          :error="user.errors.password"
-        />
-        <SubmitButton @submit="submitUpdate" :type="submit"
+        <SubmitButton @submit="user.update(form)" :type="submit"
           >Update</SubmitButton
         >
       </form>
