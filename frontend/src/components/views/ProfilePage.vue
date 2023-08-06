@@ -6,7 +6,7 @@ import ProfileArticles from '../profile/ProfileArticles.vue'
 
 <template>
   <div class="profilePage__container">
-    <ProfileHeader />
+    <ProfileHeader type="profile" />
     <ProfileArticles />
     <ProfileSubscription />
   </div>

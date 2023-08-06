@@ -5,8 +5,16 @@ import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
 import { appStore } from './stores/app'
 import RegisterModal from './components/register/RegisterModal.vue'
+//import { onMounted } from 'vue'
+//import { userStore } from './stores/user'
 
 const app = appStore()
+//const user = userStore()
+/*onMounted(() => {
+  if (localStorage.getItem('token')) {
+    user.me()
+  }
+})*/
 </script>
 
 <template>

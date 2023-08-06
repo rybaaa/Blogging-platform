@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { appStore } from '../../stores/app'
+import { userStore } from '../../stores/user'
 
 const app = appStore()
+const user = userStore()
 </script>
 
 <template>
@@ -21,14 +23,24 @@ const app = appStore()
               >Articles</RouterLink
             >
           </li>
-          <li class="header__nav-item">
+          <li v-if="!user.isLoggedIn" class="header__nav-item">
             <a class="header__nav-itemLink" @click="app.openRegisterModal"
               >Register</a
             >
           </li>
-          <li class="header__nav-item">
+          <li v-if="!user.isLoggedIn" class="header__nav-item">
             <a class="header__nav-itemLink" @click="app.openLoginModal"
               >Sign in</a
+            >
+          </li>
+          <li v-if="user.isLoggedIn" class="header__nav-item">
+            <RouterLink class="header__nav-itemLink" :to="{ name: 'profile' }"
+              >Profile</RouterLink
+            >
+          </li>
+          <li v-if="user.isLoggedIn" class="header__nav-item">
+            <a class="header__nav-itemLink" @click.prevent="user.logout"
+              >Logout</a
             >
           </li>
         </ul>

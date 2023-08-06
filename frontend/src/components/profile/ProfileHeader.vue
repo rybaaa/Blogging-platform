@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+defineProps({
+  type: String,
+})
+</script>
 
 <template>
   <div class="profileHeader__container">
@@ -13,7 +17,10 @@
       <h2 class="profileHeader__name">Name</h2>
       <h4 class="profileHeader__email">123@test.com</h4>
       <span class="profileHeader__divider"></span>
-      <span class="profileHeader__edit">Edit profile</span>
+      <span v-if="type === 'profile'" class="profileHeader__edit"
+        >Edit profile</span
+      >
+      <span v-else class="profileHeader__edit">Back to profile</span>
       <span class="profileHeader__subscription">Manage subscription</span>
     </section>
   </div>

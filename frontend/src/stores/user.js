@@ -11,7 +11,16 @@ export const userStore = defineStore('user', () => {
         password: '',
         name: ''
     })
+    let user = ref({
+      name: '',
+      email: '',
+      avatar:''
+    })
+    let isLoggedIn = ref(false)
+
     const app = appStore()
+
+    //requests
 
   async function registerUser(values) {
     app.setSubmitting('isLoading')
@@ -38,10 +47,11 @@ export const userStore = defineStore('user', () => {
         const response = await User.login(params)
         localStorage.setItem('token', response.data.token)
         app.closeModal()
+        isLoggedIn.value = true
         successAlert('You logged in!')
+        me()
       }
     catch (error){
-      console.log(error);
       errorAlert(error.response.data.message)
       setErrors(error)
     }
@@ -50,12 +60,44 @@ export const userStore = defineStore('user', () => {
     }
   }
 
+  async function me(){
+    app.setSubmitting('isLoading')
+    try{
+      const response = await User.me()
+      setUserInfo(response.data.name, response.data.email, response.data.avatar)
+      isLoggedIn.value = true
+    } catch(error){
+      errorAlert('You are not logged in!')
+    }
+    finally{
+      app.setSubmitting('idle')
+  }
+  }
+
+  async function logout(){
+    app.setSubmitting('isLoading')
+    try{
+      const response = await User.logout()
+      successAlert(response.data.message)
+      localStorage.removeItem('token')
+      setUserInfo('', '', '')
+      isLoggedIn.value = false
+    } catch(error){
+      errorAlert('Something went wrong')
+    }
+    finally{
+      app.setSubmitting('idle')
+  }
+  }
+
+  //updating state
+
   function eraseErrors(){
-    console.log('test');
     errors.value.email = ''
     errors.value.password = ''
     errors.value.name = ''
   }
+
   function setErrors(e){
     errors.value.email = e.response.data.errors.email? e.response.data.errors.email[0] : ''
     errors.value.name = e.response.data.errors.name? e.response.data.errors.name[0] : ''
@@ -63,5 +105,11 @@ export const userStore = defineStore('user', () => {
 
   }
 
-  return { registerUser, errors, eraseErrors, login }
+  function setUserInfo(name, email, avatar){
+    user.value.email = email
+    user.value.name = name
+    user.value.avatar = avatar
+  }
+
+  return { registerUser, errors, eraseErrors, login, user, isLoggedIn, me, logout }
 })
