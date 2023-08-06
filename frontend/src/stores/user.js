@@ -3,14 +3,10 @@ import { defineStore } from 'pinia'
 import User from '../api/User'
 import { appStore } from './app';
 import { successAlert, errorAlert } from '../utils/alerts';
+import { errorsStore } from './errors';
 
 
 export const userStore = defineStore('user', () => {
-    let errors = ref({
-        email: '',
-        password: '',
-        name: ''
-    })
     let user = ref({
       id: null,
       name: null,
@@ -21,12 +17,13 @@ export const userStore = defineStore('user', () => {
     let isLoggedIn = ref(false)
 
     const app = appStore()
+    const errors = errorsStore()
 
     //requests
 
   async function registerUser(values) {
     app.setSubmitting('isLoading')
-    eraseErrors()
+    errors.eraseErrors()
     try{
         const response = await User.register(values)
         localStorage.setItem('token', response.data.token)
@@ -34,7 +31,7 @@ export const userStore = defineStore('user', () => {
         successAlert('You have been registered!')
       }
     catch (error){
-        setErrors(error)
+        errors.setErrors(error)
         errorAlert(error.response.data.message)
     }
     finally{
@@ -44,7 +41,7 @@ export const userStore = defineStore('user', () => {
 
   async function login(params) {
     app.setSubmitting('isLoading')
-    eraseErrors()
+    errors.eraseErrors()
     try{
         const response = await User.login(params)
         localStorage.setItem('token', response.data.token)
@@ -55,7 +52,7 @@ export const userStore = defineStore('user', () => {
       }
     catch (error){
       errorAlert(error.response.data.message)
-      setErrors(error)
+      errors.setErrors(error)
     }
     finally{
         app.setSubmitting('idle')
@@ -92,7 +89,6 @@ export const userStore = defineStore('user', () => {
   }
 
   async function update(data){
-    console.log(data);
     app.setSubmitting('isLoading')
     try{
       const response = await User.update(user.value.id, data)
@@ -100,27 +96,13 @@ export const userStore = defineStore('user', () => {
       successAlert(response.data.message)
     } catch(error){
       errorAlert(error.response.data.message)
-      setErrors(error)
+      errors.setErrors(error)
     } finally{
       app.setSubmitting('idle')
     }
-
   }
 
   //updating state
-
-  function eraseErrors(){
-    errors.value.email = ''
-    errors.value.password = ''
-    errors.value.name = ''
-  }
-
-  function setErrors(e){
-    errors.value.email = e.response.data.errors.email? e.response.data.errors.email[0] : ''
-    errors.value.name = e.response.data.errors.name? e.response.data.errors.name[0] : ''
-    errors.value.password = e.response.data.errors.password? e.response.data.errors.password[0] : ''
-
-  }
 
   function setUserInfo(id, name, email, avatar, articles){
     user.value.id = id
@@ -135,5 +117,5 @@ export const userStore = defineStore('user', () => {
     user.value.name = name
   }
 
-  return { registerUser, errors, eraseErrors, login, user, isLoggedIn, me, logout, update }
+  return { registerUser, login, user, isLoggedIn, me, logout, update }
 })

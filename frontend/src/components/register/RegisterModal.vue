@@ -3,6 +3,7 @@ import ModalComponent from '@/components/general/ModalComponent.vue'
 import InputComponent from '../general/InputComponent.vue'
 import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
+import { errorsStore } from '../../stores/errors'
 import { userStore } from '../../stores/user'
 
 const form = ref({
@@ -10,8 +11,8 @@ const form = ref({
   password: '',
   name: '',
 })
-
 const user = userStore()
+const errors = errorsStore()
 </script>
 <template>
   <div class="logIn__wrapper">
@@ -24,7 +25,7 @@ const user = userStore()
           name="email"
           type="email"
           :placeholder="'your-email@email.com'"
-          :error="user.errors.email"
+          :error="errors.errors.email"
         />
         <InputComponent
           v-model:value="form.name"
@@ -32,7 +33,7 @@ const user = userStore()
           name="name"
           type="text"
           :placeholder="'Your name'"
-          :error="user.errors.name"
+          :error="errors.errors.name"
         />
         <InputComponent
           v-model:value="form.password"
@@ -40,7 +41,7 @@ const user = userStore()
           name="password"
           type="password"
           :placeholder="'Password'"
-          :error="user.errors.password"
+          :error="errors.errors.password"
         />
         <SubmitButton @submit="user.registerUser(form)" :type="submit"
           >Register</SubmitButton

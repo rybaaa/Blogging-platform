@@ -1,5 +1,5 @@
 <script setup>
-import { userStore } from '../../stores/user'
+import { errorsStore } from '../../stores/errors'
 
 defineProps({
   value: String,
@@ -10,12 +10,12 @@ defineProps({
   error: String,
 })
 
-const user = userStore()
+const errors = errorsStore()
 
 const emits = defineEmits(['update:value'])
 const changeValue = (event) => {
   emits('update:value', event.target.value)
-  user.eraseErrors()
+  errors.eraseErrors()
 }
 </script>
 <template>

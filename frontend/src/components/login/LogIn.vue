@@ -4,12 +4,14 @@ import InputComponent from '../general/InputComponent.vue'
 import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
 import { userStore } from '../../stores/user'
+import { errorsStore } from '../../stores/errors'
 
 const form = ref({
   email: '',
   password: '',
 })
 const user = userStore()
+const errors = errorsStore()
 </script>
 <template>
   <div class="logIn__wrapper">
@@ -21,7 +23,7 @@ const user = userStore()
         name="email"
         type="email"
         :placeholder="'your-email@email.com'"
-        :error="user.errors.email"
+        :error="errors.errors.email"
       />
       <InputComponent
         v-model:value="form.password"
@@ -29,7 +31,7 @@ const user = userStore()
         name="password"
         type="password"
         :placeholder="'Password'"
-        :error="user.errors.password"
+        :error="errors.errors.password"
       />
       <SubmitButton @submit="user.login(form)" :type="submit"
         >Log in</SubmitButton
