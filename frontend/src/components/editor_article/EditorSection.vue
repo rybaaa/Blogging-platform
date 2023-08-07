@@ -1,12 +1,15 @@
-<script>
+<script setup>
 import EditorArticle from './EditorArticle.vue'
-export default {
-  name: 'EditorSection',
-  props: {
-    title: String,
+defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  components: { EditorArticle },
-}
+  articles: {
+    type: Object,
+    required: true,
+  },
+})
 </script>
 
 <template>
@@ -14,9 +17,11 @@ export default {
     <div class="editorSection__container">
       <h2 class="editorSection__title">{{ title }}</h2>
       <div class="editorSections">
-        <EditorArticle></EditorArticle>
-        <EditorArticle></EditorArticle>
-        <EditorArticle></EditorArticle>
+        <EditorArticle
+          v-for="article in articles"
+          :key="article.id"
+          :article="article"
+        />
       </div>
     </div>
   </section>

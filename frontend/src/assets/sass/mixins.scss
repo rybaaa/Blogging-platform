@@ -13,6 +13,14 @@
     all: unset;
   }
 
+  @mixin link{
+    text-decoration: none;
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline #000;
+  }
+  }
+
   @mixin for-phone-only{
     @media screen and (max-width:768px){
       @content;
@@ -36,3 +44,5 @@
       @content;
     }
   }
+
+  
