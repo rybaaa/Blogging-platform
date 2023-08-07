@@ -10,7 +10,6 @@ import CommentsList from '@/components/comment/CommentsList.vue'
 let article = ref(null)
 let relatedArticles = ref([])
 const route = useRoute()
-//let comments = article.value.comments
 
 onMounted(async () => {
   await fetchArticle(route.params.id)
@@ -29,7 +28,7 @@ async function fetchArticle(id) {
 }
 async function fetchRelatedArticles() {
   let response = await Articles.index()
-  relatedArticles.value = response.data.data.slice(0, 3)
+  relatedArticles.value = response.data.data.data.slice(0, 3)
 }
 
 function addNewComment(comment) {
