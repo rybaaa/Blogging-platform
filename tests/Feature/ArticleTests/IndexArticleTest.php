@@ -35,7 +35,7 @@ class IndexArticleTest extends TestCase
 
     public function test_article_index_with_pagination(): void
     {
-        Article::factory()->count(100)->create();
+        Article::factory()->count(20)->create();
 
         $response = $this->get(route('articles.index'));
 
@@ -52,6 +52,13 @@ class IndexArticleTest extends TestCase
                 'total'
             ]
         ]);
+
+        $responseData = $response->json();
+        $nextPage = $responseData['data']['next_page_url'];
+
+        $nextResponse = $this->get($nextPage);
+
+        $nextResponse->assertJsonCount(5, 'data.data');
     }
 
     public function test_article_index_with_filtering(): void

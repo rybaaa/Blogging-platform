@@ -47,7 +47,7 @@ class ArticleController extends Controller
 
         $article = new Article($data);
         $article->save();
-
+      
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
