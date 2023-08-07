@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Article::class, options: ['except' => ['index', 'show']]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $articles = Article::query()->with(['comments', 'author', 'tags'])->get();
+        $articles = Article::query()
+            ->with(['comments', 'author', 'tags'])
+            ->when(
+                request('author_id'),
+                function ($query, $authorId) {
+                    $query->where('author_id', $authorId);
+                }
+            )
+            ->paginate();
         return response()->json([
             'status' => 200,
             'data' => $articles
@@ -24,12 +36,18 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article($request->validate([
-            'author_id' => ['required', 'int', 'exists:users,id'],
+        $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
-        ]));
+        ]);
+
+        $user = auth()->user();
+
+        $data['author_id'] = $user->id;
+
+        $article = new Article($data);
         $article->save();
+      
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
@@ -52,13 +70,13 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Article $article)
     {
-        $article = Article::where('id', $id)->firstOrFail();
         $article->update($request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
         ]));
+
         return response()->json([
             'status' => 200,
             'message' => 'Article was updated',
@@ -69,13 +87,13 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Article $article)
     {
-        $article = Article::where('id', $id)->firstOrFail();
         $article->delete();
+
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Article was deleted',
-        ], 204);
+        ], 200);
     }
 }

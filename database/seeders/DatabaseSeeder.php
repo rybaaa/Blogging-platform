@@ -24,5 +24,9 @@ class DatabaseSeeder extends Seeder
             $tags = Tag::inRandomOrder()->take($randomTagCount)->get();
             $article->tags()->attach($tags->pluck('id'));
         }
+        User::factory()
+            ->set('email', 'test@test.com')
+            ->set('password', bcrypt('12345678'))
+            ->create();
     }
 }

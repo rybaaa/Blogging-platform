@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TagController;
-use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +18,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::apiResource('/articles', ArticleController::class);
-Route::apiResource('/comments', CommentController::class);
-Route::apiResource('/tags', TagController::class);
+$guestRoutes = ['index', 'show'];
+
+Route::apiResource('/articles', ArticleController::class)
+    ->middleware('auth:sanctum')
+    ->except($guestRoutes);
+
+Route::apiResource('/articles', ArticleController::class)
+    ->only($guestRoutes);
+
+Route::apiResource('/comments', CommentController::class)
+    ->middleware('auth:sanctum')
+    ->except($guestRoutes);
+
+Route::apiResource('/comments', CommentController::class)
+    ->only($guestRoutes);
+
+Route::apiResource('/tags', TagController::class)
+    ->middleware('auth:sanctum')
+    ->except($guestRoutes);
+
+Route::apiResource('/tags', TagController::class)
+    ->only($guestRoutes);
+
+Route::apiResource('/tags', TagController::class)
+    ->only($guestRoutes);
+
+Route::post('/auth', [UserController::class, 'auth']);
+Route::post('/register', [UserController::class, 'register']);
+Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
