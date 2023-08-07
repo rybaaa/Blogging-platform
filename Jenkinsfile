@@ -1,4 +1,3 @@
-
 @Library('jenkins-build-helpers') _
 setupEnvironment(['business_unit': 'corp'])
 
@@ -96,6 +95,8 @@ pipeline {
             agent any
             steps {
                 script {
+                    //Check email   
+
                     def invalidAuthors = []
                     def commitAuthors = sh(script: "git log --pretty=format:'%ae' ${CHANGE_TARGET}...${BRANCH_NAME} | sort -u",returnStdout: true).trim()
 
@@ -116,7 +117,7 @@ pipeline {
 
                     def validBranchPrefixes = ['build', 'ci', 'docs', 'feat', 'fix', 'perf', 'refactor', 'style', 'test']
                     def branchName = env.GIT_BRANCH.replaceAll("origin/", "").toLowerCase()
-                    echo "${branchName} - my branch"
+                    echo "${branchName} -  branch"
                     def isValidBranch = false
 
                     for (def prefix : validBranchPrefixes) {
