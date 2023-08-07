@@ -21,7 +21,7 @@ let form = ref({
           label="Email"
           name="email"
           type="email"
-          :placeholder="'your-email@email.com'"
+          placeholder="your-email@email.com"
           :error="user.errors.email"
         />
         <InputComponent
@@ -29,7 +29,7 @@ let form = ref({
           label="Name"
           name="name"
           type="text"
-          :placeholder="'Your name'"
+          placeholder="Your name"
           :error="user.errors.name"
         />
         <SubmitButton @submit="user.update(form)" :type="submit"

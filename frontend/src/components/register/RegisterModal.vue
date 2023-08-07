@@ -24,7 +24,7 @@ const errors = errorsStore()
           label="Email"
           name="email"
           type="email"
-          :placeholder="'your-email@email.com'"
+          placeholder="your-email@email.com"
           :error="errors.errors.email"
         />
         <InputComponent
@@ -32,7 +32,7 @@ const errors = errorsStore()
           label="Name"
           name="name"
           type="text"
-          :placeholder="'Your name'"
+          placeholder="Your name"
           :error="errors.errors.name"
         />
         <InputComponent

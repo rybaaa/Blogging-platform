@@ -22,7 +22,7 @@ const errors = errorsStore()
         label="Email"
         name="email"
         type="email"
-        :placeholder="'your-email@email.com'"
+        placeholder="your-email@email.com"
         :error="errors.errors.email"
       />
       <InputComponent
@@ -30,7 +30,7 @@ const errors = errorsStore()
         label="Password"
         name="password"
         type="password"
-        :placeholder="'Password'"
+        placeholder="Password"
         :error="errors.errors.password"
       />
       <SubmitButton @submit="user.login(form)" :type="submit"
