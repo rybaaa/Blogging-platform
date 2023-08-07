@@ -7,7 +7,7 @@ def createTestingEnvironment() {
         [
             'name': 'main',
             // WARNING: rename this to follow $username-testing-image
-            'image': 'ike-docker-local.artifactory.internetbrands.com/corp/levelup-academy:main-repo-testing-image',
+            'image': 'ike-docker-local.artifactory.internetbrands.com/corp/levelup-academy:arybak-testing-image',
             'imagePullPolicy': 'Always',
             'env': [
                 ['name': 'DB_HOST',     'value': 'localhost'],
@@ -38,8 +38,6 @@ pipeline {
         gitLabConnection('IB Gitlab')
     }
 
-    // hello, something changed
-
     stages {
         stage('Build pipeline testing image') {
             agent {
@@ -54,7 +52,7 @@ pipeline {
                         'docker_repo_credential_id': 'artifactory-ike',
                         'dockerfile': './pipeline/Dockerfile',
                         'docker_image_name': 'levelup-academy',
-                        'docker_image_tag': 'main-repo-testing-image' // WARNING: rename this to follow $username-testing-image
+                        'docker_image_tag': 'arybak-testing-image' // WARNING: rename this to follow $username-testing-image
                     ])
                 }
             }
