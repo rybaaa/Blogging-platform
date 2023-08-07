@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Notifications\ModeratorNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\TwitterNotifier;
+use App\Notifications\UserNotifier;
 
 class ArticleController extends Controller
 {
+    private $notificationChannels;
+
     public function __construct()
     {
         $this->authorizeResource(Article::class, options: ['except' => ['index', 'show']]);
+        $this->notificationChannels = [new UserNotifier(), new TwitterNotifier(), new ModeratorNotifier()];
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $articles = Article::query()
@@ -55,10 +59,14 @@ class ArticleController extends Controller
             $article->save();
         }
 
+        foreach ($this->notificationChannels as $channel) {
+            $channel->notifyAbout($article);
+        }
+
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
-            'data' => $article
+            'data' => $article,
         ], 201);
     }
 
