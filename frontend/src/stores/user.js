@@ -4,6 +4,7 @@ import User from '../api/User'
 import { appStore } from './app';
 import { successAlert, errorAlert } from '../utils/alerts';
 import { errorsStore } from './errors';
+import { modalStore } from './modal';
 
 
 export const userStore = defineStore('user', () => {
@@ -17,6 +18,7 @@ export const userStore = defineStore('user', () => {
     let isLoggedIn = ref(false)
 
     const app = appStore()
+    const modal = modalStore()
     const errors = errorsStore()
 
     //requests
@@ -27,7 +29,7 @@ export const userStore = defineStore('user', () => {
     try{
         const response = await User.register(values)
         localStorage.setItem('token', response.data.token)
-        app.closeModal()
+        modal.closeModal()
         successAlert('You have been registered!')
       }
     catch (error){
@@ -45,7 +47,7 @@ export const userStore = defineStore('user', () => {
     try{
         const response = await User.login(params)
         localStorage.setItem('token', response.data.token)
-        app.closeModal()
+        modal.closeModal()
         isLoggedIn.value = true
         successAlert('You logged in!')
         me()

@@ -3,8 +3,10 @@ import InputComponent from '../general/InputComponent.vue'
 import SubmitButton from '../general/SubmitButton.vue'
 import { userStore } from '../../stores/user'
 import { ref } from 'vue'
+import { errorsStore } from '../../stores/errors'
 
 const user = userStore()
+const errors = errorsStore()
 let form = ref({
   name: user.user.name,
   email: user.user.email,
@@ -22,7 +24,7 @@ let form = ref({
           name="email"
           type="email"
           placeholder="your-email@email.com"
-          :error="user.errors.email"
+          :error="errors.errors.email"
         />
         <InputComponent
           v-model:value="form.name"
@@ -30,7 +32,7 @@ let form = ref({
           name="name"
           type="text"
           placeholder="Your name"
-          :error="user.errors.name"
+          :error="errors.errors.name"
         />
         <SubmitButton @submit="user.update(form)" :type="submit"
           >Update</SubmitButton

@@ -3,12 +3,12 @@ import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/layouts/HeaderBar.vue'
 import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
-import { appStore } from './stores/app'
+import { modalStore } from './stores/modal'
 import RegisterModal from './components/register/RegisterModal.vue'
 import { userStore } from './stores/user'
 import { onMounted } from 'vue'
 
-const app = appStore()
+const modal = modalStore()
 const user = userStore()
 
 onMounted(async () => {
@@ -21,8 +21,8 @@ onMounted(async () => {
 <template>
   <HeaderBar />
   <RouterView />
-  <LogIn v-if="app.isLoginModalOpened" />
-  <RegisterModal v-if="app.isRegisterModalOpened" />
+  <LogIn v-if="modal.isLoginModalOpened" />
+  <RegisterModal v-if="modal.isRegisterModalOpened" />
   <MainFooter />
 </template>
 

@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { appStore } from '../../stores/app'
 import { userStore } from '../../stores/user'
+import { modalStore } from '../../stores/modal'
 
-const app = appStore()
+const modal = modalStore()
 const user = userStore()
 </script>
 
@@ -24,12 +24,12 @@ const user = userStore()
             >
           </li>
           <li v-if="!user.isLoggedIn" class="header__nav-item">
-            <a class="header__nav-itemLink" @click="app.openRegisterModal"
+            <a class="header__nav-itemLink" @click="modal.openRegisterModal"
               >Register</a
             >
           </li>
           <li v-if="!user.isLoggedIn" class="header__nav-item">
-            <a class="header__nav-itemLink" @click="app.openLoginModal"
+            <a class="header__nav-itemLink" @click="modal.openLoginModal"
               >Sign in</a
             >
           </li>
