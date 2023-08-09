@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Services\Notifications;
 
 use App\Models\Article;
 
-class UserNotifier implements NotificationChannel
+class ModeratorNotifier implements NotificationChannel
 {
     public function notifyAbout(Article $article)
     {
         /*
-        $author = $article->author;
-        $followers = $author->followers;
+        $moderators = Moderators::all();
 
-        foreach($followers as $follower){
+        foreach($moderators as $moderator){
             UserNotification::create([
                 'message' => $author->name . " posted new article: " . $article->title;
             ])

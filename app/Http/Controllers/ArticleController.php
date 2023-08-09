@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Notifications\ModeratorNotifier;
+use App\Services\Notifications\NotificationChannel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Notifications\TwitterNotifier;
-use App\Notifications\UserNotifier;
 
 class ArticleController extends Controller
 {
-    private $notificationChannels;
+    private array $notificationChannels;
 
-    public function __construct()
+    public function __construct(NotificationChannel ...$notificationChannels)
     {
         $this->authorizeResource(Article::class, options: ['except' => ['index', 'show']]);
-        $this->notificationChannels = [new UserNotifier(), new TwitterNotifier(), new ModeratorNotifier()];
+        $this->notificationChannels = $notificationChannels;
     }
 
     public function index()
