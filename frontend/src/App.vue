@@ -1,5 +1,5 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import HeaderBar from '@/components/layouts/HeaderBar.vue'
 import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
@@ -10,6 +10,7 @@ import { onMounted } from 'vue'
 
 const modal = modalStore()
 const user = userStore()
+const route = useRoute()
 
 onMounted(async () => {
   if (localStorage.getItem('token')) {
@@ -20,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <HeaderBar />
-  <RouterView />
+  <RouterView :key="route.fullPath" />
   <LogIn v-if="modal.isLoginModalOpened" />
   <RegisterModal v-if="modal.isRegisterModalOpened" />
   <MainFooter />

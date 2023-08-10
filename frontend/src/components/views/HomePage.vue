@@ -22,8 +22,8 @@ onMounted(() => {
         <div class="articles">
           <ArticleItem
             v-for="article in articles.articles"
-            :article="article"
             :key="article.id"
+            :article="article"
           />
         </div>
       </div>

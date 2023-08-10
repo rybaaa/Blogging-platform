@@ -6,6 +6,7 @@ import { successAlert, errorAlert } from '../utils/alerts'
 import { errorsStore } from './errors'
 import { modalStore } from './modal'
 import errorsHandler from '@/utils/errorsHandler'
+import router from '@/router/index'
 
 export const userStore = defineStore('user', () => {
   let user = ref({
@@ -81,6 +82,7 @@ export const userStore = defineStore('user', () => {
       localStorage.removeItem('token')
       setUserInfo(null, null, null, null, null)
       isLoggedIn.value = false
+      router.push({ name: 'home' })
     } catch (error) {
       errorAlert('Something went wrong')
     } finally {
