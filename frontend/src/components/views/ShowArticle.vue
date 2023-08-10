@@ -2,50 +2,39 @@
 import ArticleCategories from '@/components/article/ArticleCategories.vue'
 import ArticleAuthor from '@/components/article/ArticleAuthor.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
-import { ref, onMounted, watch } from 'vue'
-import Articles from '@/api/Articles'
+import { onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import CommentsList from '@/components/comment/CommentsList.vue'
+import { articlesStore } from '@/stores/articles'
 
-let article = ref(null)
-let relatedArticles = ref([])
+const articles = articlesStore()
 const route = useRoute()
 
 onMounted(async () => {
-  await fetchArticle(route.params.id)
-  await fetchRelatedArticles()
+  await articles.fetchArticle(route.params.id)
 })
 watch(
   () => route.params.id,
   async () => {
-    await fetchArticle(route.params.id)
+    await articles.fetchArticle(route.params.id)
   }
 )
-async function fetchArticle(id) {
-  let response = await Articles.show(id)
-  article.value = response.data.data
-  article.value.comments.reverse()
-}
-async function fetchRelatedArticles() {
-  let response = await Articles.index()
-  relatedArticles.value = response.data.data.data.slice(0, 3)
-}
 
 function addNewComment(comment) {
-  article.value.comments.unshift(comment)
+  articles.currentArticle.comments.unshift(comment)
 }
 </script>
 
 <template>
-  <article v-if="article">
+  <article v-if="articles.currentArticle">
     <section class="mainArticle">
       <div class="mainArticle__container">
         <h2 class="mainArticle__title">
-          {{ article.title }}
+          {{ articles.currentArticle.title }}
         </h2>
         <div class="mainArticle__content">
           <span class="mainArticle__content-author">
-            By {{ article.author.name }}
+            By {{ articles.currentArticle.author.name }}
           </span>
         </div>
       </div>
@@ -53,21 +42,24 @@ function addNewComment(comment) {
     <section class="articleContent">
       <div class="articleContent__container">
         <p>
-          {{ article.content }}
+          {{ articles.currentArticle.content }}
         </p>
         <div class="articleContent__info">
           <ArticleCategories class="articleCategory-showArticle" />
           <ArticleAuthor
             class="articleContent__author"
-            :author="article.author.name"
-            :email="article.author.email"
+            :author="articles.currentArticle.author.name"
+            :email="articles.currentArticle.author.email"
           />
         </div>
-        <CommentsList :comments="article.comments" @cb="addNewComment" />
+        <CommentsList
+          :comments="articles.currentArticle.comments"
+          @cb="addNewComment"
+        />
       </div>
       <EditorSection
         title="Related posts"
-        :articles="relatedArticles"
+        :articles="articles.relatedArticles"
         class="editorSection-showArticle"
       />
     </section>

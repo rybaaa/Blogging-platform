@@ -1,23 +1,23 @@
 import http from './Http'
 
 export default{
-    async register(params){
-        return await http.post('register', params)
+    register(params){
+        return http.post('register', params)
     },
 
-    async login(params){
-        return await http.post('auth', params)
+    login(params){
+        return http.post('auth', params)
     },
 
-    async update(id, params){
-        return await http.put(`users/${id}`, params)
+    update(id, params){
+        return http.put(`users/${id}`, params)
     },
 
-    async me(){
-        return await http.get('me')
+    me(){
+        return http.get('me')
     },
 
-    async logout(){
-        return await http.get('logout')
+    logout(){
+        return http.get('logout')
     }
 }

@@ -3,39 +3,35 @@ import ArticleItem from '@/components/article/ArticleItem.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
 import ArticleMain from '@/components/article/ArticleMain.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
-import { computed, onMounted, ref } from 'vue'
-import Articles from '@/api/Articles'
+import { onMounted } from 'vue'
+import { articlesStore } from '@/stores/articles'
 
-let articles = ref([])
-let editorsPickArticles = ref([])
+const articles = articlesStore()
 
-onMounted(async () => {
-  let response = await Articles.index()
-  articles.value = response.data.data.data
-  editorsPickArticles.value = response.data.data.data.slice(0, 3)
-})
-
-let featuredArticle = computed(() => {
-  return articles.value[0]
+onMounted(() => {
+  articles.fetchArticles()
 })
 </script>
 
 <template>
   <main>
-    <ArticleMain v-if="featuredArticle" :article="featuredArticle" />
+    <ArticleMain v-if="articles.value" :article="articles.featuredArticle" />
     <section class="section">
       <div class="section__container">
         <HomeCategories />
         <div class="articles">
           <ArticleItem
-            v-for="article in articles"
+            v-for="article in articles.articles"
             :article="article"
             :key="article.id"
           />
         </div>
       </div>
     </section>
-    <EditorSection title="Editor’s Pick" :articles="editorsPickArticles" />
+    <EditorSection
+      title="Editor’s Pick"
+      :articles="articles.editorsPickArticles"
+    />
   </main>
 </template>
 
