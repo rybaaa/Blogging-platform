@@ -34,7 +34,7 @@ let form = ref({
           placeholder="Your name"
           :error="errors.errors.name"
         />
-        <SubmitButton @submit="user.update(form)" :type="submit"
+        <SubmitButton :type="submit" @submit="user.update(form)"
           >Update</SubmitButton
         >
       </form>

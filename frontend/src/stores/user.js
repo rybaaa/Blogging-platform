@@ -119,5 +119,18 @@ export const userStore = defineStore('user', () => {
     user.value.name = name
   }
 
-  return { registerUser, login, user, isLoggedIn, me, logout, update }
+  function changeAvatar(avatar) {
+    user.value.avatar = avatar
+  }
+
+  return {
+    registerUser,
+    login,
+    user,
+    isLoggedIn,
+    me,
+    logout,
+    update,
+    changeAvatar,
+  }
 })
