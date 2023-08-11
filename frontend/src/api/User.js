@@ -1,23 +1,23 @@
 import http from './Http'
 
-export default{
-    register(params){
-        return http.post('register', params)
-    },
+export default {
+  register(params) {
+    return http.post('register', params)
+  },
 
-    login(params){
-        return http.post('auth', params)
-    },
+  login(params) {
+    return http.post('auth', params)
+  },
 
-    update(id, params){
-        return http.put(`users/${id}`, params)
-    },
+  update(id, params) {
+    return http.put(`users/${id}`, params)
+  },
 
-    me(){
-        return http.get('me')
-    },
+  me() {
+    return http.get('me')
+  },
 
-    logout(){
-        return http.get('logout')
-    }
+  logout() {
+    return http.get('logout')
+  },
 }

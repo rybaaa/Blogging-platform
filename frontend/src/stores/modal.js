@@ -18,5 +18,11 @@ export const modalStore = defineStore('modal', () => {
     isRegisterModalOpened.value = true
   }
 
-  return { isLoginModalOpened, openLoginModal, closeModal, isRegisterModalOpened, openRegisterModal }
+  return {
+    isLoginModalOpened,
+    openLoginModal,
+    closeModal,
+    isRegisterModalOpened,
+    openRegisterModal,
+  }
 })
