@@ -6,10 +6,8 @@ import Articles from '@/api/Articles'
 
 let articles = ref([])
 
-onMounted(async () => {
-  let response = await Articles.index()
-  articles.value = response.data.data.data
-})
+let response = await Articles.index()
+articles.value = response.data.data.data
 </script>
 
 <template>

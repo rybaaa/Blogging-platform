@@ -86,6 +86,10 @@ const user = userStore()
   border-radius: 129px;
   box-shadow: 0px 10px 5px 0px rgba(10, 10, 10, 0.25);
   cursor: pointer;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(to right, rgb(230, 226, 29), rgb(231, 39, 5)) border-box;
+  border: 4px solid transparent;
+  padding: 3px;
 }
 .profileHeader__name {
   margin: 25px 0;

@@ -2,7 +2,6 @@
 import ArticleCategories from '@/components/article/ArticleCategories.vue'
 import ArticleAuthor from '@/components/article/ArticleAuthor.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
-import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import CommentsList from '@/components/comment/CommentsList.vue'
 import { articlesStore } from '@/stores/articles'
@@ -10,9 +9,7 @@ import { articlesStore } from '@/stores/articles'
 const articles = articlesStore()
 const route = useRoute()
 
-onMounted(async () => {
-  await articles.fetchArticle(route.params.id)
-})
+await articles.fetchArticle(route.params.id)
 
 function addNewComment(comment) {
   articles.currentArticle.comments.unshift(comment)

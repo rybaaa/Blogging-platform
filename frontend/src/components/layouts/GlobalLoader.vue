@@ -7,6 +7,7 @@
 
 <style scoped>
 .global-loader {
+  background: #343a40;
   display: flex;
   justify-content: center;
   align-items: center;

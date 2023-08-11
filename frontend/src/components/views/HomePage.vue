@@ -3,14 +3,11 @@ import ArticleItem from '@/components/article/ArticleItem.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
 import ArticleMain from '@/components/article/ArticleMain.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
-import { onMounted } from 'vue'
 import { articlesStore } from '@/stores/articles'
 
 const articles = articlesStore()
 
-onMounted(() => {
-  articles.fetchArticles()
-})
+await articles.fetchArticles()
 </script>
 
 <template>
