@@ -22,16 +22,26 @@ export const articlesStore = defineStore('articles', () => {
       ? articles.value.slice(0, 3)
       : fetchArticles()
   })
-
   let defaultCover = ref(cover)
+  let totalArticles = ref(null)
+  let articlesPerPage = ref(null)
+  let pages = ref(null)
 
   //requests
 
-  async function fetchArticles() {
+  async function fetchArticles(page) {
     app.setSubmitting('isLoading')
     try {
-      let response = await Articles.index()
+      let response = await Articles.index(page)
+      console.log(response);
       articles.value = response.data.data.data
+      totalArticles.value = response.data.data.total
+      articlesPerPage.value = response.data.data.per_page
+      pages.value = response.data.data.last_page
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     } catch (error) {
       errorsHandler(error)
     } finally {
@@ -60,6 +70,7 @@ export const articlesStore = defineStore('articles', () => {
     fetchArticle,
     relatedArticles,
     currentArticle,
-    defaultCover
+    defaultCover,
+    pages
   }
 })

@@ -1,4 +1,5 @@
 <script setup>
+import { articlesStore } from '@/stores/articles'
 import ArticleCategories from './ArticleCategories.vue'
 
 defineProps({
@@ -8,10 +9,20 @@ defineProps({
   },
 })
 import { format } from 'date-fns'
+
+const articles = articlesStore()
 </script>
 
 <template>
-  <article class="articleMain">
+  <article
+    :class="article.cover_url ? article.cover_url : articles.defaultCover"
+    :style="{
+      background: article.cover_url
+        ? `url(${article.cover_url}) center center`
+        : `url(${articles.defaultCover}) center center`,
+      'background-size': 'cover',
+    }"
+  >
     <div class="articleMain__container">
       <ArticleCategories />
       <h2 class="articleMain__title">

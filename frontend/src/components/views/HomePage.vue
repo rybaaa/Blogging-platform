@@ -4,10 +4,11 @@ import EditorSection from '@/components/editor_article/EditorSection.vue'
 import ArticleMain from '@/components/article/ArticleMain.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
 import { articlesStore } from '@/stores/articles'
+import PaginationComponent from '@/components/general/PaginationComponent.vue'
 
 const articles = articlesStore()
 
-await articles.fetchArticles()
+await articles.fetchArticles(1)
 </script>
 
 <template>
@@ -25,6 +26,7 @@ await articles.fetchArticles()
         </div>
       </div>
     </section>
+    <PaginationComponent :items="articles.pages" />
     <EditorSection
       title="Editor’s Pick"
       :articles="articles.editorsPickArticles"

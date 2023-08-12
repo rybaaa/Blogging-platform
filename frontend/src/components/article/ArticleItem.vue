@@ -21,7 +21,7 @@ const articles = articlesStore()
     ><div class="articleItem">
       <div class="articleItem__image-container">
         <img
-          :src="article.cover_url ? article.cover.url : articles.defaultCover"
+          :src="article.cover_url ? article.cover_url : articles.defaultCover"
           alt="article picture"
           class="articleItem__image"
         />

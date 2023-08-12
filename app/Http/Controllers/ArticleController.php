@@ -25,6 +25,7 @@ class ArticleController extends Controller
                     $query->where('author_id', $authorId);
                 }
             )
+            ->orderBy('created_at', 'desc')
             ->paginate();
         return response()->json([
             'status' => 200,
