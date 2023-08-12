@@ -28,7 +28,7 @@ const changeValue = (event) => {
       class="inputComponent__input"
       @input="changeValue"
     />
-    <span class="inputComponent__error">{{ error }}</span>
+    <span class="inputComponent__error">{{ errors.getError(name) }}</span>
   </div>
 </template>
 

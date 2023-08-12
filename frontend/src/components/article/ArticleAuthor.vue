@@ -1,20 +1,27 @@
 <script setup>
+import { ref } from 'vue'
+import { userStore } from '@/stores/user'
+
 defineProps({
-  author: String,
-  email: String,
+  article: Object,
 })
+const user = userStore()
 </script>
 
 <template>
   <div class="articleAuthor">
     <img
-      src="@/assets/images/face1.png"
+      :src="
+        article.author.avatar === null
+          ? user.defaultAvatar
+          : article.author.avatar
+      "
       alt="author face"
       class="articleAuthor__image"
     />
     <div class="articleAuthor__content">
-      <h4 class="articleAuthor__title">{{ author }}</h4>
-      <p class="articleAuthor__description">{{ email }}</p>
+      <h4 class="articleAuthor__title">{{ article.author.name }}</h4>
+      <p class="articleAuthor__description">{{ article.author.email }}</p>
     </div>
   </div>
 </template>
@@ -27,6 +34,11 @@ defineProps({
   display: flex;
   gap: 17px;
   align-items: center;
+}
+.articleAuthor__image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 .articleAuthor__content {
   display: flex;

@@ -42,10 +42,7 @@ defineProps({
           {{ article.content }}
         </p>
         <div class="articleItem__divider"></div>
-        <ArticleAuthor
-          :author="article.author.name"
-          :email="article.author.email"
-        />
+        <ArticleAuthor :article="article" />
       </div></div
   ></RouterLink>
 </template>

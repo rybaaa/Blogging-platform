@@ -12,7 +12,7 @@ await articles.fetchArticles()
 
 <template>
   <main>
-    <ArticleMain v-if="articles.value" :article="articles.featuredArticle" />
+    <ArticleMain :article="articles.featuredArticle" />
     <section class="section">
       <div class="section__container">
         <HomeCategories />

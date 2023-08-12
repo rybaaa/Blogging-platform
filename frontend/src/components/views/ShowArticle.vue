@@ -17,8 +17,21 @@ function addNewComment(comment) {
 </script>
 
 <template>
-  <article v-if="articles.currentArticle">
-    <section class="mainArticle">
+  <article>
+    <section
+      :class="
+        articles.currentArticle.cover_url === null
+          ? articles.defaultCover
+          : articles.currentArticle.cover_url
+      "
+      :style="{
+        background:
+          articles.currentArticle.cover_url === null
+            ? `url(${articles.defaultCover}) center center`
+            : `url(${articles.currentArticle.cover_url}) center center`,
+        'background-size': 'cover',
+      }"
+    >
       <div class="mainArticle__container">
         <h2 class="mainArticle__title">
           {{ articles.currentArticle.title }}
@@ -39,13 +52,12 @@ function addNewComment(comment) {
           <ArticleCategories class="articleCategory-showArticle" />
           <ArticleAuthor
             class="articleContent__author"
-            :author="articles.currentArticle.author.name"
-            :email="articles.currentArticle.author.email"
+            :article="articles.currentArticle"
           />
         </div>
         <CommentsList
           :comments="articles.currentArticle.comments"
-          @cb="addNewComment"
+          @addNewComment="addNewComment"
         />
       </div>
       <EditorSection

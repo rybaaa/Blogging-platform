@@ -3,6 +3,10 @@ import { ref } from 'vue'
 import CommentItem from './CommentItem.vue'
 import Comments from '@/api/Comments'
 import { useRoute } from 'vue-router'
+import { userStore } from '@/stores/user'
+import { errorsStore } from '@/stores/errors'
+import errorsHandler from '@/utils/errorsHandler'
+import { appStore } from '@/stores/app'
 
 defineProps({
   comments: {
@@ -13,22 +17,30 @@ defineProps({
 
 let commentText = ref('')
 const route = useRoute()
-const emit = defineEmits(['cb'])
-let error = ref('')
+const emit = defineEmits(['addNewComment'])
+const user = userStore()
+const errors = errorsStore()
+const app = appStore()
 
 const sendComment = async () => {
+  app.setSubmitting('isLoading')
   try {
-    error.value = ''
     let response = await Comments.store({
       content: commentText.value,
-      author_id: 1,
       article_id: route.params.id,
     })
-    emit('cb', response.data.data)
+    emit('addNewComment', response.data.data)
     commentText.value = ''
   } catch (errorMsg) {
-    error.value = errorMsg.response.data.message
+    errorsHandler(errorMsg, errors)
+  } finally {
+    app.setSubmitting('idle')
   }
+}
+
+const changeValue = (event) => {
+  commentText.value = event.target.value
+  errors.eraseErrors()
 }
 </script>
 
@@ -37,17 +49,26 @@ const sendComment = async () => {
     <h3 class="commentsList__title">Comments:</h3>
     <form class="commentsList__form" @submit.prevent="sendComment">
       <img
-        src="@/assets/images/face1.png"
+        :src="user.user.avatar === null ? user.defaultAvatar : user.user.avatar"
         alt="avatar"
         class="commentsList__img"
       />
       <textarea
-        v-model="commentText"
+        :value="commentText"
         type="text"
         placeholder="Write a comment..."
         class="commentsList__input"
+        @input="changeValue"
       ></textarea>
-      <p class="commentsList__error">{{ error }}</p>
+      <p class="commentsList__error">
+        {{
+          errors.errors.message
+            ? errors.errors.message
+            : errors.errors.content
+            ? errors.errors.content[0]
+            : ''
+        }}
+      </p>
       <button type="submit" class="commentsList__button">Send</button>
     </form>
     <div v-if="comments.length" class="commentsList__list">
@@ -73,6 +94,11 @@ const sendComment = async () => {
   color: $textColor2;
   font-family: $secondaryFontFamily;
   line-height: 25px;
+}
+.commentsList__img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 .commentsList__form {
   position: relative;

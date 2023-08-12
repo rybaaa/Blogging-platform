@@ -2,29 +2,19 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const errorsStore = defineStore('errors', () => {
-  let errors = ref({
-    email: '',
-    password: '',
-    name: '',
-  })
+  let errors = ref({})
 
   function eraseErrors() {
-    errors.value.email = ''
-    errors.value.password = ''
-    errors.value.name = ''
+    errors.value = {}
   }
 
-  function setErrors(e) {
-    errors.value.email = e.response.data.errors.email
-      ? e.response.data.errors.email[0]
-      : ''
-    errors.value.name = e.response.data.errors.name
-      ? e.response.data.errors.name[0]
-      : ''
-    errors.value.password = e.response.data.errors.password
-      ? e.response.data.errors.password[0]
-      : ''
+  function setErrors(newErrors) {
+    errors.value = newErrors
   }
 
-  return { errors, eraseErrors, setErrors }
+  function getError(key) {
+    return errors.value[key]? errors.value[key][0] : null
+  }
+
+  return { errors, eraseErrors, setErrors, getError }
 })

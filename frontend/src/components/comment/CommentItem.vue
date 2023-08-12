@@ -1,5 +1,6 @@
 <script setup>
 import { format, intlFormatDistance } from 'date-fns'
+import { userStore } from '@/stores/user'
 
 const props = defineProps({
   comment: {
@@ -7,12 +8,18 @@ const props = defineProps({
     required: true,
   },
 })
+
+const user = userStore()
 </script>
 
 <template>
   <div class="commentItem">
     <img
-      src="@/assets/images/face1.png"
+      :src="
+        props.comment.author.avatar === null
+          ? user.defaultAvatar
+          : props.comment.author.avatar
+      "
       alt="avatar"
       class="commentItem__img"
     />
@@ -53,6 +60,7 @@ const props = defineProps({
 .commentItem__img {
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 }
 .commentItem__content {
   display: flex;

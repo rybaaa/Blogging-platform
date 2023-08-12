@@ -7,6 +7,7 @@ import { errorsStore } from './errors'
 import { modalStore } from './modal'
 import errorsHandler from '@/utils/errorsHandler'
 import router from '@/router/index'
+import mercedes from '@/assets/images/mercedes.png'
 
 export const userStore = defineStore('user', () => {
   let user = ref({
@@ -17,6 +18,7 @@ export const userStore = defineStore('user', () => {
     articles: null,
   })
   let isLoggedIn = ref(false)
+  let defaultAvatar = ref(mercedes)
 
   const app = appStore()
   const modal = modalStore()
@@ -132,5 +134,6 @@ export const userStore = defineStore('user', () => {
     logout,
     update,
     changeAvatar,
+    defaultAvatar
   }
 })

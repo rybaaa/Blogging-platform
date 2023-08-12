@@ -8,9 +8,6 @@ defineProps({
 })
 
 let isUploadFormOpened = ref(false)
-let defaultAvatar = ref(
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/2048px-Mercedes-Logo.svg.png'
-)
 let headers = ref({
   Authorization: `Bearer ${localStorage.getItem('token')}`,
 })
@@ -27,7 +24,9 @@ const user = userStore()
     <section class="profileHeader">
       <div class="profileHeader__avatarWrapper">
         <img
-          :src="user.user.avatar === null ? defaultAvatar : user.user.avatar"
+          :src="
+            user.user.avatar === null ? user.defaultAvatar : user.user.avatar
+          "
           alt="avatar"
           class="profileHeader__avatar"
           @click="isUploadFormOpened = !isUploadFormOpened"

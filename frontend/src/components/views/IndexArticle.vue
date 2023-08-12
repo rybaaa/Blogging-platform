@@ -1,13 +1,11 @@
 <script setup>
 import ArticleItem from '@/components/article/ArticleItem.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
-import { onMounted, ref } from 'vue'
-import Articles from '@/api/Articles'
+import { articlesStore } from '@/stores/articles'
 
-let articles = ref([])
+const articles = articlesStore()
 
-let response = await Articles.index()
-articles.value = response.data.data.data
+await articles.fetchArticles()
 </script>
 
 <template>
@@ -17,7 +15,7 @@ articles.value = response.data.data.data
         <HomeCategories />
         <div class="articles">
           <ArticleItem
-            v-for="article in articles"
+            v-for="article in articles.articles"
             :article="article"
             :key="article.id"
           />

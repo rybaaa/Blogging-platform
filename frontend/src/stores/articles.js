@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { appStore } from './app'
 import errorsHandler from '@/utils/errorsHandler'
 import Articles from '@/api/Articles'
+import cover from '@/assets/images/bg_image.jpg'
 
 export const articlesStore = defineStore('articles', () => {
   const app = appStore()
@@ -21,6 +22,8 @@ export const articlesStore = defineStore('articles', () => {
       ? articles.value.slice(0, 3)
       : fetchArticles()
   })
+
+  let defaultCover = ref(cover)
 
   //requests
 
@@ -57,5 +60,6 @@ export const articlesStore = defineStore('articles', () => {
     fetchArticle,
     relatedArticles,
     currentArticle,
+    defaultCover
   }
 })
