@@ -2,13 +2,16 @@
 import ArticleCategories from './ArticleCategories.vue'
 import ArticleAuthor from './ArticleAuthor.vue'
 import { format } from 'date-fns'
+import { articlesStore } from '@/stores/articles'
 
-defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
   },
 })
+
+const articles = articlesStore()
 </script>
 
 <template>
@@ -18,7 +21,7 @@ defineProps({
     ><div class="articleItem">
       <div class="articleItem__image-container">
         <img
-          src="@/assets/images/blogImage1.png"
+          :src="article.cover_url ? article.cover.url : articles.defaultCover"
           alt="article picture"
           class="articleItem__image"
         />
@@ -62,6 +65,7 @@ defineProps({
 }
 .articleItem__image {
   width: 100%;
+  height: 280px;
 }
 
 .articleItem__content {
