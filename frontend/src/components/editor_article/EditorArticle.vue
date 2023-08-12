@@ -1,6 +1,7 @@
 <script setup>
 import { format } from 'date-fns'
 import update from '@/assets/images/Vector.svg'
+import { articlesStore } from '@/stores/articles'
 
 defineProps({
   article: {
@@ -9,6 +10,7 @@ defineProps({
   },
   type: String,
 })
+const articles = articlesStore()
 </script>
 
 <template>

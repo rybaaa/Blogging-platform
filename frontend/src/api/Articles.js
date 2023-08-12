@@ -7,4 +7,7 @@ export default {
   show(id) {
     return http.get(`articles/${id}`)
   },
+  store(body){
+    return http.post('articles', body)
+  }
 }

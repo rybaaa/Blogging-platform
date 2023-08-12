@@ -4,9 +4,12 @@ import { appStore } from './app'
 import errorsHandler from '@/utils/errorsHandler'
 import Articles from '@/api/Articles'
 import cover from '@/assets/images/bg_image.jpg'
+import { errorAlert, successAlert } from '../utils/alerts'
+import { errorsStore } from './errors'
 
 export const articlesStore = defineStore('articles', () => {
   const app = appStore()
+  const errors = errorsStore()
 
   let articles = ref([])
   let currentArticle = ref(null)
@@ -62,6 +65,36 @@ export const articlesStore = defineStore('articles', () => {
     }
   }
 
+  async function createArticle(values){
+    console.log(values.content);
+    if(!values.content) {
+      errorAlert('Please provide a content')
+    }
+    let content = processContent(values.content)    
+    let object = {
+      title: values.title,
+      content
+    }
+    app.setSubmitting('isLoading')
+    try {
+      let response = await Articles.store(object)
+      successAlert(response.data.message)
+    } catch (error) {
+      errorsHandler(error, errors)
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
+  function processContent(data) {
+    let content = ''
+    if(!data.ops.length) return null
+    for(let i = 0; i< data.ops.length; i++){
+      content += data.ops[i].insert
+    }
+    return content
+  }
+
   return {
     articles,
     featuredArticle,
@@ -71,6 +104,7 @@ export const articlesStore = defineStore('articles', () => {
     relatedArticles,
     currentArticle,
     defaultCover,
-    pages
+    pages,
+    createArticle
   }
 })
