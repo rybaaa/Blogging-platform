@@ -42,7 +42,11 @@ const articles = articlesStore()
           {{ article.title }}
         </h3>
         <p class="articleItem__text">
-          {{ article.content }}
+          {{
+            article.content.length > 100
+              ? article.content.slice(0, 100) + '...(Click to read more)'
+              : article.content
+          }}
         </p>
         <div class="articleItem__divider"></div>
         <ArticleAuthor :article="article" />

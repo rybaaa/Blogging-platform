@@ -19,11 +19,6 @@ function addNewComment(comment) {
 <template>
   <article>
     <section
-      :class="
-        articles.currentArticle.cover_url === null
-          ? articles.defaultCover
-          : articles.currentArticle.cover_url
-      "
       :style="{
         background:
           articles.currentArticle.cover_url === null

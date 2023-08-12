@@ -15,7 +15,6 @@ const articles = articlesStore()
 
 <template>
   <article
-    :class="article.cover_url ? article.cover_url : articles.defaultCover"
     :style="{
       background: article.cover_url
         ? `url(${article.cover_url}) center center`

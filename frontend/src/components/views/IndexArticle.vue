@@ -2,6 +2,7 @@
 import ArticleItem from '@/components/article/ArticleItem.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
 import { articlesStore } from '@/stores/articles'
+import PaginationComponent from '@/components/general/PaginationComponent.vue'
 
 const articles = articlesStore()
 
@@ -21,6 +22,7 @@ await articles.fetchArticles()
           />
         </div>
       </div>
+      <PaginationComponent :items="articles.pages" />
     </section>
   </main>
 </template>

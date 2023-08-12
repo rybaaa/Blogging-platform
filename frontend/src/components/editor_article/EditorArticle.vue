@@ -17,7 +17,15 @@ defineProps({
       class="editorArticle-link"
       :to="{ name: 'article', params: { id: article.id } }"
     >
-      <div class="editorArticle__image-container">
+      <div
+        class="editorArticle__image-container"
+        :style="{
+          background: article.cover_url
+            ? `url(${article.cover_url}) center center`
+            : `url(${articles.defaultCover}) center center`,
+          'background-size': 'cover',
+        }"
+      >
         <img
           v-if="type === 'profile'"
           :src="update"
@@ -42,7 +50,11 @@ defineProps({
             {{ article.title }}
           </h3>
           <p class="editorArticle__text">
-            {{ article.content.slice(0, 100) + '...' }}
+            {{
+              article.content.length > 100
+                ? article.content.slice(0, 100) + '...'
+                : article.content
+            }}
           </p>
         </div>
       </div></RouterLink
@@ -60,11 +72,14 @@ defineProps({
 }
 .editorArticle__image-container {
   position: relative;
-  background: url('@/assets/images/editorsBg1.png') center center no-repeat;
   background-size: cover;
   opacity: 0.9;
   height: 350px;
   width: 100%;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+  }
 }
 .editorArticle__image-update {
   position: absolute;
