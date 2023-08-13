@@ -28,12 +28,17 @@ const articles = articlesStore()
           'background-size': 'cover',
         }"
       >
-        <img
-          v-if="type === 'profile'"
-          :src="update"
-          alt="update article"
-          class="editorArticle__image-update"
-        />
+        <RouterLink
+          class="editorArticle-link"
+          :to="{ name: 'edit article', params: { id: article.id } }"
+        >
+          <img
+            v-if="type === 'profile'"
+            :src="update"
+            alt="update article"
+            class="editorArticle__image-update"
+          />
+        </RouterLink>
         <ul class="editorArticle__categories">
           <li class="editorArticle__category">
             <a href="#" class="editorArticle__category-link">ADVENTURE</a>

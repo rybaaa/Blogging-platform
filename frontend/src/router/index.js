@@ -5,6 +5,7 @@ import IndexArticle from '@/components/views/IndexArticle.vue'
 import ProfilePage from '@/components/views/ProfilePage.vue'
 import EditProfile from '@/components/views/EditProfile.vue'
 import ArticleConstructor from '@/components/views/ArticleConstructor.vue'
+import ArticleEditConstructor from '@/components/views/ArticleEditConstructor.vue'
 import { userStore } from '../stores/user'
 
 const router = createRouter({
@@ -45,6 +46,14 @@ const router = createRouter({
       path: '/new-article',
       name: 'new article',
       component: ArticleConstructor,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/edit-article/:id',
+      name: 'edit article',
+      component: ArticleEditConstructor,
       meta: {
         requiresAuth: true,
       },

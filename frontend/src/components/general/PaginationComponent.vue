@@ -1,19 +1,41 @@
 <script setup>
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
 
 defineProps({
   items: Number,
+  purpose: String,
 })
 
+const classesForAllArticles = (pagenumber) => {
+  return pagenumber === articles.currentPage
+    ? 'paginationComponent__button-current'
+    : ''
+}
+const classesForProfile = (pagenumber) => {
+  return pagenumber === user.user.articles.current_page
+    ? 'paginationComponent__button-current'
+    : ''
+}
 const articles = articlesStore()
+const user = userStore()
 </script>
 <template>
   <div class="paginationComponent">
     <button
       v-for="pagenumber in items"
       :key="pageNumber"
-      @click="articles.fetchArticles(pagenumber)"
+      @click="
+        purpose === 'profile'
+          ? user.fetchUserArticles(pagenumber, user.user.id)
+          : articles.fetchArticles(pagenumber)
+      "
       class="paginationComponent__button"
+      :class="
+        purpose === 'profile'
+          ? classesForProfile(pagenumber)
+          : classesForAllArticles(pagenumber)
+      "
     >
       {{ pagenumber }}
     </button>
@@ -46,5 +68,10 @@ const articles = articlesStore()
   &:hover {
     opacity: 0.8;
   }
+}
+
+.paginationComponent__button-current {
+  background: #ffffff;
+  color: #d4a373;
 }
 </style>

@@ -5,12 +5,13 @@ import { ref } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
 
-defineProps({
+const props = defineProps({
   type: String,
+  article: Object,
 })
 let form = ref({
-  title: '',
-  content: '',
+  title: props.type === 'new' ? '' : props.article.title,
+  content: props.type === 'new' ? '' : props.article.content,
 })
 let options = {
   theme: 'snow',
@@ -19,12 +20,13 @@ let options = {
 }
 const errors = errorsStore()
 const articles = articlesStore()
+//v-model:value="form.title"
 </script>
 <template>
   <div class="constructorMain__container">
     <section class="constructorMain">
       <h3 class="constructorMain__header">
-        {{ type === 'new' ? 'Add Content' : 'Edit Content' }}
+        {{ props.type === 'new' ? 'Add Content' : 'Edit Content' }}
       </h3>
       <form class="constructorMain__form" @submit.prevent="">
         <InputComponent
@@ -38,8 +40,14 @@ const articles = articlesStore()
         <div class="constructorMain__quillEditor">
           <QuillEditor :options="options" v-model:content="form.content" />
         </div>
-        <SubmitButton :type="submit" @submit="articles.createArticle(form)"
-          >Add</SubmitButton
+        <SubmitButton
+          :type="submit"
+          @submit="
+            props.type === 'new'
+              ? articles.createArticle(form)
+              : articles.updateArticle(props.article.id, form)
+          "
+          >{{ props.type === 'new' ? 'Add' : 'Update' }}</SubmitButton
         >
       </form>
     </section>

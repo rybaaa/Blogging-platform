@@ -24,7 +24,6 @@ const changeValue = (event) => {
     <input
       :type="type"
       :name="name"
-      :placeholder="placeholder"
       class="inputComponent__input"
       @input="changeValue"
     />

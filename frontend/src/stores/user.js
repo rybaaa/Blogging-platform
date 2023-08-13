@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import User from '@/api/User'
+import Articles from '@/api/Articles'
 import { appStore } from './app'
 import { successAlert, errorAlert } from '../utils/alerts'
 import { errorsStore } from './errors'
@@ -106,6 +107,23 @@ export const userStore = defineStore('user', () => {
     }
   }
 
+  async function fetchUserArticles(page, id){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await Articles.index(page, id)
+      console.log(response);
+      user.value.articles = response.data.data
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
   //updating state
 
   function setUserInfo(id, name, email, avatar, articles) {
@@ -134,6 +152,7 @@ export const userStore = defineStore('user', () => {
     logout,
     update,
     changeAvatar,
-    defaultAvatar
+    defaultAvatar,
+    fetchUserArticles
   }
 })

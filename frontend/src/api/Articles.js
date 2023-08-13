@@ -9,5 +9,8 @@ export default {
   },
   store(body){
     return http.post('articles', body)
+  },
+  update(id, body) {
+    return http.put(`articles/${id}`, body)
   }
 }

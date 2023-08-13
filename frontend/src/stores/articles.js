@@ -6,6 +6,7 @@ import Articles from '@/api/Articles'
 import cover from '@/assets/images/bg_image.jpg'
 import { errorAlert, successAlert } from '../utils/alerts'
 import { errorsStore } from './errors'
+import router from '@/router/index'
 
 export const articlesStore = defineStore('articles', () => {
   const app = appStore()
@@ -29,6 +30,7 @@ export const articlesStore = defineStore('articles', () => {
   let totalArticles = ref(null)
   let articlesPerPage = ref(null)
   let pages = ref(null)
+  let currentPage = ref(1)
 
   //requests
 
@@ -41,6 +43,7 @@ export const articlesStore = defineStore('articles', () => {
       totalArticles.value = response.data.data.total
       articlesPerPage.value = response.data.data.per_page
       pages.value = response.data.data.last_page
+      currentPage.value = response.data.data.current_page
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
@@ -66,7 +69,6 @@ export const articlesStore = defineStore('articles', () => {
   }
 
   async function createArticle(values){
-    console.log(values.content);
     if(!values.content) {
       errorAlert('Please provide a content')
     }
@@ -78,7 +80,34 @@ export const articlesStore = defineStore('articles', () => {
     app.setSubmitting('isLoading')
     try {
       let response = await Articles.store(object)
-      successAlert(response.data.message)
+      setTimeout(()=>{
+        successAlert(response.data.message)
+      }, 1000)
+      router.push({ name: 'profile' })
+    } catch (error) {
+      errorsHandler(error, errors)
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function updateArticle(id, values){
+    console.log(values);
+    if(!values.content) {
+      errorAlert('Please provide a content')
+    }
+    let content = processContent(values.content)    
+    let object = {
+      title: values.title,
+      content
+    }
+    app.setSubmitting('isLoading')
+    try {
+      let response = await Articles.update(id, object)
+      setTimeout(()=>{
+        successAlert(response.data.message)
+      }, 1000)
+      router.push({ name: 'profile' })
     } catch (error) {
       errorsHandler(error, errors)
     } finally{
@@ -88,7 +117,11 @@ export const articlesStore = defineStore('articles', () => {
 
   function processContent(data) {
     let content = ''
-    if(!data.ops.length) return null
+    if(data.hasOwnProperty('ops')){
+      if(!data.ops.length) return null
+    } else {
+      return data
+    }
     for(let i = 0; i< data.ops.length; i++){
       content += data.ops[i].insert
     }
@@ -105,6 +138,8 @@ export const articlesStore = defineStore('articles', () => {
     currentArticle,
     defaultCover,
     pages,
-    createArticle
+    currentPage,
+    createArticle,
+    updateArticle
   }
 })

@@ -1,15 +1,16 @@
 <script setup>
 import InputComponent from '../general/InputComponent.vue'
 import SubmitButton from '../general/SubmitButton.vue'
-import { userStore } from '../../stores/user'
-import { ref } from 'vue'
-import { errorsStore } from '../../stores/errors'
+import { userStore } from '@/stores/user'
+import { computed, ref } from 'vue'
+import { errorsStore } from '@/stores/errors'
 
-const user = userStore()
+const userStores = userStore()
+const user = computed(() => userStores.user)
 const errors = errorsStore()
 let form = ref({
-  name: user.user.name,
-  email: user.user.email,
+  name: user.name,
+  email: user.email,
 })
 </script>
 
