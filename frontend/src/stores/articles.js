@@ -34,10 +34,10 @@ export const articlesStore = defineStore('articles', () => {
 
   //requests
 
-  async function fetchArticles(page) {
+  async function fetchArticles(page, id, tag) {
     app.setSubmitting('isLoading')
     try {
-      let response = await Articles.index(page)
+      let response = await Articles.index(page, id, tag)
       console.log(response);
       articles.value = response.data.data.data
       totalArticles.value = response.data.data.total

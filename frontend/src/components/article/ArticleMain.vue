@@ -23,7 +23,7 @@ const articles = articlesStore()
     }"
   >
     <div class="articleMain__container">
-      <ArticleCategories />
+      <ArticleCategories :tags="article.tags" />
       <h2 class="articleMain__title">
         <RouterLink
           class="articleMain-link"

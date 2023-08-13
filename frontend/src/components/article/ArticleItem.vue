@@ -25,7 +25,10 @@ const articles = articlesStore()
           alt="article picture"
           class="articleItem__image"
         />
-        <ArticleCategories class="articleItem__category--card" />
+        <ArticleCategories
+          :tags="props.article.tags"
+          class="articleItem__category--card"
+        />
       </div>
       <div class="articleItem__content">
         <div class="articleItem__info">
