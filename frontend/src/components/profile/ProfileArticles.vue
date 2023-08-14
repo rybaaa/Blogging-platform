@@ -1,16 +1,9 @@
 <script setup>
-import { onMounted } from 'vue'
-import Articles from '@/api/Articles'
 import EditorArticle from '../editor_article/EditorArticle.vue'
 import AddArticleFromProfile from '../profile/AddArticleFromProfile.vue'
 import { userStore } from '@/stores/user'
 
 const user = userStore()
-
-/*onMounted(async () => {
-  let response = await Articles.index(1, user.user.id)
-  user.user.articles = response.data.data.data
-})*/
 </script>
 
 <template>

@@ -2,8 +2,9 @@
 import { format } from 'date-fns'
 import update from '@/assets/images/Vector.svg'
 import { articlesStore } from '@/stores/articles'
+import ArticleCategories from '@/components/article/ArticleCategories.vue'
 
-defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
@@ -39,11 +40,10 @@ const articles = articlesStore()
             class="editorArticle__image-update"
           />
         </RouterLink>
-        <ul class="editorArticle__categories">
-          <li class="editorArticle__category">
-            <a href="#" class="editorArticle__category-link">ADVENTURE</a>
-          </li>
-        </ul>
+        <ArticleCategories
+          :tags="props.article.tags"
+          class="articleItem__category--card"
+        />
         <div class="editorArticle__content">
           <img
             src="@/assets/images/gem.svg"
