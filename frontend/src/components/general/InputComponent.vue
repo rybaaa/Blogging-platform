@@ -22,6 +22,7 @@ const changeValue = (event) => {
   <div class="inputComponent__group">
     <label :for="name" class="inputComponent__label">{{ label }}</label>
     <input
+      :value="value"
       :type="type"
       :name="name"
       class="inputComponent__input"

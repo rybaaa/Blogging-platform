@@ -1,38 +1,76 @@
 <script setup>
 import InputComponent from '../general/InputComponent.vue'
 import SubmitButton from '../general/SubmitButton.vue'
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
 import myUpload from 'vue-image-crop-upload'
+import MultiSelect from '@/components/general/MultiSelect.vue'
+import { tagsStore } from '@/stores/tags.js'
 
 const props = defineProps({
   type: String,
   article: Object,
 })
 
-let articleCover = ref(null)
+const errors = errorsStore()
+const articles = articlesStore()
+const tags = tagsStore()
 
-let form = ref({
+const articleCover = ref(props.article?.cover_url || null)
+const form = ref({
   title: props.type === 'new' ? '' : props.article.title,
   content: props.type === 'new' ? '' : props.article.content,
   cover: props.type === 'new' ? articleCover : props.article.cover_url,
+  tags: [],
 })
-let options = {
+
+const options = {
   theme: 'snow',
   placeholder: 'Add content',
   contentType: 'html',
 }
-const errors = errorsStore()
-const articles = articlesStore()
 
-let isUploadFormOpened = ref(false)
-let headers = ref({
-  Authorization: `Bearer ${localStorage.getItem('token')}`,
-})
+const isUploadFormOpened = ref(false)
+
+function updateSelectedTags(tags) {
+  form.value.tags = tags
+}
+
 const cropSuccess = (coverImage) => {
   form.value.cover = coverImage
 }
+
+function getTagsForCurrentArticle() {
+  return props.article.tags.map((tag) => tag.title)
+}
+
+const selectedTags = computed({
+  get: () => {
+    return props.type === 'new' ? form.value.tags : getTagsForCurrentArticle()
+  },
+  set: (newTags) => {
+    form.value.tags = newTags
+  },
+})
+
+const handleSubmit = () => {
+  const articleData = {
+    title: form.value.title,
+    content: form.value.content,
+    cover: form.value.cover,
+    tags: form.value.tags,
+  }
+  console.log(articleData)
+
+  if (props.type === 'new') {
+    articles.createArticle(articleData)
+  } else {
+    articles.updateArticle(props.article.id, articleData)
+  }
+}
+
+await tags.fetchTags()
 </script>
 <template>
   <div class="constructorMain__container">
@@ -40,7 +78,7 @@ const cropSuccess = (coverImage) => {
       <h3 class="constructorMain__header">
         {{ props.type === 'new' ? 'Add Content' : 'Edit Content' }}
       </h3>
-      <form class="constructorMain__form" @submit.prevent="">
+      <form class="constructorMain__form" @submit.prevent="handleSubmit">
         <InputComponent
           v-model:value="form.title"
           label="Title"
@@ -50,8 +88,16 @@ const cropSuccess = (coverImage) => {
           :error="errors.errors.title"
         />
         <div class="constructorMain__quillEditor">
-          <QuillEditor :options="options" v-model:content="form.content" />
+          <QuillEditor
+            :options="options"
+            v-model:content="form.content"
+            :content="form.content"
+          />
         </div>
+        <MultiSelect
+          :selectedTags="selectedTags"
+          @update="updateSelectedTags"
+        />
         <div
           @click="isUploadFormOpened = !isUploadFormOpened"
           class="constructorMain__articleCover"
@@ -68,21 +114,14 @@ const cropSuccess = (coverImage) => {
           <my-upload
             v-model="isUploadFormOpened"
             field="cover"
-            :width="300"
-            :height="300"
             lang-type="'en'"
-            :headers="headers"
             @crop-success="cropSuccess"
           ></my-upload>
         </div>
         <SubmitButton
           :type="submit"
           class="constructorMain__button"
-          @submit="
-            props.type === 'new'
-              ? articles.createArticle(form)
-              : articles.updateArticle(props.article.id, form)
-          "
+          @submit="handleSubmit"
           >{{ props.type === 'new' ? 'Add' : 'Update' }}</SubmitButton
         >
       </form>
@@ -130,10 +169,6 @@ const cropSuccess = (coverImage) => {
   width: 300px;
   height: 200px;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  &:hover {
-    transform: translateY(-3px);
-  }
 }
 .constructorMain__articleCover-label {
   @include text(14px, 400, $textColor2);

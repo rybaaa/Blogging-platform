@@ -103,11 +103,20 @@ class ArticleController extends Controller
             'title' => ['required', 'string']
         ]));
 
+        if ($tagContent = request()->input('tags')) {
+            $this->deleteOldTags($article);
+            $this->attachTags($article, $tagContent);
+        }
+
         return response()->json([
             'status' => 200,
             'message' => 'Article was updated',
             'data' => $article
         ], 200);
+    }
+    protected function deleteOldTags(Article $article)
+    {
+        $article->tags()->detach();
     }
 
     /**
@@ -126,8 +135,16 @@ class ArticleController extends Controller
     private function attachTags(Article $article, array $tagContent)
     {
         // create the tags if they don't exist already
-        //$tagUpsertData = collect($tagContent)->map(fn ($content) => ['title' => $content])->all();
-        //Tag::upsert($tagUpsertData, ['title']);
+        /*[
+            ['title' => 'foobar'],
+            ['title' => 'another tag'],
+          ]*/
+
+        $tagUpsertData = collect($tagContent)->map(fn ($content) => ['title' => $content])->all();
+        foreach ($tagUpsertData as &$tagData) {
+            $tagData['author_id'] = auth()->user()->id;
+        }
+        Tag::upsert($tagUpsertData, ['title']);
 
         // fetch the tags so that they may be attached
         $tags = Tag::query()->whereIn('title', $tagContent)->get('id');

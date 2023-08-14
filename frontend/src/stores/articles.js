@@ -38,7 +38,6 @@ export const articlesStore = defineStore('articles', () => {
     app.setSubmitting('isLoading')
     try {
       let response = await Articles.index(page, id, tag)
-      console.log(response);
       articles.value = response.data.data.data
       totalArticles.value = response.data.data.total
       articlesPerPage.value = response.data.data.per_page
@@ -77,7 +76,8 @@ export const articlesStore = defineStore('articles', () => {
     let object = {
       title: values.title,
       content,
-      cover_photo: values.cover
+      cover_photo: values.cover,
+      tags: values.tags
     }
     app.setSubmitting('isLoading')
     try {
@@ -101,7 +101,8 @@ export const articlesStore = defineStore('articles', () => {
     let content = processContent(values.content)    
     let object = {
       title: values.title,
-      content
+      content,
+      tags: values.tags
     }
     app.setSubmitting('isLoading')
     try {
