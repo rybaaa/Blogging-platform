@@ -69,13 +69,15 @@ export const articlesStore = defineStore('articles', () => {
   }
 
   async function createArticle(values){
+    console.log(values);
     if(!values.content) {
       errorAlert('Please provide a content')
     }
     let content = processContent(values.content)    
     let object = {
       title: values.title,
-      content
+      content,
+      cover_photo: values.cover
     }
     app.setSubmitting('isLoading')
     try {

@@ -4,14 +4,19 @@ import SubmitButton from '../general/SubmitButton.vue'
 import { ref } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
+import myUpload from 'vue-image-crop-upload'
 
 const props = defineProps({
   type: String,
   article: Object,
 })
+
+let articleCover = ref(null)
+
 let form = ref({
   title: props.type === 'new' ? '' : props.article.title,
   content: props.type === 'new' ? '' : props.article.content,
+  cover: props.type === 'new' ? articleCover : props.article.cover_url,
 })
 let options = {
   theme: 'snow',
@@ -20,7 +25,14 @@ let options = {
 }
 const errors = errorsStore()
 const articles = articlesStore()
-//v-model:value="form.title"
+
+let isUploadFormOpened = ref(false)
+let headers = ref({
+  Authorization: `Bearer ${localStorage.getItem('token')}`,
+})
+const cropSuccess = (coverImage) => {
+  form.value.cover = coverImage
+}
 </script>
 <template>
   <div class="constructorMain__container">
@@ -40,8 +52,32 @@ const articles = articlesStore()
         <div class="constructorMain__quillEditor">
           <QuillEditor :options="options" v-model:content="form.content" />
         </div>
+        <div
+          @click="isUploadFormOpened = !isUploadFormOpened"
+          class="constructorMain__articleCover"
+          :style="{
+            background: articleCover
+              ? `url(${form.cover}) center center`
+              : `url(https://www.learningaboutelectronics.com/images/Upload-photo-image.png) center center`,
+            'background-size': 'cover',
+          }"
+        >
+          <span class="constructorMain__articleCover-label"
+            >Click here to upload article cover</span
+          >
+          <my-upload
+            v-model="isUploadFormOpened"
+            field="cover"
+            :width="300"
+            :height="300"
+            lang-type="'en'"
+            :headers="headers"
+            @crop-success="cropSuccess"
+          ></my-upload>
+        </div>
         <SubmitButton
           :type="submit"
+          class="constructorMain__button"
           @submit="
             props.type === 'new'
               ? articles.createArticle(form)
@@ -88,5 +124,22 @@ const articles = articlesStore()
 .constructorMain__quillEditor {
   margin: 50px 0;
   height: 150px;
+}
+
+.constructorMain__articleCover {
+  width: 300px;
+  height: 200px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+.constructorMain__articleCover-label {
+  @include text(14px, 400, $textColor2);
+  font-family: $secondaryFontFamily;
+}
+.constructorMain__button {
+  margin: 20px 0;
 }
 </style>

@@ -63,10 +63,14 @@ class ArticleController extends Controller
             $this->attachTags($article, $tagContent);
         }
 
+        if ($coverPhotoBase64 = request()->input('cover_photo')) {
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $coverPhotoBase64));
 
-        if ($coverPhoto = request()->file('cover_photo')) {
-            $filePath = $coverPhoto->storePublicly('public/covers');
-            $article->cover_url = Storage::url($filePath);
+            $fileName = 'cover_' . time() . '.png';
+
+            Storage::put('public/covers/' . $fileName, $imageData);
+
+            $article->cover_url = Storage::url('public/covers/' . $fileName);
             $article->save();
         }
 
