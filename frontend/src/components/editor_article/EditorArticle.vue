@@ -56,16 +56,17 @@ const articles = articlesStore()
           <h3 class="editorArticle__title">
             {{ article.title }}
           </h3>
-          <p class="editorArticle__text">
-            {{
-              article.content.length > 100
-                ? article.content.slice(0, 100) + '...'
-                : article.content
-            }}
-          </p>
-        </div>
-      </div></RouterLink
-    >
+          <p
+            v-html="
+              props.article.content.length > 20
+                ? props.article.content.slice(0, 20) +
+                  '<span>(Click to read more)</span>'
+                : props.article.content
+            "
+            class="editorArticle__text"
+          ></p>
+        </div></div
+    ></RouterLink>
   </div>
 </template>
 

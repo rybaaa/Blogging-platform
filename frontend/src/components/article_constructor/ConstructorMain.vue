@@ -1,12 +1,13 @@
 <script setup>
 import InputComponent from '../general/InputComponent.vue'
 import SubmitButton from '../general/SubmitButton.vue'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
 import myUpload from 'vue-image-crop-upload'
 import MultiSelect from '@/components/general/MultiSelect.vue'
 import { tagsStore } from '@/stores/tags.js'
+import { Quill, QuillEditor } from '@vueup/vue-quill'
 
 const props = defineProps({
   type: String,
@@ -24,12 +25,6 @@ const form = ref({
   cover: props.type === 'new' ? articleCover : props.article.cover_url,
   tags: [],
 })
-
-const options = {
-  theme: 'snow',
-  placeholder: 'Add content',
-  contentType: 'html',
-}
 
 const isUploadFormOpened = ref(false)
 
@@ -70,7 +65,18 @@ const handleSubmit = () => {
   }
 }
 
-await tags.fetchTags()
+const onTextChange = (data) => {
+  const quill = new Quill(document.createElement('div'))
+  console.log(quill)
+  quill.setContents(data.oldContents)
+  form.value.content = quill.root.innerHTML
+}
+
+onMounted(async () => {
+  await tags.fetchTags()
+  let qlEditorElement = document.querySelector('.ql-editor')
+  qlEditorElement.innerHTML = form.value.content
+})
 </script>
 <template>
   <div class="constructorMain__container">
@@ -88,11 +94,7 @@ await tags.fetchTags()
           :error="errors.errors.title"
         />
         <div class="constructorMain__quillEditor">
-          <QuillEditor
-            :options="options"
-            v-model:content="form.content"
-            :content="form.content"
-          />
+          <QuillEditor theme="snow" @textChange="onTextChange" />
         </div>
         <MultiSelect
           :selectedTags="selectedTags"

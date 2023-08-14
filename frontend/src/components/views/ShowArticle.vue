@@ -40,11 +40,12 @@ function addNewComment(comment) {
     </section>
     <section class="articleContent">
       <div class="articleContent__container">
-        <p>
-          {{ articles.currentArticle.content }}
-        </p>
+        <p v-html="articles.currentArticle.content"></p>
         <div class="articleContent__info">
-          <ArticleCategories class="articleCategory-showArticle" />
+          <ArticleCategories
+            :tags="articles.currentArticle.tags"
+            class="articleCategory-showArticle"
+          />
           <ArticleAuthor
             class="articleContent__author"
             :article="articles.currentArticle"

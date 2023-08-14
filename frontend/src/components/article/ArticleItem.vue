@@ -44,13 +44,14 @@ const articles = articlesStore()
         <h3 class="articleItem__title">
           {{ article.title }}
         </h3>
-        <p class="articleItem__text">
-          {{
+        <p
+          v-html="
             article.content.length > 100
               ? article.content.slice(0, 100) + '...(Click to read more)'
               : article.content
-          }}
-        </p>
+          "
+          class="articleItem__text"
+        ></p>
         <div class="articleItem__divider"></div>
         <ArticleAuthor :article="article" />
       </div></div

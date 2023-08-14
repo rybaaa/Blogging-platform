@@ -37,9 +37,10 @@ const articles = articlesStore()
           format(new Date(article.created_at), 'H:mm')
         }}</time>
         <div class="articleMain__content-divider"></div>
-        <span class="articleMain__content-description">{{
-          article.content
-        }}</span>
+        <span
+          v-html="article.content"
+          class="articleMain__content-description"
+        ></span>
       </div>
     </div>
   </article>
