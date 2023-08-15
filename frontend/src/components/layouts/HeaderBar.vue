@@ -1,9 +1,8 @@
-<script>
+<script setup>
 import { RouterLink } from 'vue-router'
-export default {
-  name: 'HeaderBar',
-  components: RouterLink,
-}
+import { appStore } from '../../stores/app'
+
+const app = appStore()
 </script>
 
 <template>
@@ -18,19 +17,19 @@ export default {
             >
           </li>
           <li class="header__nav-item">
-            <RouterLink
-              class="header__nav-itemLink"
-              :to="{ name: 'article', params: { id: 1 } }"
-              >Article</RouterLink
-            >
-          </li>
-          <li class="header__nav-item">
             <RouterLink class="header__nav-itemLink" :to="{ name: 'articles' }"
               >Articles</RouterLink
             >
           </li>
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" href="#">Sign in</a>
+            <a class="header__nav-itemLink" @click="app.openRegisterModal"
+              >Register</a
+            >
+          </li>
+          <li class="header__nav-item">
+            <a class="header__nav-itemLink" @click="app.openLoginModal"
+              >Sign in</a
+            >
           </li>
         </ul>
       </nav>
@@ -78,9 +77,8 @@ export default {
 .header__nav-item {
   padding: 6px;
   list-style: none;
-
+  cursor: pointer;
   border-bottom: 2px solid transparent;
-
   &:hover {
     border-bottom: 2px solid #d4a373;
   }
