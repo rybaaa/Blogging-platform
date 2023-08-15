@@ -66,9 +66,9 @@ const filterArticlesByTag = async (tag) => {
   @include unsetAll();
   display: flex;
   margin-bottom: 30px;
+  flex-wrap: wrap;
   @include for-phone-only {
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 10px;
   }
 }

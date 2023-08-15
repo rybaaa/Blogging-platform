@@ -1,7 +1,7 @@
 import http from './Http'
 
 export default {
-  index() {
-    return http.get('tags')
+  index(search) {
+    return http.get('tags', { params: { search }})
   }
 }

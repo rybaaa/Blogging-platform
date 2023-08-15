@@ -1,6 +1,5 @@
 <script setup>
 import Multiselect from '@vueform/multiselect'
-import { ref } from 'vue'
 import { tagsStore } from '@/stores/tags.js'
 
 const tags = tagsStore()
@@ -10,22 +9,38 @@ const props = defineProps({
 const emit = defineEmits(['update'])
 const onChange = (value) => {
   console.log(value)
-  //currentTags.value = value
-  emit('update', value)
+  emit(
+    'update',
+    value.map((tag) => tag.value)
+  )
 }
+const transformTags = props.selectedTags.map((item) => {
+  return { value: item, label: item }
+})
 </script>
 
 <template>
   <div class="multiSelect__container">
     <span class="multiSelect__title">Tags</span>
     <Multiselect
-      v-model="props.selectedTags"
-      mode="tags"
-      :close-on-select="false"
-      :searchable="true"
-      :options="tags.tagTitles"
       @change="onChange"
       class="multiselect-brown"
+      v-model="transformTags"
+      mode="tags"
+      :close-on-select="false"
+      :filter-results="false"
+      :min-chars="1"
+      :resolve-on-load="false"
+      :delay="0"
+      :searchable="true"
+      :object="true"
+      :create-option="true"
+      :options="
+        async function (query) {
+          await tags.fetchTags(query)
+          return tags.tagTitles
+        }
+      "
     />
   </div>
 </template>

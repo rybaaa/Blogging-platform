@@ -4,10 +4,10 @@ import SubmitButton from '../general/SubmitButton.vue'
 import { ref, computed, onMounted } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
-import myUpload from 'vue-image-crop-upload'
 import MultiSelect from '@/components/general/MultiSelect.vue'
 import { tagsStore } from '@/stores/tags.js'
-import { Quill, QuillEditor } from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill'
+import InputImage from '@/components/general/InputImage.vue'
 
 const props = defineProps({
   type: String,
@@ -25,15 +25,10 @@ const form = ref({
   cover: props.type === 'new' ? articleCover : props.article.cover_url,
   tags: [],
 })
-
 const isUploadFormOpened = ref(false)
 
 function updateSelectedTags(tags) {
   form.value.tags = tags
-}
-
-const cropSuccess = (coverImage) => {
-  form.value.cover = coverImage
 }
 
 function getTagsForCurrentArticle() {
@@ -53,7 +48,7 @@ const handleSubmit = () => {
   const articleData = {
     title: form.value.title,
     content: form.value.content,
-    cover: form.value.cover,
+    cover: articles.uploadedImage ?? form.value.cover,
     tags: form.value.tags,
   }
   console.log(articleData)
@@ -63,13 +58,6 @@ const handleSubmit = () => {
   } else {
     articles.updateArticle(props.article.id, articleData)
   }
-}
-
-const onTextChange = (data) => {
-  const quill = new Quill(document.createElement('div'))
-  console.log(quill)
-  quill.setContents(data.oldContents)
-  form.value.content = quill.root.innerHTML
 }
 
 onMounted(async () => {
@@ -94,7 +82,12 @@ onMounted(async () => {
           :error="errors.errors.title"
         />
         <div class="constructorMain__quillEditor">
-          <QuillEditor theme="snow" @textChange="onTextChange" />
+          <label class="constructorMain__quillEditor-label">Content</label>
+          <quill-editor
+            v-model:content="form.content"
+            content-type="html"
+            theme="snow"
+          ></quill-editor>
         </div>
         <MultiSelect
           :selectedTags="selectedTags"
@@ -103,29 +96,20 @@ onMounted(async () => {
         <div
           @click="isUploadFormOpened = !isUploadFormOpened"
           class="constructorMain__articleCover"
-          :style="{
-            background: articleCover
-              ? `url(${form.cover}) center center`
-              : `url(https://www.learningaboutelectronics.com/images/Upload-photo-image.png) center center`,
-            'background-size': 'cover',
-          }"
         >
-          <span class="constructorMain__articleCover-label"
-            >Click here to upload article cover</span
+          <label class="constructorMain__articleCover-label"
+            >Article cover:</label
           >
-          <my-upload
-            v-model="isUploadFormOpened"
-            field="cover"
-            lang-type="'en'"
-            @crop-success="cropSuccess"
-          ></my-upload>
+          <InputImage v-if="!props.article" />
         </div>
-        <SubmitButton
-          :type="submit"
-          class="constructorMain__button"
-          @submit="handleSubmit"
-          >{{ props.type === 'new' ? 'Add' : 'Update' }}</SubmitButton
-        >
+        <div class="constructorMain__buttonWrapper">
+          <SubmitButton
+            :type="submit"
+            class="constructorMain__button"
+            @submit="handleSubmit"
+            >{{ props.type === 'new' ? 'Add new' : 'Update' }}</SubmitButton
+          >
+        </div>
       </form>
     </section>
   </div>
@@ -163,20 +147,25 @@ onMounted(async () => {
 }
 
 .constructorMain__quillEditor {
-  margin: 50px 0;
-  height: 150px;
+  margin: 20px 0 20px;
+}
+.constructorMain__quillEditor-label {
+  @include text(12px, 700, #818181);
+  font-family: $secondaryFontFamily;
+  line-height: 25px;
 }
 
-.constructorMain__articleCover {
-  width: 300px;
-  height: 200px;
-  cursor: pointer;
-}
 .constructorMain__articleCover-label {
-  @include text(14px, 400, $textColor2);
+  @include text(12px, 700, #818181);
   font-family: $secondaryFontFamily;
+  line-height: 25px;
+}
+.constructorMain__buttonWrapper {
+  display: flex;
+  justify-content: center;
 }
 .constructorMain__button {
-  margin: 20px 0;
+  width: 320px;
+  margin: 20px 0 50px 0;
 }
 </style>

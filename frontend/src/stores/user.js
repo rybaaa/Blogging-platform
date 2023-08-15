@@ -3,12 +3,11 @@ import { defineStore } from 'pinia'
 import User from '@/api/User'
 import Articles from '@/api/Articles'
 import { appStore } from './app'
-import { successAlert, errorAlert } from '../utils/alerts'
+import { successAlert, errorAlert } from '@/utils/alerts'
 import { errorsStore } from './errors'
 import { modalStore } from './modal'
 import errorsHandler from '@/utils/errorsHandler'
 import router from '@/router/index'
-import mercedes from '@/assets/images/mercedes.png'
 
 export const userStore = defineStore('user', () => {
   let user = ref({
@@ -19,7 +18,7 @@ export const userStore = defineStore('user', () => {
     articles: null,
   })
   let isLoggedIn = ref(false)
-  let defaultAvatar = ref(mercedes)
+  let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')
 
   const app = appStore()
   const modal = modalStore()

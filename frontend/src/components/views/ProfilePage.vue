@@ -11,7 +11,7 @@ await user.fetchUserArticles(1, user.user.id)
 </script>
 
 <template>
-  <div class="profilePage__container">
+  <div>
     <ProfileHeader type="profile" />
     <ProfileArticles />
     <PaginationComponent
@@ -25,7 +25,4 @@ await user.fetchUserArticles(1, user.user.id)
 <style scoped lang="scss">
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
-
-.profilePage__container {
-}
 </style>

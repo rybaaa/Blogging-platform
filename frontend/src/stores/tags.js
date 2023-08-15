@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import Tags from '@/api/Tags'
 import { appStore } from './app'
@@ -18,9 +18,9 @@ export const tagsStore = defineStore('tags', () => {
 
   //requests
 
-  async function fetchTags(){
+  async function fetchTags(search){
     try {
-        const response = await Tags.index()
+        const response = await Tags.index(search)
         tags.value = response.data.data.data
         tagTitles.value = tags.value.map((tag) => tag.title)
     } catch (error) {
@@ -37,13 +37,6 @@ export const tagsStore = defineStore('tags', () => {
   function setTagsForCurrentArticle(tags){
     tagsForCurrentArticle.value = tags
   }
-  /*function getTags(){
-    let titles = []
-    for(let i = 0; i < tags.value.length; i){
-      titles.push(tags.value[i].title)
-    }
-    return titles
-  }*/
 
   return {
     tags,

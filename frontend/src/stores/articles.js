@@ -32,6 +32,8 @@ export const articlesStore = defineStore('articles', () => {
   let pages = ref(null)
   let currentPage = ref(1)
 
+  let uploadedImage = ref(null);
+
   //requests
 
   async function fetchArticles(page, id, tag) {
@@ -143,6 +145,7 @@ export const articlesStore = defineStore('articles', () => {
     pages,
     currentPage,
     createArticle,
-    updateArticle
+    updateArticle,
+    uploadedImage
   }
 })
