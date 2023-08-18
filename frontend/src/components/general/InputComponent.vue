@@ -22,13 +22,13 @@ const changeValue = (event) => {
   <div class="inputComponent__group">
     <label :for="name" class="inputComponent__label">{{ label }}</label>
     <input
+      :value="value"
       :type="type"
       :name="name"
-      :placeholder="placeholder"
       class="inputComponent__input"
       @input="changeValue"
     />
-    <span class="inputComponent__error">{{ error }}</span>
+    <span class="inputComponent__error">{{ errors.getError(name) }}</span>
   </div>
 </template>
 

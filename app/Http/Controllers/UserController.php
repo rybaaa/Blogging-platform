@@ -93,19 +93,8 @@ class UserController extends Controller
             'email' => ['email'],
         ]));
 
-        if ($avatar = request()->file('avatar')) {
-            $request->validate(['avatar' => 'image']);
-            if ($user->avatar) {
-                $oldAvatarPath = str_replace(
-                    'storage',
-                    'public',
-                    str_replace("http://localhost/", "", $user->avatar)
-                );
-                Storage::delete($oldAvatarPath);
-            }
-            $filePath = $avatar->storePublicly('public/avatars');
-            $user->avatar = Storage::url($filePath);
-            $user->save();
+        if (request()->file('avatar')) {
+            $this->uploadAvatar($request);
         }
 
         return response()->json([
@@ -133,6 +122,42 @@ class UserController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'You are logged out'
+        ]);
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        $user = request()->user();
+
+        $avatar = $request->file('avatar');
+        if (!$avatar) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'No avatar file provided',
+            ]);
+        }
+
+        $request->validate([
+            'avatar' => 'image',
+        ]);
+
+        if ($user->avatar) {
+            $oldAvatarPath = str_replace(
+                'storage',
+                'public',
+                str_replace("http://localhost/", "", $user->avatar)
+            );
+            Storage::delete($oldAvatarPath);
+        }
+
+        $filePath = $avatar->storePublicly('public/avatars');
+        $user->avatar = Storage::url($filePath);
+        $user->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Avatar has been updated',
+            'data' => $user,
         ]);
     }
 }

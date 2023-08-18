@@ -1,4 +1,5 @@
 <script setup>
+import { articlesStore } from '@/stores/articles'
 import ArticleCategories from './ArticleCategories.vue'
 
 defineProps({
@@ -8,12 +9,21 @@ defineProps({
   },
 })
 import { format } from 'date-fns'
+
+const articles = articlesStore()
 </script>
 
 <template>
-  <article class="articleMain">
+  <article
+    :style="{
+      background: article.cover_url
+        ? `url(${article.cover_url}) center center`
+        : `url(${articles.defaultCover}) center center`,
+      'background-size': 'cover',
+    }"
+  >
     <div class="articleMain__container">
-      <ArticleCategories />
+      <ArticleCategories :tags="article.tags" />
       <h2 class="articleMain__title">
         <RouterLink
           class="articleMain-link"
@@ -27,9 +37,10 @@ import { format } from 'date-fns'
           format(new Date(article.created_at), 'H:mm')
         }}</time>
         <div class="articleMain__content-divider"></div>
-        <span class="articleMain__content-description">{{
-          article.content
-        }}</span>
+        <span
+          v-html="article.content"
+          class="articleMain__content-description"
+        ></span>
       </div>
     </div>
   </article>

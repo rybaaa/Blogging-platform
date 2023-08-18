@@ -1,9 +1,20 @@
 <script setup>
-import { userStore } from '../../stores/user'
+import { userStore } from '@/stores/user'
+import { ref } from 'vue'
+import myUpload from 'vue-image-crop-upload'
 
 defineProps({
   type: String,
 })
+
+let isUploadFormOpened = ref(false)
+let headers = ref({
+  Authorization: `Bearer ${localStorage.getItem('token')}`,
+})
+const cropSuccess = (imageUrl) => {
+  user.changeAvatar(imageUrl)
+}
+const uploadUrl = ref(`${import.meta.env.VITE_API_URL}upload-avatar`)
 
 const user = userStore()
 </script>
@@ -13,10 +24,23 @@ const user = userStore()
     <section class="profileHeader">
       <div class="profileHeader__avatarWrapper">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/2048px-Mercedes-Logo.svg.png"
+          :src="
+            user.user.avatar === null ? user.defaultAvatar : user.user.avatar
+          "
           alt="avatar"
           class="profileHeader__avatar"
+          @click="isUploadFormOpened = !isUploadFormOpened"
         />
+        <my-upload
+          v-model="isUploadFormOpened"
+          field="avatar"
+          :width="300"
+          :height="300"
+          lang-type="'en'"
+          :url="uploadUrl"
+          :headers="headers"
+          @crop-success="cropSuccess"
+        ></my-upload>
       </div>
       <h2 class="profileHeader__name">{{ user.user.name }}</h2>
       <h4 class="profileHeader__email">
@@ -60,6 +84,11 @@ const user = userStore()
   height: 129px;
   border-radius: 129px;
   box-shadow: 0px 10px 5px 0px rgba(10, 10, 10, 0.25);
+  cursor: pointer;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(to right, rgb(230, 226, 29), rgb(231, 39, 5)) border-box;
+  border: 4px solid transparent;
+  padding: 3px;
 }
 .profileHeader__name {
   margin: 25px 0;

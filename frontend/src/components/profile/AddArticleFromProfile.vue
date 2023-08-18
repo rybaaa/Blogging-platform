@@ -4,10 +4,15 @@ import plus from '@/assets/images/plus.svg'
 
 <template>
   <div class="addArticleFromProfile__container">
-    <div class="addArticleFromProfile__wrapper">
-      <img :src="plus" alt="plus sign" class="addArticleFromProfile__image" />
-      <h4 class="addArticleFromProfile__title">Add new article</h4>
-    </div>
+    <RouterLink
+      class="addArticleFromProfile__link"
+      :to="{ name: 'new article' }"
+    >
+      <div class="addArticleFromProfile__wrapper">
+        <img :src="plus" alt="plus sign" class="addArticleFromProfile__image" />
+        <h4 class="addArticleFromProfile__title">Add new article</h4>
+      </div>
+    </RouterLink>
   </div>
 </template>
 
@@ -46,5 +51,9 @@ import plus from '@/assets/images/plus.svg'
   @include text(18px, 700, $textColor2);
   font-family: $secondaryFontFamily;
   line-height: 25px;
+}
+
+.addArticleFromProfile__link {
+  @include link();
 }
 </style>

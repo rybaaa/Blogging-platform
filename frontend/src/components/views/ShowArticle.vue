@@ -2,72 +2,63 @@
 import ArticleCategories from '@/components/article/ArticleCategories.vue'
 import ArticleAuthor from '@/components/article/ArticleAuthor.vue'
 import EditorSection from '@/components/editor_article/EditorSection.vue'
-import { ref, onMounted, watch } from 'vue'
-import Articles from '@/api/Articles'
 import { useRoute } from 'vue-router'
 import CommentsList from '@/components/comment/CommentsList.vue'
+import { articlesStore } from '@/stores/articles'
 
-let article = ref(null)
-let relatedArticles = ref([])
+const articles = articlesStore()
 const route = useRoute()
 
-onMounted(async () => {
-  await fetchArticle(route.params.id)
-  await fetchRelatedArticles()
-})
-watch(
-  () => route.params.id,
-  async () => {
-    await fetchArticle(route.params.id)
-  }
-)
-async function fetchArticle(id) {
-  let response = await Articles.show(id)
-  article.value = response.data.data
-  article.value.comments.reverse()
-}
-async function fetchRelatedArticles() {
-  let response = await Articles.index()
-  relatedArticles.value = response.data.data.data.slice(0, 3)
-}
+await articles.fetchArticle(route.params.id)
 
 function addNewComment(comment) {
-  article.value.comments.unshift(comment)
+  articles.currentArticle.comments.unshift(comment)
 }
 </script>
 
 <template>
-  <article v-if="article">
-    <section class="mainArticle">
+  <article>
+    <section
+      :style="{
+        background:
+          articles.currentArticle.cover_url === null
+            ? `url(${articles.defaultCover}) center center`
+            : `url(${articles.currentArticle.cover_url}) center center`,
+        'background-size': 'cover',
+      }"
+    >
       <div class="mainArticle__container">
         <h2 class="mainArticle__title">
-          {{ article.title }}
+          {{ articles.currentArticle.title }}
         </h2>
         <div class="mainArticle__content">
           <span class="mainArticle__content-author">
-            By {{ article.author.name }}
+            By {{ articles.currentArticle.author.name }}
           </span>
         </div>
       </div>
     </section>
     <section class="articleContent">
       <div class="articleContent__container">
-        <p>
-          {{ article.content }}
-        </p>
+        <p v-html="articles.currentArticle.content"></p>
         <div class="articleContent__info">
-          <ArticleCategories class="articleCategory-showArticle" />
+          <ArticleCategories
+            :tags="articles.currentArticle.tags"
+            class="articleCategory-showArticle"
+          />
           <ArticleAuthor
             class="articleContent__author"
-            :author="article.author.name"
-            :email="article.author.email"
+            :article="articles.currentArticle"
           />
         </div>
-        <CommentsList :comments="article.comments" @cb="addNewComment" />
+        <CommentsList
+          :comments="articles.currentArticle.comments"
+          @addNewComment="addNewComment"
+        />
       </div>
       <EditorSection
         title="Related posts"
-        :articles="relatedArticles"
+        :articles="articles.relatedArticles"
         class="editorSection-showArticle"
       />
     </section>

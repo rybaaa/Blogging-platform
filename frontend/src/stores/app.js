@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 export const appStore = defineStore('app', () => {
   let status = ref('idle')
 
-  function setSubmitting(value){
+  function setSubmitting(value) {
     status.value = value
   }
 
