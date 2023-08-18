@@ -34,6 +34,7 @@ export const userStore = defineStore('user', () => {
       localStorage.setItem('token', response.data.token)
       modal.closeModal()
       successAlert('You have been registered!')
+      me()
     } catch (error) {
       errorsHandler(error, errors)
     } finally {
@@ -99,8 +100,9 @@ export const userStore = defineStore('user', () => {
       updateUserInfo(response.data.data.name, response.data.data.email)
       successAlert(response.data.message)
     } catch (error) {
+      console.log(error);
       errorAlert(error.response.data.message)
-      errors.setErrors(error)
+      errors.setErrors(error.response.data.errors)
     } finally {
       app.setSubmitting('idle')
     }
