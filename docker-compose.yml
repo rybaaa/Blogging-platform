@@ -89,5 +89,5 @@ volumes:
         driver: local
     node_modules:
         driver: local
-        driver_opts:
-            location: ./frontend/node_modules
+        # driver_opts:
+        #     location: ./frontend/node_modules
