@@ -3,6 +3,8 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,7 @@ Route::post('/register', [UserController::class, 'register']);
 Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/upload-avatar', [UserController::class, 'uploadAvatar'])->middleware('auth:sanctum');
+Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index']);
 
 Route::apiResource('/articles', ArticleController::class)
     ->middleware('auth:sanctum')
@@ -53,3 +56,5 @@ Route::apiResource('/users', UserController::class)
 
 Route::apiResource('/users', UserController::class)
     ->only(array_merge($guestRoutes, ['store']));
+
+Route::apiResource('/subscriptions', SubscriptionController::class)->middleware('auth:sanctum');
