@@ -16,6 +16,7 @@ export const userStore = defineStore('user', () => {
     email: null,
     avatar: null,
     articles: null,
+    premiumType: 'Monthly',
   })
   let isLoggedIn = ref(false)
   let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')

@@ -1,12 +1,14 @@
 <script setup>
-import ModalComponent from '@/components/general/ModalComponent.vue'
 import InputComponent from '@/components/general/InputComponent.vue'
-import { ref } from 'vue'
 import SubmitButton from '@/components/general/SubmitButton.vue'
-import { errorsStore } from '@/stores/errors'
 import { userStore } from '@/stores/user'
+import { ref } from 'vue'
+import { errorsStore } from '@/stores/errors'
 import SubscriptionPlanToggle from '@/components/general/SubscriptionPlanToggle.vue'
+import PurchaseHistory from './PurchaseHistory.vue'
 
+const user = userStore()
+const errors = errorsStore()
 const form = ref({
   cardNumber: '',
   ccv: '',
@@ -16,20 +18,18 @@ const form = ref({
   surname: '',
   address: '',
 })
-const user = userStore()
-const errors = errorsStore()
-
 let currentPlan = ref('Monthly')
 const setCurrentPlan = (title) => {
   currentPlan.value = title
 }
 </script>
+
 <template>
-  <div class="subscriptionModal__wrapper">
-    <ModalComponent>
-      <h4 class="subscriptionModal__title">Choose plan</h4>
+  <div class="editSubscription__container">
+    <section class="editSubscription">
+      <h3 class="editSubscription__header">Edit subscription</h3>
       <SubscriptionPlanToggle :plan="currentPlan" @toggle="setCurrentPlan" />
-      <form @submit.prevent="">
+      <form class="profileInfo__form" @submit.prevent="">
         <InputComponent
           v-model:value="form.cardNumber"
           label="Card number"
@@ -37,13 +37,13 @@ const setCurrentPlan = (title) => {
           type="text"
           :error="errors.errors.cardNumber"
         />
-        <div class="subscriptionModal__cardInfo">
+        <div class="editSubscription__cardInfo">
           <InputComponent
             v-model:value="form.ccv"
             label="CCV"
             name="ccv"
             type="text"
-            class="subscriptionModal__cardInfo-ccv"
+            class="editSubscription__cardInfo-ccv"
             :error="errors.errors.ccv"
           />
           <InputComponent
@@ -51,7 +51,7 @@ const setCurrentPlan = (title) => {
             label="Expiry date"
             name="expiryMonth"
             type="text"
-            class="subscriptionModal__cardInfo-expiryDate"
+            class="editSubscription__cardInfo-expiryDate"
             :error="errors.errors.expiryMonth"
           />
           <InputComponent
@@ -59,7 +59,7 @@ const setCurrentPlan = (title) => {
             label="Year"
             name="expiryYear"
             type="text"
-            class="subscriptionModal__cardInfo-expiryDate"
+            class="editSubscription__cardInfo-expiryDate"
             :error="errors.errors.expiryYear"
           />
         </div>
@@ -86,9 +86,10 @@ const setCurrentPlan = (title) => {
           type="text"
           :error="errors.errors.address"
         />
-        <SubmitButton @submit="" :type="submit">Go premium</SubmitButton>
+        <SubmitButton :type="submit" @submit="">Go Premium</SubmitButton>
       </form>
-    </ModalComponent>
+      <PurchaseHistory />
+    </section>
   </div>
 </template>
 
@@ -96,23 +97,41 @@ const setCurrentPlan = (title) => {
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
 
-.subscriptionModal__title {
-  @include text(18px, 700, $textColor2);
-  font-family: $secondaryFontFamily;
-  line-height: 25px;
-  margin-bottom: 25px;
+.editSubscription__container {
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.subscriptionModal__cardInfo {
+.editSubscription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 510px;
+  min-height: 450px;
+  padding: 50px 0 80px;
+  @include for-phone-only {
+    width: 80%;
+  }
+}
+.editSubscription__header {
+  @include text(36px, 700, $textColor2);
+  font-family: $secondaryFontFamily;
+  line-height: normal;
+  margin-bottom: 40px;
+}
+.profileInfo__form {
+  width: 100%;
+}
+.editSubscription__cardInfo {
   display: flex;
   gap: 12px;
 }
-.subscriptionModal__cardInfo-ccv {
-  width: 142px;
+.editSubscription__cardInfo-ccv {
+  width: 50%;
 }
-.subscriptionModal__cardInfo-expiryDate {
-  width: 62px;
-}
-.subscriptionModal__cardInfo-expiryDate > .inputComponent__label {
-  color: red;
+.editSubscription__cardInfo-expiryDate {
+  width: 25%;
 }
 </style>

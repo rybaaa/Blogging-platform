@@ -56,8 +56,12 @@ const user = userStore()
       <RouterLink v-else class="profileHeader__link" :to="{ name: 'profile' }">
         <span class="profileHeader__edit">Back to profile</span>
       </RouterLink>
-
-      <span class="profileHeader__subscription">Manage subscription</span>
+      <RouterLink
+        class="profileHeader__link"
+        :to="{ name: 'edit subscription' }"
+      >
+        <span class="profileHeader__subscription">Manage subscription</span>
+      </RouterLink>
     </section>
   </div>
 </template>
