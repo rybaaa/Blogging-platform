@@ -16,17 +16,26 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'subscription_plan_id',
-        'active',
+        'is_active',
         'start_date',
         'end_date',
+        'address'
     ];
+
+    public function deactivateSubscription(): bool
+    {
+        $this->is_active = false;
+        $this->invoice_pay = false;
+
+        return $this->save();
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function plan()
+    public function subscriptionPlan()
     {
         return $this->belongsTo(SubscriptionPlan::class);
     }
