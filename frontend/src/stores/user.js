@@ -26,7 +26,7 @@ export const userStore = defineStore('user', () => {
 
   //requests
 
-  async function registerUser(values) {
+  async function registerUser(values, premium) {
     app.setSubmitting('isLoading')
     errors.eraseErrors()
     try {
@@ -35,6 +35,9 @@ export const userStore = defineStore('user', () => {
       modal.closeModal()
       successAlert('You have been registered!')
       me()
+      if(premium){
+        modal.isSubscriptionModalOpened = true
+      }
     } catch (error) {
       errorsHandler(error, errors)
     } finally {
