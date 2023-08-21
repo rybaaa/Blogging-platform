@@ -87,6 +87,16 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         $article = Article::where('id', $id)->with(['author', 'comments.author', 'tags'])->firstOrFail();
+
+        //Check if user is subscribed
+
+        if ($article->premium) {
+            $sentences = preg_split('/(?<=[.!?])\s+/', $article->content, -1, PREG_SPLIT_NO_EMPTY);
+            $firstThreeSentences = array_slice($sentences, 0, 5);
+            $article->content = implode(' ', $firstThreeSentences);
+        }
+
+
         return response()->json([
             'status' => 200,
             'data' => $article
