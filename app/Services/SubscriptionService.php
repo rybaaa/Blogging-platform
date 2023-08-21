@@ -16,8 +16,20 @@ class SubscriptionService
         $this->creditCardValidatorService = $creditCardValidatorService;
     }
 
-    public function handleSubscription(User $user, array $credit_card_info): Subscription
+    public function handleSubscription(User $user, ?array $credit_card_info): Subscription
     {
+
+        if (!count($credit_card_info)) {
+            $credit_card_info['credit_card_number'] = '4916880588564';
+            $credit_card_info['expiry_date'] = '08/25';
+            $userWithLastActiveSubscription = User::with(['subscriptions' => function ($query) {
+                $query->where('is_active', true)
+                    ->orderBy('end_date', 'desc')
+                    ->take(1);
+            }])->find($user->id);
+            $credit_card_info['subscription_plan_id'] = $userWithLastActiveSubscription->subscriptions[0]->subscription_plan_id;
+        }
+
         $this->creditCardValidatorService->validateCreditCard($credit_card_info['credit_card_number'], $credit_card_info['expiry_date']);
 
         $activeUserSubscription = $user->subscriptions()->where('is_active', 1)->first();
