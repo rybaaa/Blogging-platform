@@ -23,6 +23,8 @@ class UpdateSubscriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
             'credit_card_number' => 'required|numeric|digits_between:15,16',
             'expiry_date' => ['required', 'string', 'max:6', new CreditCardExpiryRule],
             'ccv' => 'required|numeric|digits_between:3, 4',

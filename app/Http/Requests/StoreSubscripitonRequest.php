@@ -23,6 +23,8 @@ class StoreSubscripitonRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
             'subscription_plan_id' => 'required|numeric',
             'credit_card_number' => 'required|numeric|digits_between:15,16',
             'ccv' => 'required|numeric|digits_between:3, 4',
