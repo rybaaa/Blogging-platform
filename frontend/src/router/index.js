@@ -7,6 +7,7 @@ import EditProfile from '@/components/views/EditProfile.vue'
 import ArticleConstructor from '@/components/views/ArticleConstructor.vue'
 import ArticleEditConstructor from '@/components/views/ArticleEditConstructor.vue'
 import EditSubscription from '@/components/views/EditSubscription.vue'
+import PremiumArticles from '@/components/views/PremiumArticles.vue'
 import { userStore } from '@/stores/user'
 
 const router = createRouter({
@@ -63,6 +64,14 @@ const router = createRouter({
       path: '/edit-subscription/',
       name: 'edit subscription',
       component: EditSubscription,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/premium-articles/',
+      name: 'premium-articles',
+      component: PremiumArticles,
       meta: {
         requiresAuth: true,
       },
