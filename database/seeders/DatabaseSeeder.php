@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
             ->set('password', bcrypt('12345678'))
             ->create();
         $this->call(SubscriptionPlanSeeder::class);
+        $this->call(SubscriptionSeeder::class);
     }
 }
