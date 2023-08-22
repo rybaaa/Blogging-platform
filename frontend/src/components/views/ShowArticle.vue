@@ -40,8 +40,7 @@ function addNewComment(comment) {
     </section>
     <section class="articleContent">
       <div class="articleContent__container">
-        <p v-if="articles.premium" v-html="firstFiveLines"></p>
-        <p v-else v-html="articles.currentArticle.content"></p>
+        <p v-html="articles.currentArticle.content"></p>
         <div class="articleContent__info">
           <ArticleCategories
             :tags="articles.currentArticle.tags"
