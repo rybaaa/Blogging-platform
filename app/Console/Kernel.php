@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('charge:subscribers')->daily();
+        $schedule->command('deactivate:subscribers')->daily();
     }
 
     /**
