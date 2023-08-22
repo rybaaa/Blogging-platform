@@ -23,17 +23,30 @@ let currentPlan = ref('Monthly')
 const setCurrentPlan = (title) => {
   currentPlan.value = title
 }
+
+const submitForm = () => {
+  let params = {
+    name: form.value.name,
+    surname: form.value.surname,
+    subscription_plan_id: currentPlan.value === 'Monthly' ? 1 : 2,
+    credit_card_number: form.value.cardNumber,
+    ccv: form.value.ccv,
+    expiry_date: `${form.value.expiryMonth}/${form.value.expiryYear}`,
+    address: form.value.address,
+  }
+  user.makeSubscription(params)
+}
 </script>
 <template>
   <div class="subscriptionModal__wrapper">
     <ModalComponent>
       <h4 class="subscriptionModal__title">Choose plan</h4>
       <SubscriptionPlanToggle :plan="currentPlan" @toggle="setCurrentPlan" />
-      <form @submit.prevent="">
+      <form @submit.prevent="submitForm">
         <InputComponent
           v-model:value="form.cardNumber"
           label="Card number"
-          name="cardNumber"
+          name="credit_card_number"
           type="text"
           :error="errors.errors.cardNumber"
         />
@@ -49,16 +62,18 @@ const setCurrentPlan = (title) => {
           <InputComponent
             v-model:value="form.expiryMonth"
             label="Expiry date"
-            name="expiryMonth"
+            name="expiry_date"
             type="text"
+            placeholder="MM"
             class="subscriptionModal__cardInfo-expiryDate"
-            :error="errors.errors.expiryMonth"
+            :error="errors.errors.expiry_date"
           />
           <InputComponent
             v-model:value="form.expiryYear"
             label="Year"
             name="expiryYear"
             type="text"
+            placeholder="YY"
             class="subscriptionModal__cardInfo-expiryDate"
             :error="errors.errors.expiryYear"
           />
@@ -86,7 +101,9 @@ const setCurrentPlan = (title) => {
           type="text"
           :error="errors.errors.address"
         />
-        <SubmitButton @submit="" :type="submit">Go premium</SubmitButton>
+        <SubmitButton @submit="submitForm" :type="submit"
+          >Go premium</SubmitButton
+        >
       </form>
     </ModalComponent>
   </div>

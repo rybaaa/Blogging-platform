@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { isBefore, format } from 'date-fns'
+import { userStore } from '@/stores/user'
 
 let purchasesList = ref([
   { id: 1646, start: '10.10.2022', end: '10.11.2023' },
@@ -14,6 +15,8 @@ const isEarlier = (date) => {
   console.log(format(new Date(date), 'dd,MM,yyyy'))
   return isBefore(new Date(), new Date(date))
 }
+
+const user = userStore()
 </script>
 <template>
   <div class="purchaseHistory__container">
@@ -54,7 +57,7 @@ const isEarlier = (date) => {
     </div>
     <ul v-if="isHistoryOpened" class="purchaseHistory__list">
       <li
-        v-for="item in purchasesList"
+        v-for="item in user.user.subscription_history"
         :key="item.id"
         class="purchaseHistory__list-item"
       >
@@ -65,14 +68,18 @@ const isEarlier = (date) => {
               class="purchaseHistory__list-itemInfo purchaseHistory__list-itemId"
               >{{ item.id }}</span
             >
-            <span class="purchaseHistory__list-itemInfo">{{ item.start }}</span>
-            <span class="purchaseHistory__list-itemInfo">{{ item.end }}</span>
+            <span class="purchaseHistory__list-itemInfo">{{
+              item.start_date
+            }}</span>
+            <span class="purchaseHistory__list-itemInfo">{{
+              item.end_date
+            }}</span>
             <span
               class="purchaseHistory__list-itemInfo"
               :class="{
-                'purchaseHistory__list-active': isEarlier(item.end),
+                'purchaseHistory__list-active': isEarlier(item.end_date),
               }"
-              >{{ isEarlier(item.end) ? 'Active' : 'Ended' }}
+              >{{ isEarlier(item.end_date) ? 'Active' : 'Ended' }}
             </span>
           </div>
         </div>

@@ -22,6 +22,19 @@ let currentPlan = ref('Monthly')
 const setCurrentPlan = (title) => {
   currentPlan.value = title
 }
+
+const submitForm = () => {
+  let params = {
+    name: form.value.name,
+    surname: form.value.surname,
+    subscription_plan_id: currentPlan.value === 'Monthly' ? 1 : 2,
+    credit_card_number: form.value.cardNumber,
+    ccv: form.value.ccv,
+    expiry_date: `${form.value.expiryMonth}/${form.value.expiryYear}`,
+    address: form.value.address,
+  }
+  user.makeSubscription(params)
+}
 </script>
 
 <template>
@@ -29,13 +42,13 @@ const setCurrentPlan = (title) => {
     <section class="editSubscription">
       <h3 class="editSubscription__header">Edit subscription</h3>
       <SubscriptionPlanToggle :plan="currentPlan" @toggle="setCurrentPlan" />
-      <form class="profileInfo__form" @submit.prevent="">
+      <form class="profileInfo__form" @submit.prevent="submitForm">
         <InputComponent
           v-model:value="form.cardNumber"
           label="Card number"
-          name="cardNumber"
+          name="credit_card_number"
           type="text"
-          :error="errors.errors.cardNumber"
+          :error="errors.errors.credit_card_number"
         />
         <div class="editSubscription__cardInfo">
           <InputComponent
@@ -49,16 +62,18 @@ const setCurrentPlan = (title) => {
           <InputComponent
             v-model:value="form.expiryMonth"
             label="Expiry date"
-            name="expiryMonth"
+            name="expiry_date"
             type="text"
             class="editSubscription__cardInfo-expiryDate"
-            :error="errors.errors.expiryMonth"
+            placeholder="MM"
+            :error="errors.errors.expiry_date"
           />
           <InputComponent
             v-model:value="form.expiryYear"
             label="Year"
             name="expiryYear"
             type="text"
+            placeholder="YY"
             class="editSubscription__cardInfo-expiryDate"
             :error="errors.errors.expiryYear"
           />
@@ -86,7 +101,9 @@ const setCurrentPlan = (title) => {
           type="text"
           :error="errors.errors.address"
         />
-        <SubmitButton :type="submit" @submit="">Go Premium</SubmitButton>
+        <SubmitButton :type="submit" @submit="submitForm"
+          >Go Premium</SubmitButton
+        >
       </form>
       <PurchaseHistory />
     </section>

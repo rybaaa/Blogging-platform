@@ -5,7 +5,8 @@ export const modalStore = defineStore('modal', () => {
   let isLoginModalOpened = ref(false)
   let isRegisterModalOpened = ref(false)
   let isSubscriptionModalOpened = ref(false)
-
+  let isCancelSubscriptionOpened = ref(false)
+  
   function openLoginModal() {
     isLoginModalOpened.value = true
   }
@@ -14,6 +15,7 @@ export const modalStore = defineStore('modal', () => {
     isLoginModalOpened.value = false
     isRegisterModalOpened.value = false
     isSubscriptionModalOpened.value = false
+    isCancelSubscriptionOpened.value = false
   }
 
   function openRegisterModal() {
@@ -24,6 +26,10 @@ export const modalStore = defineStore('modal', () => {
     isSubscriptionModalOpened.value = true
   }
 
+  function openCancelSubscriptionModal(){
+    isCancelSubscriptionOpened.value = true
+  }
+
   return {
     isLoginModalOpened,
     openLoginModal,
@@ -31,6 +37,8 @@ export const modalStore = defineStore('modal', () => {
     isRegisterModalOpened,
     openRegisterModal,
     isSubscriptionModalOpened,
-    openSubscriptionModal
+    openSubscriptionModal,
+    isCancelSubscriptionOpened,
+    openCancelSubscriptionModal
   }
 })

@@ -20,4 +20,16 @@ export default {
   logout() {
     return http.get('logout')
   },
+
+  makeSubscription(params){
+    return http.post('subscriptions', params)
+  },
+
+  fetchSubscriptions(){
+    return http.get('subscriptions')
+  },
+
+  deleteSubscription(id){
+    return http.delete(`subscriptions/${id}`)
+  }
 }
