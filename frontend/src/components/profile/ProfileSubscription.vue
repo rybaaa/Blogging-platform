@@ -57,11 +57,6 @@ const modal = modalStore()
               >
             </div>
             <h5
-              class="profileSubscription__headers-add profileSubscription__subscription-buttonEdit"
-            >
-              Edit payment
-            </h5>
-            <h5
               @click="modal.openCancelSubscriptionModal()"
               class="profileSubscription__headers-add profileSubscription__subscription-buttonCancel"
             >

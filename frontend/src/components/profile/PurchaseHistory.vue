@@ -69,17 +69,17 @@ const user = userStore()
               >{{ item.id }}</span
             >
             <span class="purchaseHistory__list-itemInfo">{{
-              item.start_date
+              item.start_date.slice(0, 10)
             }}</span>
             <span class="purchaseHistory__list-itemInfo">{{
-              item.end_date
+              item.end_date.slice(0, 10)
             }}</span>
             <span
               class="purchaseHistory__list-itemInfo"
               :class="{
-                'purchaseHistory__list-active': isEarlier(item.end_date),
+                'purchaseHistory__list-active': item.is_active,
               }"
-              >{{ isEarlier(item.end_date) ? 'Active' : 'Ended' }}
+              >{{ item.is_active ? 'Active' : 'Ended' }}
             </span>
           </div>
         </div>
