@@ -28,7 +28,7 @@ class StoreSubscripitonRequest extends FormRequest
             'subscription_plan_id' => 'required|numeric',
             'credit_card_number' => 'required|numeric|digits_between:15,16',
             'ccv' => 'required|numeric|digits_between:3, 4',
-            'expiry_date' => ['required', 'string', 'max:6', new CreditCardExpiryRule],
+            'expiry_date' => ['required', 'string', 'max:5', 'date_format:m/y', new CreditCardExpiryRule],
             'address' => 'nullable|string|max:255',
         ];
     }
