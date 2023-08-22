@@ -114,9 +114,6 @@ class SubscriptionController extends Controller
     public function destroy(Subscription $subscription)
     {
         $subscription->invoice_pay = false;
-        $user = User::find($subscription->user->id);
-        $user->is_subscriber = false;
-        $user->save();
         $subscription->save();
 
         return response()->noContent();
