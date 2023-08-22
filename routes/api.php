@@ -28,6 +28,7 @@ Route::post('/register', [UserController::class, 'register']);
 Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/upload-avatar', [UserController::class, 'uploadAvatar'])->middleware('auth:sanctum');
+Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index']);
 Route::get('/premium-articles', [PremiumArticleController::class, 'getPremiumArticles'])->middleware('auth:sanctum');
 
 Route::apiResource('/articles', ArticleController::class)
