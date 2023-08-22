@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PremiumArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SubscriptionController;
@@ -28,6 +29,7 @@ Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/upload-avatar', [UserController::class, 'uploadAvatar'])->middleware('auth:sanctum');
 Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index']);
+Route::get('/premium-articles', [PremiumArticleController::class, 'getPremiumArticles'])->middleware('auth:sanctum');
 
 Route::apiResource('/articles', ArticleController::class)
     ->middleware('auth:sanctum')
@@ -35,6 +37,7 @@ Route::apiResource('/articles', ArticleController::class)
 
 Route::apiResource('/articles', ArticleController::class)
     ->only($guestRoutes);
+
 
 Route::apiResource('/comments', CommentController::class)
     ->middleware('auth:sanctum')
