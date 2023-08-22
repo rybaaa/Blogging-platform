@@ -16,7 +16,8 @@ export const userStore = defineStore('user', () => {
     email: null,
     avatar: null,
     articles: null,
-    premiumType: 'Monthly',
+    is_subscriber: false,
+    subscription_history:[]
   })
   let isLoggedIn = ref(false)
   let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')
@@ -129,6 +130,49 @@ export const userStore = defineStore('user', () => {
     }
   }
 
+  async function makeSubscription(params) {
+    app.setSubmitting('isLoading')
+    try {
+      const response = await User.makeSubscription(params)
+      createUserSubscription(response.data.data)
+      modal.closeModal()
+      successAlert(response.data.message)      
+    } catch (error) {
+      console.log(error);
+      errorsHandler(error, errors)
+    } finally {
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function deleteSubscription() {
+    app.setSubmitting('isLoading')
+    try {
+      await User.deleteSubscription(user.value.subscription_history[0].id)
+      fetchUserSubscriptions()
+      modal.closeModal()
+      successAlert('Subscription has been deleted')      
+    } catch (error) {
+      console.log(error);
+      errorsHandler(error, errors)
+    } finally {
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function fetchUserSubscriptions(){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await User.fetchSubscriptions()
+      user.value.subscription_history = response.data.data
+      user.value.is_subscriber = true
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
   //updating state
 
   function setUserInfo(id, name, email, avatar, articles) {
@@ -148,6 +192,11 @@ export const userStore = defineStore('user', () => {
     user.value.avatar = avatar
   }
 
+  function createUserSubscription(sub_info) {
+    user.value.is_subscriber = true
+    user.value.subscription_history.unshift(sub_info)
+  }
+
   return {
     registerUser,
     login,
@@ -158,6 +207,9 @@ export const userStore = defineStore('user', () => {
     update,
     changeAvatar,
     defaultAvatar,
-    fetchUserArticles
+    fetchUserArticles,
+    makeSubscription,
+    fetchUserSubscriptions,
+    deleteSubscription
   }
 })

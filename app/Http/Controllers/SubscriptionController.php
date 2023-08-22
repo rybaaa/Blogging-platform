@@ -31,8 +31,11 @@ class SubscriptionController extends Controller
     public function index()
 
     {
-        $userSubscriptions =  Subscription::query()->with(['subscriptionPlan'])->where('user_id', Auth::user()->id)->orderBy('end_date')->get();
-        return $userSubscriptions;
+        $userSubscriptions =  Subscription::query()->with(['subscriptionPlan'])->where('user_id', Auth::user()->id)->orderBy('end_date', 'desc')->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $userSubscriptions
+        ]);
     }
 
     /**
@@ -51,7 +54,11 @@ class SubscriptionController extends Controller
             ], 422);
         }
 
-        return $newSubscription;
+        return response()->json([
+            'status' => 201,
+            'message' => 'You made a subscription',
+            'data' => $newSubscription
+        ], 201);
     }
 
     /**
@@ -62,7 +69,10 @@ class SubscriptionController extends Controller
      */
     public function show(Subscription $subscription)
     {
-        return $subscription->load(['subscriptionPlan', 'user']);
+        return response()->json([
+            'status' => 200,
+            'data' => $subscription->load(['subscriptionPlan', 'user'])
+        ]);
     }
 
     /**

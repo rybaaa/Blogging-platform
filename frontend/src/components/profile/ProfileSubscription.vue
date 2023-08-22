@@ -1,13 +1,18 @@
 <script setup>
 import { userStore } from '@/stores/user'
 import PremiumGemImage from '@/components/general/PremiumGemImage.vue'
+import { modalStore } from '@/stores/modal'
 
 const user = userStore()
+const modal = modalStore()
 </script>
 
 <template>
   <div class="profileSubscription__wrapper">
-    <section v-if="user.user.premiumType === null" class="profileSubscription">
+    <section
+      v-if="user.user.is_subscriber === false"
+      class="profileSubscription"
+    >
       <div class="profileSubscription__headers">
         <h4 class="profileSubscription__headers-my">My subscription</h4>
         <h5 class="profileSubscription__headers-add">Add subscription</h5>
@@ -26,7 +31,14 @@ const user = userStore()
     <section v-else class="profileSubscription">
       <div class="profileSubscription__headers">
         <h4 class="profileSubscription__headers-my">My subscription</h4>
-        <h5 class="profileSubscription__headers-add">Manage subscription</h5>
+        <RouterLink
+          :to="{ name: 'edit subscription' }"
+          class="profileSubscription__link"
+        >
+          <h5 class="profileSubscription__headers-add">
+            Manage subscription
+          </h5></RouterLink
+        >
       </div>
       <div class="profileSubscription__currentWrapper-existing">
         <div class="profileSubscription__current-existing">
@@ -36,18 +48,16 @@ const user = userStore()
             </h4>
             <div class="profileSubscription__subscription-datesWrapper">
               <span class="profileSubscription__subscription-dates"
-                >Expiry date: 11.11.2022</span
+                >Expiry date:
+                {{ user.user.subscription_history[0].end_date }}</span
               >
               <span class="profileSubscription__subscription-dates"
-                >Start date: 11.12.2022</span
+                >Start date:
+                {{ user.user.subscription_history[0].start_date }}</span
               >
             </div>
             <h5
-              class="profileSubscription__headers-add profileSubscription__subscription-buttonEdit"
-            >
-              Edit payment
-            </h5>
-            <h5
+              @click="modal.openCancelSubscriptionModal()"
               class="profileSubscription__headers-add profileSubscription__subscription-buttonCancel"
             >
               Cancel subscription
@@ -197,5 +207,8 @@ const user = userStore()
   line-height: 25px;
   width: 125px;
   padding: 10px 10px 10px 0;
+}
+.profileSubscription__link {
+  @include unsetAll();
 }
 </style>

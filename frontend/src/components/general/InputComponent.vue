@@ -24,7 +24,7 @@ const changeValue = (event) => {
       :for="name"
       class="inputComponent__label"
       :class="{
-        'inputComponent__label-expired': name === 'expiryMonth',
+        'inputComponent__label-expired': name === 'expiry_date',
         'inputComponent__label-expiredYear': name === 'expiryYear',
       }"
       >{{ label }}</label
