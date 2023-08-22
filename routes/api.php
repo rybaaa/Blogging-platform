@@ -4,6 +4,8 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PremiumArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +58,5 @@ Route::apiResource('/users', UserController::class)
 
 Route::apiResource('/users', UserController::class)
     ->only(array_merge($guestRoutes, ['store']));
+
+Route::apiResource('/subscriptions', SubscriptionController::class)->middleware('auth:sanctum');
