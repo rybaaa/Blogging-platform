@@ -57,4 +57,7 @@ Route::apiResource('/users', UserController::class)
 Route::apiResource('/users', UserController::class)
     ->only(array_merge($guestRoutes, ['store']));
 
-Route::apiResource('/subscriptions', SubscriptionController::class)->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/subscriptions', SubscriptionController::class);
+    Route::get('/subscriptions/{subscription}/download-invoice', [SubscriptionController::class, 'downloadInvoice']);
+});
