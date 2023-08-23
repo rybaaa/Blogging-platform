@@ -45,8 +45,9 @@ const selectedTags = computed({
     form.value.tags = newTags
   },
 })
-
 const handleSubmit = () => {
+console.log(form.value.isPremium)
+
   const articleData = {
     title: form.value.title,
     content: form.value.content,
