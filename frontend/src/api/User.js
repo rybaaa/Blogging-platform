@@ -31,5 +31,9 @@ export default {
 
   deleteSubscription(id){
     return http.delete(`subscriptions/${id}`)
+  },
+
+  downloadInvoice(id){
+    return http.get(`subscriptions/${id}/download-invoice`)
   }
 }

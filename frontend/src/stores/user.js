@@ -21,6 +21,7 @@ export const userStore = defineStore('user', () => {
   })
   let isLoggedIn = ref(false)
   let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')
+  let invoice = ref(null)
 
   const app = appStore()
   const modal = modalStore()
@@ -173,6 +174,19 @@ export const userStore = defineStore('user', () => {
     }
   }
 
+  async function downloadInvoice(id){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await User.downloadInvoice(id)
+      console.log(response.data);
+      invoice.value = response.data
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
   //updating state
 
   function setUserInfo(id, name, email, avatar, is_subscriber) {
@@ -211,6 +225,8 @@ export const userStore = defineStore('user', () => {
     fetchUserArticles,
     makeSubscription,
     fetchUserSubscriptions,
-    deleteSubscription
+    deleteSubscription,
+    downloadInvoice,
+    invoice
   }
 })

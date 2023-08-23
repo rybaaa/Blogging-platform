@@ -1,19 +1,25 @@
 <script setup>
 import { ref } from 'vue'
-import { isBefore, format } from 'date-fns'
 import { userStore } from '@/stores/user'
 
-let purchasesList = ref([
-  { id: 1646, start: '10.10.2022', end: '10.11.2023' },
-  { id: 234, start: '10.09.2022', end: '10.10.2022' },
-])
 let isHistoryOpened = ref(false)
 const toggle = () => {
   isHistoryOpened.value = !isHistoryOpened.value
 }
-const isEarlier = (date) => {
-  console.log(format(new Date(date), 'dd,MM,yyyy'))
-  return isBefore(new Date(), new Date(date))
+
+const downloadInvoice = async (id) => {
+  await user.downloadInvoice(id)
+  if (user.invoice) {
+    const blob = new Blob([user.invoice], { type: 'application/pdf' })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'invoice.pdf'
+    a.click()
+
+    URL.revokeObjectURL(url)
+  }
 }
 
 const user = userStore()
@@ -54,6 +60,8 @@ const user = userStore()
       <span class="purchaseHistory__tableHeader-title">Start</span>
       <span class="purchaseHistory__tableHeader-title">End</span>
       <span class="purchaseHistory__tableHeader-title">Status</span>
+      <span class="purchaseHistory__tableHeader-title">Invoice</span>
+      <span class="purchaseHistory__tableHeader-title">Show</span>
     </div>
     <ul v-if="isHistoryOpened" class="purchaseHistory__list">
       <li
@@ -81,6 +89,12 @@ const user = userStore()
               }"
               >{{ item.is_active ? 'Active' : 'Ended' }}
             </span>
+            <span
+              @click="downloadInvoice(item.id)"
+              class="purchaseHistory__list-itemInfo purchaseHistory__list-link"
+            >
+              Download</span
+            >
           </div>
         </div>
       </li>
@@ -157,5 +171,12 @@ const user = userStore()
 }
 .purchaseHistory__list-active {
   color: $textColor4;
+}
+.purchaseHistory__list-link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: $textColor4;
+  }
 }
 </style>
