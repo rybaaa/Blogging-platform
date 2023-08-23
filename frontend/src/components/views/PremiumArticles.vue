@@ -7,7 +7,7 @@ import PremiumGemImage from '@/components/general/PremiumGemImage.vue'
 
 const articles = articlesStore()
 
-await articles.fetchArticles()
+await articles.fetchPremiumArticles()
 </script>
 
 <template>
@@ -31,7 +31,7 @@ await articles.fetchArticles()
         <HomeCategories />
         <div class="articles">
           <ArticleItem
-            v-for="article in articles.articles"
+            v-for="article in articles.premiumArticles"
             :article="article"
             :key="article.id"
           />

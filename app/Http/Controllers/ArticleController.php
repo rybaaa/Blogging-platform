@@ -74,6 +74,11 @@ class ArticleController extends Controller
             $article->save();
         }
 
+        if ($request->has('premium')) {
+            $data['premium'] = $request->input('premium');
+        }
+
+
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',

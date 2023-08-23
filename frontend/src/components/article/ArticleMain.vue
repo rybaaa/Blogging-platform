@@ -38,7 +38,11 @@ const articles = articlesStore()
         }}</time>
         <div class="articleMain__content-divider"></div>
         <span
-          v-html="article.content"
+          v-html="
+            article.content.length > 100
+              ? article.content.slice(0, 100) + '...(Click to read more)'
+              : article.content
+          "
           class="articleMain__content-description"
         ></span>
       </div>

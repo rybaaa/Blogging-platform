@@ -8,6 +8,7 @@ import MultiSelect from '@/components/general/MultiSelect.vue'
 import { tagsStore } from '@/stores/tags.js'
 import { QuillEditor } from '@vueup/vue-quill'
 import InputImage from '@/components/general/InputImage.vue'
+import CustomCheckbox from '@/components/general/CustomCheckbox.vue'
 
 const props = defineProps({
   type: String,
@@ -24,6 +25,7 @@ const form = ref({
   content: props.type === 'new' ? '' : props.article.content,
   cover: props.type === 'new' ? articleCover : props.article.cover_url,
   tags: [],
+  isPremium: props.type === 'new' ? false : props.article.premium,
 })
 const isUploadFormOpened = ref(false)
 
@@ -50,6 +52,7 @@ const handleSubmit = () => {
     content: form.value.content,
     cover: articles.uploadedImage ?? form.value.cover,
     tags: form.value.tags,
+    premium: form.value.isPremium,
   }
   console.log(articleData)
 
@@ -58,6 +61,10 @@ const handleSubmit = () => {
   } else {
     articles.updateArticle(props.article.id, articleData)
   }
+}
+
+const setPremium = () => {
+  form.value.isPremium = !form.value.isPremium
 }
 
 onMounted(async () => {
@@ -102,6 +109,12 @@ onMounted(async () => {
           >
           <InputImage v-if="!props.article" />
         </div>
+        <CustomCheckbox
+          :value="form.isPremium"
+          title="Premium article"
+          @changeValue="setPremium"
+          class="constructorMain__checkbox"
+        />
         <div class="constructorMain__buttonWrapper">
           <SubmitButton
             :type="submit"
@@ -167,5 +180,8 @@ onMounted(async () => {
 .constructorMain__button {
   width: 320px;
   margin: 20px 0 50px 0;
+}
+.constructorMain__checkbox {
+  margin-top: 10px;
 }
 </style>

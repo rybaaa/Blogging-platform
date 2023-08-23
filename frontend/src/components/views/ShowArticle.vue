@@ -5,6 +5,7 @@ import EditorSection from '@/components/editor_article/EditorSection.vue'
 import { useRoute } from 'vue-router'
 import CommentsList from '@/components/comment/CommentsList.vue'
 import { articlesStore } from '@/stores/articles'
+import PremiumAlert from '@/components/general/PremiumAlert.vue'
 
 const articles = articlesStore()
 const route = useRoute()
@@ -41,6 +42,7 @@ function addNewComment(comment) {
     <section class="articleContent">
       <div class="articleContent__container">
         <p v-html="articles.currentArticle.content"></p>
+        <PremiumAlert />
         <div class="articleContent__info">
           <ArticleCategories
             :tags="articles.currentArticle.tags"

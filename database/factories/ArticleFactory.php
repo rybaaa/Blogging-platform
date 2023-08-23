@@ -16,11 +16,17 @@ class ArticleFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
+        $content = collect();
+        for ($i = 0; $i < 10; $i++) {
+            $content->push($this->faker->paragraph());
+        }
+
         return [
             'title' => $this->faker->sentence(),
-            'content' => $this->faker->paragraph(),
+            'content' => $content->implode("\n\n"),
             'author_id' => User::factory(),
             'premium' => $this->faker->randomElement([true, false]),
         ];

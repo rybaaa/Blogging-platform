@@ -13,6 +13,7 @@ export const articlesStore = defineStore('articles', () => {
   const errors = errorsStore()
 
   let articles = ref([])
+  let premiumArticles = ref([])
   let currentArticle = ref(null)
   let editorsPickArticles = computed(() => {
     return articles.value.slice(0, 3)
@@ -56,6 +57,27 @@ export const articlesStore = defineStore('articles', () => {
     }
   }
 
+  async function fetchPremiumArticles(page, tag) {
+    app.setSubmitting('isLoading')
+    try {
+      let response = await Articles.indexPremium(page, tag)
+      console.log(response);
+      premiumArticles.value = response.data.data.data
+      totalArticles.value = response.data.data.total
+      articlesPerPage.value = response.data.data.per_page
+      pages.value = response.data.data.last_page
+      currentPage.value = response.data.data.current_page
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    } catch (error) {
+      errorsHandler(error)
+    } finally {
+      app.setSubmitting('idle')
+    }
+  }
+
   async function fetchArticle(id) {
     app.setSubmitting('isLoading')
     try {
@@ -79,7 +101,8 @@ export const articlesStore = defineStore('articles', () => {
       title: values.title,
       content,
       cover_photo: values.cover,
-      tags: values.tags
+      tags: values.tags,
+      premium:values.premium
     }
     app.setSubmitting('isLoading')
     try {
@@ -104,7 +127,8 @@ export const articlesStore = defineStore('articles', () => {
     let object = {
       title: values.title,
       content,
-      tags: values.tags
+      tags: values.tags,
+      premium:values.premium
     }
     app.setSubmitting('isLoading')
     try {
@@ -146,6 +170,8 @@ export const articlesStore = defineStore('articles', () => {
     currentPage,
     createArticle,
     updateArticle,
-    uploadedImage
+    uploadedImage,
+    fetchPremiumArticles,
+    premiumArticles
   }
 })

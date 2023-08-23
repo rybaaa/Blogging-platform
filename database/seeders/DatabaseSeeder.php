@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Article::factory(10)->create();
+        Article::factory(50)->create();
         $this->call(TagSeeder::class);
         $this->call(CommentSeeder::class);
         foreach (Article::all() as $article) {
