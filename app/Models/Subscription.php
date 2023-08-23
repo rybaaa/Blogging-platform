@@ -26,7 +26,7 @@ class Subscription extends Model
     {
         $this->is_active = false;
         $this->invoice_pay = false;
-
+        $this->user->is_subscriber = false;
         return $this->save();
     }
 

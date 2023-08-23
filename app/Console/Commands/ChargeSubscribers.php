@@ -30,7 +30,7 @@ class ChargeSubscribers extends Command
      *
      * @var string
      */
-    protected $description = 'Charge users how are subscribed on the blog app.';
+    protected $description = 'Charge users who are subscribed on the blog app.';
 
     /**
      * Execute the console command.
@@ -56,6 +56,6 @@ class ChargeSubscribers extends Command
             }
         }
 
-        $this->info('The operation was successfull!');
+        $this->info('The operation for renewing the user subscriptions was successfull!');
     }
 }
