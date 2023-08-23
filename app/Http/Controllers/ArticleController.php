@@ -56,6 +56,10 @@ class ArticleController extends Controller
 
         $data['author_id'] = $user->id;
 
+        if ($request->has('premium')) {
+            $data['premium'] = $request->input('premium');
+        }
+
         $article = new Article($data);
         $article->save();
 
@@ -72,10 +76,6 @@ class ArticleController extends Controller
 
             $article->cover_url = Storage::url('public/covers/' . $fileName);
             $article->save();
-        }
-
-        if ($request->has('premium')) {
-            $data['premium'] = $request->input('premium');
         }
 
 
@@ -102,6 +102,13 @@ class ArticleController extends Controller
         }
 
 
+        // if ($article->premium && (is_null($user) || (!is_null($user) && !$user->is_subscriber))) {
+        //     $sentences = preg_split('/(?<=[.!?])\s+/', $article->content, -1, PREG_SPLIT_NO_EMPTY);
+        //     $firstTwoSentences = array_slice($sentences, 0, 2);
+        //     $article->content = implode(' ', $firstTwoSentences);
+        // }
+
+
         return response()->json([
             'status' => 200,
             'data' => $article
@@ -117,6 +124,11 @@ class ArticleController extends Controller
             'content' => ['required', 'string'],
             'title' => ['required', 'string']
         ]));
+
+        if ($request->has('premium')) {
+            $article['premium'] = $request->input('premium');
+            $article->save();
+        }
 
         if ($tagContent = request()->input('tags')) {
             $this->deleteOldTags($article);
