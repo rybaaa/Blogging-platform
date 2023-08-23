@@ -15,14 +15,23 @@ const modal = modalStore()
     >
       <div class="profileSubscription__headers">
         <h4 class="profileSubscription__headers-my">My subscription</h4>
-        <h5 class="profileSubscription__headers-add">Add subscription</h5>
+        <RouterLink
+          :to="{ name: 'edit subscription' }"
+          class="profileSubscription__link"
+          ><h5 class="profileSubscription__headers-add">
+            Add subscription
+          </h5></RouterLink
+        >
       </div>
       <div class="profileSubscription__currentWrapper">
         <div class="profileSubscription__current">
           <span class="profileSubscription__current-title"
             >No active subscription
           </span>
-          <button class="profileSubscription__current-button">
+          <button
+            @click="modal.openSubscriptionModal"
+            class="profileSubscription__current-button"
+          >
             Go Premium
           </button>
         </div>

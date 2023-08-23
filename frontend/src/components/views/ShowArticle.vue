@@ -5,16 +5,19 @@ import EditorSection from '@/components/editor_article/EditorSection.vue'
 import { useRoute } from 'vue-router'
 import CommentsList from '@/components/comment/CommentsList.vue'
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
 import PremiumAlert from '@/components/general/PremiumAlert.vue'
 
 const articles = articlesStore()
 const route = useRoute()
+const user = userStore()
 
 await articles.fetchArticle(route.params.id)
 
 function addNewComment(comment) {
   articles.currentArticle.comments.unshift(comment)
 }
+console.log(articles.currentArticle.premium, !user.is_subscriber)
 </script>
 
 <template>
@@ -41,8 +44,16 @@ function addNewComment(comment) {
     </section>
     <section class="articleContent">
       <div class="articleContent__container">
-        <p v-html="articles.currentArticle.content"></p>
-        <PremiumAlert />
+        <p
+          :class="{
+            articleContent__content:
+              articles.currentArticle.premium && !user.user.is_subscriber,
+          }"
+          v-html="articles.currentArticle.content"
+        ></p>
+        <PremiumAlert
+          v-if="articles.currentArticle.premium && !user.user.is_subscriber"
+        />
         <div class="articleContent__info">
           <ArticleCategories
             :tags="articles.currentArticle.tags"
@@ -146,5 +157,26 @@ function addNewComment(comment) {
     margin: 0;
     padding: 0 15px;
   }
+}
+.articleContent__content {
+  position: relative;
+  display: inline-block;
+}
+
+.articleContent__content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -10px; /* Adjust this value to control the width of the blurred area */
+  width: 1000px; /* Adjust this value to control the width of the blurred area */
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+  filter: blur(
+    10px
+  ); /* Adjust this value to control the intensity of the blur */
 }
 </style>

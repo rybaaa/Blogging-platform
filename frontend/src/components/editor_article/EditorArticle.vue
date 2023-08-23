@@ -46,6 +46,7 @@ const articles = articlesStore()
         />
         <div class="editorArticle__content">
           <img
+            v-if="props.article.premium"
             src="@/assets/images/gem.svg"
             alt="gem image"
             class="editorArticle__image"
