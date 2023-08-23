@@ -48,7 +48,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+
         $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string'],
@@ -112,8 +112,6 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
 
-        // dd($request);
-
         $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string'],
@@ -121,7 +119,7 @@ class ArticleController extends Controller
         ]);
 
         $article->update($data);
-        // dd($article);
+
         if ($tagContent = request()->input('tags')) {
             $this->deleteOldTags($article);
             $this->attachTags($article, $tagContent);
