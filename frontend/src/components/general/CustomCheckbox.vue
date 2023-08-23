@@ -11,7 +11,7 @@ const emit = defineEmits(['changeValue'])
       class="customCheckbox__checkbox"
       type="checkbox"
       name="premium"
-      :checked="isPremium"
+      :checked="value"
       @change="emit('changeValue')"
     />
     <label class="customCheckbox__checkbox-label" for="premium">{{

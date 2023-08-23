@@ -21,7 +21,7 @@ class ArticleFactory extends Factory
     {
         $content = collect();
         for ($i = 0; $i < 10; $i++) {
-            $content->push($this->faker->paragraph());
+            $content->push($this->faker->paragraph(8));
         }
 
         return [
