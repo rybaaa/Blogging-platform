@@ -7,7 +7,6 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use \Auth; 
 
 class ArticleController extends Controller
 {
@@ -91,8 +90,6 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        $user = Auth::guard('sanctum')->user() ?? null;
-
         $article = Article::where('id', $id)->with(['author', 'comments.author', 'tags'])->firstOrFail();
         $user = Auth::guard('sanctum')->user() ?? null;
 
@@ -101,6 +98,7 @@ class ArticleController extends Controller
             $firstTwoSentences = array_slice($sentences, 0, 2);
             $article->content = implode(' ', $firstTwoSentences);
         }
+
 
         return response()->json([
             'status' => 200,
@@ -121,11 +119,6 @@ class ArticleController extends Controller
         ]);
 
         $article->update($data);
-
-        if ($request->has('premium')) {
-            $article['premium'] = $request->input('premium');
-            $article->save();
-        }
 
         if ($tagContent = request()->input('tags')) {
             $this->deleteOldTags($article);
