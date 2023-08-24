@@ -19,12 +19,21 @@ const errors = errorsStore()
 const setPremium = () => {
   isPremium.value = !isPremium.value
 }
+
+const validateForm = (form, isPremium) => {
+  errors.validateEmail(form.email)
+  errors.validatePassword(form.password)
+  errors.validateName(form.name)
+  if (errors.validateAll()) {
+    user.registerUser(form, isPremium)
+  }
+}
 </script>
 <template>
   <div class="registerModal__wrapper">
     <ModalComponent>
       <h4 class="registerModal__title">Register</h4>
-      <form @submit.prevent="user.registerUser(form)">
+      <form>
         <InputComponent
           v-model:value="form.email"
           label="Email"
@@ -54,9 +63,7 @@ const setPremium = () => {
           title="I want Premium"
           @changeValue="setPremium"
         />
-        <SubmitButton
-          @submit="user.registerUser(form, isPremium)"
-          :type="submit"
+        <SubmitButton @submit="validateForm(form, isPremium)" :type="submit"
           >Register</SubmitButton
         >
       </form>

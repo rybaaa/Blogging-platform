@@ -11,7 +11,7 @@ const user = userStore()
 const errors = errorsStore()
 const form = ref({
   cardNumber: '',
-  ccv: '',
+  cvv: '',
   expiryMonth: '',
   expiryYear: '',
   name: '',
@@ -29,11 +29,23 @@ const submitForm = () => {
     surname: form.value.surname,
     subscription_plan_id: currentPlan.value === 'Monthly' ? 1 : 2,
     credit_card_number: form.value.cardNumber,
-    ccv: form.value.ccv,
+    cvv: form.value.cvv,
     expiry_date: `${form.value.expiryMonth}/${form.value.expiryYear}`,
     address: form.value.address,
   }
-  user.makeSubscription(params)
+
+  errors.validateSubscription(
+    form.value.name,
+    form.value.surname,
+    form.value.cvv,
+    form.value.cardNumber,
+    form.value.expiryMonth,
+    form.value.expiryYear,
+    form.value.address
+  )
+  if (errors.validateAll()) {
+    user.makeSubscription(params)
+  }
 }
 
 watch(
@@ -42,7 +54,7 @@ watch(
     await user.fetchUserSubscriptions()
     form.value = {
       cardNumber: '',
-      ccv: '',
+      cvv: '',
       expiryMonth: '',
       expiryYear: '',
       name: '',
@@ -68,12 +80,12 @@ watch(
         />
         <div class="editSubscription__cardInfo">
           <InputComponent
-            v-model:value="form.ccv"
-            label="CCV"
-            name="ccv"
+            v-model:value="form.cvv"
+            label="CVV"
+            name="cvv"
             type="text"
             class="editSubscription__cardInfo-ccv"
-            :error="errors.errors.ccv"
+            :error="errors.errors.cvv"
           />
           <InputComponent
             v-model:value="form.expiryMonth"

@@ -24,7 +24,7 @@ class UserSubscriptionTest extends PremiumArticlesTestCase
                     'surname' => 'New',
                     'subscription_plan_id' => '1',
                     'credit_card_number' => '4242424242424242',
-                    'ccv' => '845',
+                    'cvv' => '845',
                     'expiry_date' => '12/25',
                     'address' => '',
                 ]
@@ -33,7 +33,6 @@ class UserSubscriptionTest extends PremiumArticlesTestCase
 
         $this->assertTrue($isSubscriber);
         $response->assertStatus(201);
-        
     }
 
     public function test_user_can_update_their_subscription(): void
@@ -46,7 +45,7 @@ class UserSubscriptionTest extends PremiumArticlesTestCase
             "/api/subscriptions/{$subscription->id}",
             [
                 'credit_card_number' => '4242424242424242',
-                'ccv' => '321',
+                'cvv' => '321',
                 'expiry_date' => '12/30',
                 'address' => 'New Address',
                 'name' => 'Test Name',
@@ -68,18 +67,14 @@ class UserSubscriptionTest extends PremiumArticlesTestCase
         $user = User::findOrFail($subscription->user_id);
 
         $response = $this
-        ->actingAs($user)
-        ->deleteJson(
-            "/api/subscriptions/{$subscription->id}"
-        );
+            ->actingAs($user)
+            ->deleteJson(
+                "/api/subscriptions/{$subscription->id}"
+            );
 
         $subscription->refresh();
 
         $this->assertFalse($subscription->invoice_pay);
         $response->assertStatus(204);
-
     }
-
-
-
 }

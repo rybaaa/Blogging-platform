@@ -48,8 +48,6 @@ const selectedTags = computed({
   },
 })
 const handleSubmit = () => {
-  console.log(form.value.isPremium)
-
   const articleData = {
     title: form.value.title,
     content: form.value.content,
@@ -57,12 +55,17 @@ const handleSubmit = () => {
     tags: form.value.tags,
     premium: form.value.isPremium,
   }
-  console.log(articleData)
 
   if (props.type === 'new') {
-    articles.createArticle(articleData)
+    errors.validateArticleTitle(form.value.title)
+    if (errors.validateAll()) {
+      articles.createArticle(articleData)
+    }
   } else {
-    articles.updateArticle(props.article.id, articleData)
+    errors.validateArticleTitle(form.value.title)
+    if (errors.validateAll()) {
+      articles.createArticle(articleData)
+    }
   }
 }
 
