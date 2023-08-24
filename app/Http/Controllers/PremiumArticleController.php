@@ -33,11 +33,15 @@ class PremiumArticleController extends Controller
             )
             ->orderBy('created_at', 'desc')
             ->paginate();
-        return response()->json([
-            'status' => 200,
-            'data' => $articles
-        ]);
+            return response()->json([
+             'status' => 200,
+                'data' => $articles
+            ]);
+        } else if(!$user->is_subscriber) {
+            return response()->json(['error' => 'User is not subscribed'], 404);
         }
         
     }
 }
+
+
