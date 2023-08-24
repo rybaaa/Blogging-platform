@@ -34,6 +34,8 @@ export default {
   },
 
   downloadInvoice(id){
-    return http.get(`subscriptions/${id}/download-invoice`)
+    return http.get(`subscriptions/${id}/download-invoice`,{
+      responseType: 'blob'
+    });
   }
 }
