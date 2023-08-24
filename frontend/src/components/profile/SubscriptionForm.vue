@@ -2,7 +2,7 @@
 import InputComponent from '@/components/general/InputComponent.vue'
 import SubmitButton from '@/components/general/SubmitButton.vue'
 import { userStore } from '@/stores/user'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import SubscriptionPlanToggle from '@/components/general/SubscriptionPlanToggle.vue'
 import PurchaseHistory from './PurchaseHistory.vue'
@@ -35,6 +35,22 @@ const submitForm = () => {
   }
   user.makeSubscription(params)
 }
+
+watch(
+  () => user.user.subscription_history.length,
+  async () => {
+    await user.fetchUserSubscriptions()
+    form.value = {
+      cardNumber: '',
+      ccv: '',
+      expiryMonth: '',
+      expiryYear: '',
+      name: '',
+      surname: '',
+      address: '',
+    }
+  }
+)
 </script>
 
 <template>
