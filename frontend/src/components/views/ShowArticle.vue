@@ -7,6 +7,7 @@ import CommentsList from '@/components/comment/CommentsList.vue'
 import { articlesStore } from '@/stores/articles'
 import { userStore } from '@/stores/user'
 import PremiumAlert from '@/components/general/PremiumAlert.vue'
+import { watch } from 'vue'
 
 const articles = articlesStore()
 const route = useRoute()
@@ -17,7 +18,12 @@ await articles.fetchArticle(route.params.id)
 function addNewComment(comment) {
   articles.currentArticle.comments.unshift(comment)
 }
-console.log(articles.currentArticle.premium, !user.is_subscriber)
+watch(
+  () => user.user.is_subscriber,
+  async () => {
+    await articles.fetchArticle(route.params.id)
+  }
+)
 </script>
 
 <template>

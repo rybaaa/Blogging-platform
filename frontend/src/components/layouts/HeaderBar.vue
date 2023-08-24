@@ -23,7 +23,7 @@ const user = userStore()
               >Articles</RouterLink
             >
           </li>
-          <li class="header__nav-item">
+          <li v-if="user.user.is_subscriber" class="header__nav-item">
             <RouterLink
               class="header__nav-itemLink"
               :to="{ name: 'premium-articles' }"

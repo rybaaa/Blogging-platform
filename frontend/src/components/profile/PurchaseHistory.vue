@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { userStore } from '@/stores/user'
+
+const user = userStore()
 
 let isHistoryOpened = ref(false)
 const toggle = () => {
@@ -15,14 +17,19 @@ const downloadInvoice = async (id) => {
 
     const a = document.createElement('a')
     a.href = url
-    a.download = 'invoice.pdf'
+    a.download = 'invoice'
     a.click()
 
-    URL.revokeObjectURL(url)
+    URL.revokeObjectURL(a.href)
   }
 }
 
-const user = userStore()
+watch(
+  () => user.user.is_subscriber,
+  async () => {
+    await articles.fetchArticle(route.params.id)
+  }
+)
 </script>
 <template>
   <div class="purchaseHistory__container">
@@ -61,7 +68,6 @@ const user = userStore()
       <span class="purchaseHistory__tableHeader-title">End</span>
       <span class="purchaseHistory__tableHeader-title">Status</span>
       <span class="purchaseHistory__tableHeader-title">Invoice</span>
-      <span class="purchaseHistory__tableHeader-title">Show</span>
     </div>
     <ul v-if="isHistoryOpened" class="purchaseHistory__list">
       <li
