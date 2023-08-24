@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubscripitonRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Subscription;
+use App\Models\User;
 use App\Services\CreditCardValidatorService;
 use App\Services\SubscriptionService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SubscriptionController extends Controller
 {
@@ -115,5 +117,28 @@ class SubscriptionController extends Controller
         $subscription->save();
 
         return response()->noContent();
+    }
+
+    /**
+     * Download invoice with info for user subscription.
+     *
+     * @param  \App\Models\Subscription  $subscription
+     * @return \Illuminate\Http\Response
+     */
+
+    public function downloadInvoice(Subscription $subscription)
+    {
+        $price = $subscription->subscriptionPlan->monthly_cost;
+        $priceWithoutTax = round(($price / 1.18), 2);
+        $tax = round(($price - $priceWithoutTax), 2);
+
+        $pdf = Pdf::loadView('invoice', [
+            'subscription' => $subscription,
+            'price_without_tax' => "$priceWithoutTax $",
+            'tax' => "$tax $",
+            'price' => "$price $"
+        ]);
+
+        return $pdf->download('invoice.pdf');
     }
 }

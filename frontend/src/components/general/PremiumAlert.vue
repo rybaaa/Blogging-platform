@@ -1,7 +1,9 @@
 <script setup>
 import { modalStore } from '@/stores/modal'
+import { userStore } from '@/stores/user'
 
 const modal = modalStore()
+const user = userStore()
 </script>
 
 <template>
@@ -32,6 +34,7 @@ const modal = modalStore()
       </p>
       <div class="premiumAlert__buttons">
         <button
+          v-if="!user.isLoggedIn"
           @click="modal.openLoginModal"
           class="premiumAlert__button premiumAlert__button-orange"
         >
@@ -39,10 +42,18 @@ const modal = modalStore()
         </button>
 
         <button
+          v-if="!user.isLoggedIn"
           @click="modal.openRegisterModal"
           class="premiumAlert__button premiumAlert__button-black"
         >
           Register
+        </button>
+        <button
+          v-if="!user.user.is_subscriber && user.isLoggedIn"
+          @click="modal.openSubscriptionModal"
+          class="premiumAlert__button premiumAlert__button-black"
+        >
+          Go Premium
         </button>
       </div>
     </div>

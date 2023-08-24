@@ -3,13 +3,19 @@ import { tagsStore } from '@/stores/tags'
 import { articlesStore } from '@/stores/articles'
 import { ref } from 'vue'
 
+const props = defineProps({
+  page: String,
+})
+
 const tags = tagsStore()
 const articles = articlesStore()
 let activeTag = ref('All')
 
 await tags.fetchTags()
 const filterArticlesByTag = async (tag) => {
-  await articles.fetchArticles(1, null, tag)
+  props.page === 'premium'
+    ? await articles.fetchPremiumArticles(1, tag)
+    : await articles.fetchArticles(1, null, tag)
   if (!tag) {
     activeTag.value = 'All'
   } else {

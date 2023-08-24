@@ -35,7 +35,7 @@ class SubscriptionFactory extends Factory
             'start_date' => $startDate,
             'end_date' => $endDate,
             'is_active' => true,
-            'invoice_pay' => true,
+            'invoice_pay' => $this->faker->randomElement([true, false]),
             'address' => $this->faker->address,
         ];
     }

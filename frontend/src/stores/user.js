@@ -21,6 +21,7 @@ export const userStore = defineStore('user', () => {
   })
   let isLoggedIn = ref(false)
   let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')
+  let invoice = ref(null)
 
   const app = appStore()
   const modal = modalStore()
@@ -72,7 +73,8 @@ export const userStore = defineStore('user', () => {
         response.data.id,
         response.data.name,
         response.data.email,
-        response.data.avatar
+        response.data.avatar,
+        response.data.is_subscriber
       )
       isLoggedIn.value = true
     } catch (error) {
@@ -151,7 +153,7 @@ export const userStore = defineStore('user', () => {
       await User.deleteSubscription(user.value.subscription_history[0].id)
       fetchUserSubscriptions()
       modal.closeModal()
-      successAlert('Subscription has been deleted')      
+      successAlert('Subscription has been cancelled')      
     } catch (error) {
       console.log(error);
       errorsHandler(error, errors)
@@ -165,7 +167,19 @@ export const userStore = defineStore('user', () => {
     try {
       let response = await User.fetchSubscriptions()
       user.value.subscription_history = response.data.data
-      user.value.is_subscriber = true
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function downloadInvoice(id){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await User.downloadInvoice(id)
+      console.log(response.data);
+      invoice.value = response.data
     } catch (error) {
       console.log(error);
     } finally{
@@ -175,12 +189,13 @@ export const userStore = defineStore('user', () => {
 
   //updating state
 
-  function setUserInfo(id, name, email, avatar, articles) {
+  function setUserInfo(id, name, email, avatar, is_subscriber) {
+    console.log(is_subscriber);
     user.value.id = id
     user.value.email = email
     user.value.name = name
     user.value.avatar = avatar
-    user.value.articles = articles
+    user.value.is_subscriber = is_subscriber
   }
 
   function updateUserInfo(name, email) {
@@ -210,6 +225,8 @@ export const userStore = defineStore('user', () => {
     fetchUserArticles,
     makeSubscription,
     fetchUserSubscriptions,
-    deleteSubscription
+    deleteSubscription,
+    downloadInvoice,
+    invoice
   }
 })

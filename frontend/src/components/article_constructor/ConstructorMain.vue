@@ -4,6 +4,7 @@ import SubmitButton from '../general/SubmitButton.vue'
 import { ref, computed, onMounted } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
 import MultiSelect from '@/components/general/MultiSelect.vue'
 import { tagsStore } from '@/stores/tags.js'
 import { QuillEditor } from '@vueup/vue-quill'
@@ -17,6 +18,7 @@ const props = defineProps({
 
 const errors = errorsStore()
 const articles = articlesStore()
+const user = userStore()
 const tags = tagsStore()
 
 const articleCover = ref(props.article?.cover_url || null)
@@ -45,8 +47,9 @@ const selectedTags = computed({
     form.value.tags = newTags
   },
 })
-
 const handleSubmit = () => {
+  console.log(form.value.isPremium)
+
   const articleData = {
     title: form.value.title,
     content: form.value.content,
@@ -101,6 +104,7 @@ onMounted(async () => {
           @update="updateSelectedTags"
         />
         <div
+          v-if="props.type === 'new'"
           @click="isUploadFormOpened = !isUploadFormOpened"
           class="constructorMain__articleCover"
         >
@@ -110,6 +114,7 @@ onMounted(async () => {
           <InputImage v-if="!props.article" />
         </div>
         <CustomCheckbox
+          v-if="user.user.is_subscriber"
           :value="form.isPremium"
           title="Premium article"
           @changeValue="setPremium"

@@ -28,7 +28,7 @@ await articles.fetchPremiumArticles()
     </div>
     <section class="section">
       <div class="section__container">
-        <HomeCategories />
+        <HomeCategories page="premium" />
         <div class="articles">
           <ArticleItem
             v-for="article in articles.premiumArticles"

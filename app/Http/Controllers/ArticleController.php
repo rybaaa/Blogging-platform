@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use \Auth; 
 
@@ -48,19 +49,16 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string'],
+            'premium' => ['required', 'boolean'],
         ]);
 
         $user = auth()->user();
 
         $data['author_id'] = $user->id;
-
-        if ($request->has('premium')) {
-            $data['premium'] = $request->input('premium');
-        }
-
         $article = new Article($data);
         $article->save();
 
@@ -80,6 +78,7 @@ class ArticleController extends Controller
         }
 
 
+
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
@@ -95,7 +94,7 @@ class ArticleController extends Controller
         $user = Auth::guard('sanctum')->user() ?? null;
 
         $article = Article::where('id', $id)->with(['author', 'comments.author', 'tags'])->firstOrFail();
-
+        $user = Auth::guard('sanctum')->user() ?? null;
 
         if ($article->premium && (is_null($user) || (!is_null($user) && !$user->is_subscriber))) {
             $sentences = preg_split('/(?<=[.!?])\s+/', $article->content, -1, PREG_SPLIT_NO_EMPTY);
@@ -114,10 +113,14 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $article->update($request->validate([
+
+        $data = $request->validate([
             'content' => ['required', 'string'],
-            'title' => ['required', 'string']
-        ]));
+            'title' => ['required', 'string'],
+            'premium' => ['required', 'boolean'],
+        ]);
+
+        $article->update($data);
 
         if ($request->has('premium')) {
             $article['premium'] = $request->input('premium');
