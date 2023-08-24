@@ -15,10 +15,10 @@ const downloadInvoice = async (id) => {
 
     const a = document.createElement('a')
     a.href = url
-    a.download = 'invoice.pdf'
+    a.download = 'invoice'
     a.click()
 
-    URL.revokeObjectURL(url)
+    URL.revokeObjectURL(a.href)
   }
 }
 
