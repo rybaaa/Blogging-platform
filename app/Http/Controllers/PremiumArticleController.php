@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Tag;
+use \Auth;
 
 class PremiumArticleController extends Controller
 {
     public function getPremiumArticles()
     {
-        $articles = Article::query()
+        $user = Auth::guard('sanctum')->user() ?? null;
+
+        if (!is_null($user) && $user->is_subscriber) {
+            $articles = Article::query()
             ->with(['comments', 'author', 'tags'])
             ->where('premium', true)
             ->when(
@@ -33,5 +37,7 @@ class PremiumArticleController extends Controller
             'status' => 200,
             'data' => $articles
         ]);
+        }
+        
     }
 }
