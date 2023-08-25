@@ -4,10 +4,12 @@ import SubmitButton from '../general/SubmitButton.vue'
 import { ref, computed, onMounted } from 'vue'
 import { errorsStore } from '@/stores/errors'
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
 import MultiSelect from '@/components/general/MultiSelect.vue'
 import { tagsStore } from '@/stores/tags.js'
 import { QuillEditor } from '@vueup/vue-quill'
 import InputImage from '@/components/general/InputImage.vue'
+import CustomCheckbox from '@/components/general/CustomCheckbox.vue'
 
 const props = defineProps({
   type: String,
@@ -16,6 +18,7 @@ const props = defineProps({
 
 const errors = errorsStore()
 const articles = articlesStore()
+const user = userStore()
 const tags = tagsStore()
 
 const articleCover = ref(props.article?.cover_url || null)
@@ -24,6 +27,7 @@ const form = ref({
   content: props.type === 'new' ? '' : props.article.content,
   cover: props.type === 'new' ? articleCover : props.article.cover_url,
   tags: [],
+  isPremium: props.type === 'new' ? false : props.article.premium,
 })
 const isUploadFormOpened = ref(false)
 
@@ -43,21 +47,30 @@ const selectedTags = computed({
     form.value.tags = newTags
   },
 })
-
 const handleSubmit = () => {
   const articleData = {
     title: form.value.title,
     content: form.value.content,
     cover: articles.uploadedImage ?? form.value.cover,
     tags: form.value.tags,
+    premium: form.value.isPremium,
   }
-  console.log(articleData)
 
   if (props.type === 'new') {
-    articles.createArticle(articleData)
+    errors.validateArticleTitle(form.value.title)
+    if (errors.validateAll()) {
+      articles.createArticle(articleData)
+    }
   } else {
-    articles.updateArticle(props.article.id, articleData)
+    errors.validateArticleTitle(form.value.title)
+    if (errors.validateAll()) {
+      articles.createArticle(articleData)
+    }
   }
+}
+
+const setPremium = () => {
+  form.value.isPremium = !form.value.isPremium
 }
 
 onMounted(async () => {
@@ -94,6 +107,7 @@ onMounted(async () => {
           @update="updateSelectedTags"
         />
         <div
+          v-if="props.type === 'new'"
           @click="isUploadFormOpened = !isUploadFormOpened"
           class="constructorMain__articleCover"
         >
@@ -102,6 +116,13 @@ onMounted(async () => {
           >
           <InputImage v-if="!props.article" />
         </div>
+        <CustomCheckbox
+          v-if="user.user.is_subscriber"
+          :value="form.isPremium"
+          title="Premium article"
+          @changeValue="setPremium"
+          class="constructorMain__checkbox"
+        />
         <div class="constructorMain__buttonWrapper">
           <SubmitButton
             :type="submit"
@@ -167,5 +188,8 @@ onMounted(async () => {
 .constructorMain__button {
   width: 320px;
   margin: 20px 0 50px 0;
+}
+.constructorMain__checkbox {
+  margin-top: 10px;
 }
 </style>

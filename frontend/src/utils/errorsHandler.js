@@ -11,6 +11,8 @@ export default (error, errorsStore) => {
   } else if (error.response.status == 401) {
     errorsStore.setErrors(error.response.data)
     errorAlert('You are not authorized')
+  } else if(error.response.status == 404){
+    errorAlert("You aren't subscribed!")
   } else {
     errorAlert('Unexpected error')
   }

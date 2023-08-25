@@ -23,6 +23,13 @@ const user = userStore()
               >Articles</RouterLink
             >
           </li>
+          <li class="header__nav-item">
+            <RouterLink
+              class="header__nav-itemLink"
+              :to="{ name: 'premium-articles' }"
+              >Premium</RouterLink
+            >
+          </li>
           <li v-if="!user.isLoggedIn" class="header__nav-item">
             <a class="header__nav-itemLink" @click="modal.openRegisterModal"
               >Register</a

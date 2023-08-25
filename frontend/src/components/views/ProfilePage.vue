@@ -8,6 +8,7 @@ import { userStore } from '@/stores/user'
 const user = userStore()
 
 await user.fetchUserArticles(1, user.user.id)
+await user.fetchUserSubscriptions()
 </script>
 
 <template>
