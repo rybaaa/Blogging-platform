@@ -14,8 +14,8 @@ const errors = errorsStore()
 
 const emits = defineEmits(['update:value'])
 const changeValue = (event) => {
+  errors.deleteError(event.target.name)
   emits('update:value', event.target.value)
-  errors.eraseErrors()
 }
 </script>
 <template>

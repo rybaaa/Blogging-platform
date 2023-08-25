@@ -10,6 +10,11 @@ export const errorsStore = defineStore('errors', () => {
     frontendErrors.value = {}
   }
 
+  function deleteError(key) {
+    errors.value[key] = []
+    frontendErrors.value[key] = []
+  }
+
   function setErrors(newErrors) {
     errors.value = newErrors
   }
@@ -115,11 +120,11 @@ export const errorsStore = defineStore('errors', () => {
 
   function isEmptyObject(obj) {
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false; 
+      if (obj.hasOwnProperty(key) && Array.isArray(obj[key]) && obj[key].length > 0) {
+        return false;
       }
     }
-    return true; 
+    return true;
   }
 
   return { 
@@ -137,5 +142,6 @@ export const errorsStore = defineStore('errors', () => {
     validateDate,
     validateArticleTitle,
     validateSubscription,
+    deleteError,
     frontendErrors }
 })
