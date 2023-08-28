@@ -12,5 +12,8 @@ export default {
   },
   update(id, body) {
     return http.put(`articles/${id}`, body)
-  }
+  },
+  indexPremium(page, tag) {
+    return http.get('premium-articles', { params: { page, tag } })
+  },
 }

@@ -16,9 +16,12 @@ export const userStore = defineStore('user', () => {
     email: null,
     avatar: null,
     articles: null,
+    is_subscriber: false,
+    subscription_history:[]
   })
   let isLoggedIn = ref(false)
   let defaultAvatar = ref('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-9.jpg')
+  let invoice = ref(null)
 
   const app = appStore()
   const modal = modalStore()
@@ -26,7 +29,7 @@ export const userStore = defineStore('user', () => {
 
   //requests
 
-  async function registerUser(values) {
+  async function registerUser(values, premium) {
     app.setSubmitting('isLoading')
     errors.eraseErrors()
     try {
@@ -35,6 +38,9 @@ export const userStore = defineStore('user', () => {
       modal.closeModal()
       successAlert('You have been registered!')
       me()
+      if(premium){
+        modal.isSubscriptionModalOpened = true
+      }
     } catch (error) {
       errorsHandler(error, errors)
     } finally {
@@ -67,7 +73,8 @@ export const userStore = defineStore('user', () => {
         response.data.id,
         response.data.name,
         response.data.email,
-        response.data.avatar
+        response.data.avatar,
+        response.data.is_subscriber
       )
       isLoggedIn.value = true
     } catch (error) {
@@ -125,14 +132,70 @@ export const userStore = defineStore('user', () => {
     }
   }
 
+  async function makeSubscription(params) {
+    app.setSubmitting('isLoading')
+    try {
+      const response = await User.makeSubscription(params)
+      createUserSubscription(response.data.data)
+      modal.closeModal()
+      successAlert(response.data.message)      
+    } catch (error) {
+      console.log(error);
+      errorsHandler(error, errors)
+    } finally {
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function deleteSubscription() {
+    app.setSubmitting('isLoading')
+    try {
+      await User.deleteSubscription(user.value.subscription_history[0].id)
+      fetchUserSubscriptions()
+      modal.closeModal()
+      successAlert('Subscription has been cancelled')      
+    } catch (error) {
+      console.log(error);
+      errorsHandler(error, errors)
+    } finally {
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function fetchUserSubscriptions(){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await User.fetchSubscriptions()
+      user.value.subscription_history = response.data.data
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
+  async function downloadInvoice(id){
+    app.setSubmitting('isLoading')
+    try {
+      let response = await User.downloadInvoice(id)
+      console.log(response.data);
+      invoice.value = response.data
+    } catch (error) {
+      console.log(error);
+    } finally{
+      app.setSubmitting('idle')
+    }
+  }
+
   //updating state
 
-  function setUserInfo(id, name, email, avatar, articles) {
+  function setUserInfo(id, name, email, avatar, is_subscriber) {
+    console.log(is_subscriber);
     user.value.id = id
     user.value.email = email
     user.value.name = name
     user.value.avatar = avatar
-    user.value.articles = articles
+    user.value.is_subscriber = is_subscriber
   }
 
   function updateUserInfo(name, email) {
@@ -142,6 +205,11 @@ export const userStore = defineStore('user', () => {
 
   function changeAvatar(avatar) {
     user.value.avatar = avatar
+  }
+
+  function createUserSubscription(sub_info) {
+    user.value.is_subscriber = true
+    user.value.subscription_history.unshift(sub_info)
   }
 
   return {
@@ -154,6 +222,11 @@ export const userStore = defineStore('user', () => {
     update,
     changeAvatar,
     defaultAvatar,
-    fetchUserArticles
+    fetchUserArticles,
+    makeSubscription,
+    fetchUserSubscriptions,
+    deleteSubscription,
+    downloadInvoice,
+    invoice
   }
 })

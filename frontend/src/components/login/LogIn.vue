@@ -12,6 +12,13 @@ const form = ref({
 })
 const user = userStore()
 const errors = errorsStore()
+
+const validateForm = (form) => {
+  errors.validateEmail(form.email)
+  if (errors.validateAll()) {
+    user.login(form)
+  }
+}
 </script>
 <template>
   <div class="logIn__wrapper">
@@ -33,7 +40,7 @@ const errors = errorsStore()
         placeholder="Password"
         :error="errors.errors.password"
       />
-      <SubmitButton @submit="user.login(form)" :type="submit"
+      <SubmitButton @submit="validateForm(form)" :type="submit"
         >Log in</SubmitButton
       >
     </ModalComponent>

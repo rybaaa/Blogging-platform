@@ -6,6 +6,8 @@ import LogIn from '@/components/login/LogIn.vue'
 import { modalStore } from './stores/modal'
 import RegisterModal from './components/register/RegisterModal.vue'
 import GlobalLoader from '@/components/layouts/GlobalLoader.vue'
+import SubscriptionModal from './components/subscription_modal/SubscriptionModal.vue'
+import CancelSubscriptionModal from './components/general/CancelSubscriptionModal.vue'
 
 const modal = modalStore()
 const route = useRoute()
@@ -32,6 +34,8 @@ const route = useRoute()
   </RouterView>
   <LogIn v-if="modal.isLoginModalOpened" />
   <RegisterModal v-if="modal.isRegisterModalOpened" />
+  <SubscriptionModal v-if="modal.isSubscriptionModalOpened" />
+  <CancelSubscriptionModal v-if="modal.isCancelSubscriptionOpened" />
   <MainFooter />
 </template>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
@@ -47,15 +48,16 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->validate([
             'content' => ['required', 'string'],
             'title' => ['required', 'string'],
+            'premium' => ['required', 'boolean'],
         ]);
 
         $user = auth()->user();
 
         $data['author_id'] = $user->id;
-
         $article = new Article($data);
         $article->save();
 
@@ -74,6 +76,8 @@ class ArticleController extends Controller
             $article->save();
         }
 
+
+
         return response()->json([
             'status' => 201,
             'message' => 'Article was created',
@@ -87,6 +91,15 @@ class ArticleController extends Controller
     public function show(string $id)
     {
         $article = Article::where('id', $id)->with(['author', 'comments.author', 'tags'])->firstOrFail();
+        $user = Auth::guard('sanctum')->user() ?? null;
+
+        if ($article->premium && (is_null($user) || (!is_null($user) && !$user->is_subscriber))) {
+            $sentences = preg_split('/(?<=[.!?])\s+/', $article->content, -1, PREG_SPLIT_NO_EMPTY);
+            $firstTwoSentences = array_slice($sentences, 0, 2);
+            $article->content = implode(' ', $firstTwoSentences);
+        }
+
+
         return response()->json([
             'status' => 200,
             'data' => $article
@@ -98,10 +111,14 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $article->update($request->validate([
+
+        $data = $request->validate([
             'content' => ['required', 'string'],
-            'title' => ['required', 'string']
-        ]));
+            'title' => ['required', 'string'],
+            'premium' => ['required', 'boolean'],
+        ]);
+
+        $article->update($data);
 
         if ($tagContent = request()->input('tags')) {
             $this->deleteOldTags($article);

@@ -5,20 +5,35 @@ import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
 import { errorsStore } from '../../stores/errors'
 import { userStore } from '../../stores/user'
+import CustomCheckbox from '../general/CustomCheckbox.vue'
 
 const form = ref({
   email: '',
   password: '',
   name: '',
 })
+let isPremium = ref(false)
 const user = userStore()
 const errors = errorsStore()
+
+const setPremium = () => {
+  isPremium.value = !isPremium.value
+}
+
+const validateForm = (form, isPremium) => {
+  errors.validateEmail(form.email)
+  errors.validatePassword(form.password)
+  errors.validateName(form.name)
+  if (errors.validateAll()) {
+    user.registerUser(form, isPremium)
+  }
+}
 </script>
 <template>
-  <div class="logIn__wrapper">
+  <div class="registerModal__wrapper">
     <ModalComponent>
-      <h4 class="logIn__title">Register</h4>
-      <form @submit.prevent="user.registerUser(form)">
+      <h4 class="registerModal__title">Register</h4>
+      <form>
         <InputComponent
           v-model:value="form.email"
           label="Email"
@@ -43,7 +58,12 @@ const errors = errorsStore()
           :placeholder="'Password'"
           :error="errors.errors.password"
         />
-        <SubmitButton @submit="user.registerUser(form)" :type="submit"
+        <CustomCheckbox
+          :value="isPremium"
+          title="I want Premium"
+          @changeValue="setPremium"
+        />
+        <SubmitButton @submit="validateForm(form, isPremium)" :type="submit"
           >Register</SubmitButton
         >
       </form>
@@ -55,7 +75,7 @@ const errors = errorsStore()
 @import '@/assets/sass/variables.scss';
 @import '@/assets/sass/mixins.scss';
 
-.logIn__title {
+.registerModal__title {
   @include text(18px, 700, $textColor2);
   font-family: $secondaryFontFamily;
   line-height: 25px;

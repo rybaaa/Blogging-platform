@@ -36,6 +36,7 @@ const articles = articlesStore()
             format(new Date(article.created_at), 'dd.MM.yyyy')
           }}</time>
           <img
+            v-if="article.premium"
             src="@/assets/images/gem.svg"
             alt="gem image"
             class="articleItem__info-gem"

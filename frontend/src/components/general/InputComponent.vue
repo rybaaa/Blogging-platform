@@ -14,18 +14,27 @@ const errors = errorsStore()
 
 const emits = defineEmits(['update:value'])
 const changeValue = (event) => {
+  errors.deleteError(event.target.name)
   emits('update:value', event.target.value)
-  errors.eraseErrors()
 }
 </script>
 <template>
   <div class="inputComponent__group">
-    <label :for="name" class="inputComponent__label">{{ label }}</label>
+    <label
+      :for="name"
+      class="inputComponent__label"
+      :class="{
+        'inputComponent__label-expired': name === 'expiry_date',
+        'inputComponent__label-expiredYear': name === 'expiryYear',
+      }"
+      >{{ label }}</label
+    >
     <input
       :value="value"
       :type="type"
       :name="name"
       class="inputComponent__input"
+      :placeholder="placeholder"
       @input="changeValue"
     />
     <span class="inputComponent__error">{{ errors.getError(name) }}</span>
@@ -59,5 +68,11 @@ const changeValue = (event) => {
 .inputComponent__error {
   @include text(12px, 700, #f30a0a);
   font-family: $secondaryFontFamily;
+}
+.inputComponent__label-expired {
+  width: 100px;
+}
+.inputComponent__label-expiredYear {
+  opacity: 0;
 }
 </style>
