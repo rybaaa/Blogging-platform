@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Notifications;
+namespace App\Notifications;
 
 use App\Models\Article;
 
