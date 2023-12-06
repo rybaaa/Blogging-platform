@@ -17,8 +17,11 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
+        static $titles = ['adventure', 'travel', 'technology', 'fashion', 'branding'];
+        shuffle($titles);
+
         return [
-            'title' => $this->faker->word(),
+            'title' => array_shift($titles),
             'author_id' => User::factory(),
         ];
     }

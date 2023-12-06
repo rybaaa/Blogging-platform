@@ -1,9 +1,9 @@
 <script setup>
 import InputComponent from '../general/InputComponent.vue'
 import SubmitButton from '../general/SubmitButton.vue'
-import { userStore } from '../../stores/user'
+import { userStore } from '@/stores/user'
 import { ref } from 'vue'
-import { errorsStore } from '../../stores/errors'
+import { errorsStore } from '@/stores/errors'
 
 const user = userStore()
 const errors = errorsStore()
@@ -34,7 +34,7 @@ let form = ref({
           placeholder="Your name"
           :error="errors.errors.name"
         />
-        <SubmitButton @submit="user.update(form)" :type="submit"
+        <SubmitButton :type="submit" @submit="user.update(form)"
           >Update</SubmitButton
         >
       </form>

@@ -1,6 +1,26 @@
-<script>
-export default {
-  name: 'HomeCategories',
+<script setup>
+import { tagsStore } from '@/stores/tags'
+import { articlesStore } from '@/stores/articles'
+import { ref } from 'vue'
+
+const props = defineProps({
+  page: String,
+})
+
+const tags = tagsStore()
+const articles = articlesStore()
+let activeTag = ref('All')
+
+await tags.fetchTags()
+const filterArticlesByTag = async (tag) => {
+  props.page === 'premium'
+    ? await articles.fetchPremiumArticles(1, tag)
+    : await articles.fetchArticles(1, null, tag)
+  if (!tag) {
+    activeTag.value = 'All'
+  } else {
+    activeTag.value = tag
+  }
 }
 </script>
 
@@ -8,26 +28,31 @@ export default {
   <div class="homeCategories">
     <h2 class="homeCategories__title">Popular topics</h2>
     <ul class="homeCategories__list">
-      <li class="homeCategories__category homeCategories__category-active">
-        <a href="#" class="homeCategories__category-link"></a>All
-      </li>
       <li class="homeCategories__category">
-        <a href="#" class="homeCategories__category-link"></a>Adventure
+        <a
+          @click="filterArticlesByTag()"
+          :class="{
+            'homeCategories__category-link': true,
+            'homeCategories__category-active': activeTag === 'All',
+          }"
+          href="#"
+          >All</a
+        >
       </li>
-      <li class="homeCategories__category">
-        <a href="#" class="homeCategories__category-link"></a>Travel
-      </li>
-      <li class="homeCategories__category">
-        <a href="#" class="homeCategories__category-link"></a>Fashion
-      </li>
-      <li class="homeCategories__category">
-        <a href="#" class="homeCategories__category-link"></a>Technology
-      </li>
-      <li class="homeCategories__category">
-        <a href="#" class="homeCategories__category-link"></a>Branding
-      </li>
-      <li class="homeCategories__category homeCategories__category-last">
-        <a href="#" class="homeCategories__category-link"></a>View all
+      <li
+        class="homeCategories__category"
+        v-for="tag in tags.tags"
+        :key="tag.id"
+      >
+        <a
+          @click="filterArticlesByTag(tag.title)"
+          :class="{
+            'homeCategories__category-link': true,
+            'homeCategories__category-active': activeTag === tag.title,
+          }"
+          href="#"
+          >{{ tag.title }}</a
+        >
       </li>
     </ul>
   </div>
@@ -47,9 +72,9 @@ export default {
   @include unsetAll();
   display: flex;
   margin-bottom: 30px;
+  flex-wrap: wrap;
   @include for-phone-only {
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 10px;
   }
 }
@@ -60,12 +85,19 @@ export default {
   font-family: $secondaryFontFamily;
   line-height: 25px;
   margin-right: 20px;
-  &:hover {
-    color: #d4a373;
-    cursor: pointer;
-  }
   @include for-phone-only {
     margin: 0;
+  }
+}
+.homeCategories__category-link {
+  @include unsetAll();
+  @include text(12px, 700, $textColor2);
+  font-family: $secondaryFontFamily;
+  line-height: 25px;
+  text-transform: capitalize;
+  cursor: pointer;
+  &:hover {
+    color: #d4a373;
   }
 }
 .homeCategories__category-active {

@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Article::factory(10)->create();
+        Article::factory(50)->create();
         $this->call(TagSeeder::class);
         $this->call(CommentSeeder::class);
-        foreach(Article::all() as $article){
-            $randomTagCount = rand(1,5);
+        foreach (Article::all() as $article) {
+            $randomTagCount = rand(1, 5);
             $tags = Tag::inRandomOrder()->take($randomTagCount)->get();
             $article->tags()->attach($tags->pluck('id'));
         }
@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
             ->set('email', 'test@test.com')
             ->set('password', bcrypt('12345678'))
             ->create();
+        $this->call(SubscriptionPlanSeeder::class);
+        $this->call(SubscriptionSeeder::class);
     }
 }

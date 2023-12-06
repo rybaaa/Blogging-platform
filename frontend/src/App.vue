@@ -1,28 +1,41 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import HeaderBar from '@/components/layouts/HeaderBar.vue'
 import MainFooter from '@/components/layouts/MainFooter.vue'
 import LogIn from '@/components/login/LogIn.vue'
 import { modalStore } from './stores/modal'
 import RegisterModal from './components/register/RegisterModal.vue'
-import { userStore } from './stores/user'
-import { onMounted } from 'vue'
+import GlobalLoader from '@/components/layouts/GlobalLoader.vue'
+import SubscriptionModal from './components/subscription_modal/SubscriptionModal.vue'
+import CancelSubscriptionModal from './components/general/CancelSubscriptionModal.vue'
 
 const modal = modalStore()
-const user = userStore()
-
-onMounted(async () => {
-  if (localStorage.getItem('token')) {
-    await user.me()
-  }
-})
+const route = useRoute()
 </script>
 
 <template>
   <HeaderBar />
-  <RouterView />
+  <RouterView :key="route.fullPath" v-slot="{ Component }">
+    <template v-if="Component">
+      <Transition mode="out-in">
+        <KeepAlive>
+          <Suspense>
+            <!-- main content -->
+            <component :is="Component"></component>
+
+            <!-- loading state -->
+            <template #fallback>
+              <GlobalLoader />
+            </template>
+          </Suspense>
+        </KeepAlive>
+      </Transition>
+    </template>
+  </RouterView>
   <LogIn v-if="modal.isLoginModalOpened" />
   <RegisterModal v-if="modal.isRegisterModalOpened" />
+  <SubscriptionModal v-if="modal.isSubscriptionModalOpened" />
+  <CancelSubscriptionModal v-if="modal.isCancelSubscriptionOpened" />
   <MainFooter />
 </template>
 
