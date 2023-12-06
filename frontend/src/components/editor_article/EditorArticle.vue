@@ -1,11 +1,17 @@
 <script setup>
 import { format } from 'date-fns'
-defineProps({
+import update from '@/assets/images/Vector.svg'
+import { articlesStore } from '@/stores/articles'
+import ArticleCategories from '@/components/article/ArticleCategories.vue'
+
+const props = defineProps({
   article: {
     type: Object,
     required: true,
   },
+  type: String,
 })
+const articles = articlesStore()
 </script>
 
 <template>
@@ -14,14 +20,33 @@ defineProps({
       class="editorArticle-link"
       :to="{ name: 'article', params: { id: article.id } }"
     >
-      <div class="editorArticle__image-container">
-        <ul class="editorArticle__categories">
-          <li class="editorArticle__category">
-            <a href="#" class="editorArticle__category-link">ADVENTURE</a>
-          </li>
-        </ul>
+      <div
+        class="editorArticle__image-container"
+        :style="{
+          background: article.cover_url
+            ? `url(${article.cover_url}) center center`
+            : `url(${articles.defaultCover}) center center`,
+          'background-size': 'cover',
+        }"
+      >
+        <RouterLink
+          class="editorArticle-link"
+          :to="{ name: 'edit article', params: { id: article.id } }"
+        >
+          <img
+            v-if="type === 'profile'"
+            :src="update"
+            alt="update article"
+            class="editorArticle__image-update"
+          />
+        </RouterLink>
+        <ArticleCategories
+          :tags="props.article.tags"
+          class="articleItem__category--card"
+        />
         <div class="editorArticle__content">
           <img
+            v-if="props.article.premium"
             src="@/assets/images/gem.svg"
             alt="gem image"
             class="editorArticle__image"
@@ -32,12 +57,17 @@ defineProps({
           <h3 class="editorArticle__title">
             {{ article.title }}
           </h3>
-          <p class="editorArticle__text">
-            {{ article.content.slice(0, 100) + '...' }}
-          </p>
-        </div>
-      </div></RouterLink
-    >
+          <p
+            v-html="
+              props.article.content.length > 20
+                ? props.article.content.slice(0, 20) +
+                  '<span>(Click to read more)</span>'
+                : props.article.content
+            "
+            class="editorArticle__text"
+          ></p>
+        </div></div
+    ></RouterLink>
   </div>
 </template>
 
@@ -51,11 +81,23 @@ defineProps({
 }
 .editorArticle__image-container {
   position: relative;
-  background: url('@/assets/images/editorsBg1.png') center center no-repeat;
   background-size: cover;
   opacity: 0.9;
   height: 350px;
   width: 100%;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+.editorArticle__image-update {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  &:hover {
+    filter: invert(79%) sepia(7%) saturate(2281%) hue-rotate(342deg)
+      brightness(87%) contrast(90%);
+  }
 }
 .editorArticle__categories {
   position: absolute;

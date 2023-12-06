@@ -4,12 +4,21 @@ import InputComponent from '../general/InputComponent.vue'
 import { ref } from 'vue'
 import SubmitButton from '../general/SubmitButton.vue'
 import { userStore } from '../../stores/user'
+import { errorsStore } from '../../stores/errors'
 
 const form = ref({
   email: '',
   password: '',
 })
 const user = userStore()
+const errors = errorsStore()
+
+const validateForm = (form) => {
+  errors.validateEmail(form.email)
+  if (errors.validateAll()) {
+    user.login(form)
+  }
+}
 </script>
 <template>
   <div class="logIn__wrapper">
@@ -20,18 +29,18 @@ const user = userStore()
         label="Email"
         name="email"
         type="email"
-        :placeholder="'your-email@email.com'"
-        :error="user.errors.email"
+        placeholder="your-email@email.com"
+        :error="errors.errors.email"
       />
       <InputComponent
         v-model:value="form.password"
         label="Password"
         name="password"
         type="password"
-        :placeholder="'Password'"
-        :error="user.errors.password"
+        placeholder="Password"
+        :error="errors.errors.password"
       />
-      <SubmitButton @submit="user.login(form)" :type="submit"
+      <SubmitButton @submit="validateForm(form)" :type="submit"
         >Log in</SubmitButton
       >
     </ModalComponent>

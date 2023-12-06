@@ -2,13 +2,16 @@
 import ArticleCategories from './ArticleCategories.vue'
 import ArticleAuthor from './ArticleAuthor.vue'
 import { format } from 'date-fns'
+import { articlesStore } from '@/stores/articles'
 
-defineProps({
+const props = defineProps({
   article: {
     type: Object,
     required: true,
   },
 })
+
+const articles = articlesStore()
 </script>
 
 <template>
@@ -18,11 +21,14 @@ defineProps({
     ><div class="articleItem">
       <div class="articleItem__image-container">
         <img
-          src="@/assets/images/blogImage1.png"
+          :src="article.cover_url ? article.cover_url : articles.defaultCover"
           alt="article picture"
           class="articleItem__image"
         />
-        <ArticleCategories class="articleItem__category--card" />
+        <ArticleCategories
+          :tags="props.article.tags"
+          class="articleItem__category--card"
+        />
       </div>
       <div class="articleItem__content">
         <div class="articleItem__info">
@@ -30,6 +36,7 @@ defineProps({
             format(new Date(article.created_at), 'dd.MM.yyyy')
           }}</time>
           <img
+            v-if="article.premium"
             src="@/assets/images/gem.svg"
             alt="gem image"
             class="articleItem__info-gem"
@@ -38,14 +45,16 @@ defineProps({
         <h3 class="articleItem__title">
           {{ article.title }}
         </h3>
-        <p class="articleItem__text">
-          {{ article.content }}
-        </p>
+        <p
+          v-html="
+            article.content.length > 100
+              ? article.content.slice(0, 100) + '...(Click to read more)'
+              : article.content
+          "
+          class="articleItem__text"
+        ></p>
         <div class="articleItem__divider"></div>
-        <ArticleAuthor
-          :author="article.author.name"
-          :email="article.author.email"
-        />
+        <ArticleAuthor :article="article" />
       </div></div
   ></RouterLink>
 </template>
@@ -65,6 +74,7 @@ defineProps({
 }
 .articleItem__image {
   width: 100%;
+  height: 280px;
 }
 
 .articleItem__content {
