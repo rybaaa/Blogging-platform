@@ -1,16 +1,13 @@
-<script>
-export default {
-  name: 'ArticleCategories',
-}
+<script setup>
+const props = defineProps({
+  tags: Array,
+})
 </script>
 
 <template>
   <ul class="articleCategories">
-    <li class="articleCategory">
-      <a class="articleCategory-link" href="#">ADVENTURE</a>
-    </li>
-    <li class="articleCategory">
-      <a class="articleCategory-link" href="#">ADVENTURE2</a>
+    <li class="articleCategory" v-for="tag in props.tags" :key="tag.id">
+      <a class="articleCategory-link" href="#">{{ tag.title }}</a>
     </li>
   </ul>
 </template>
@@ -23,6 +20,7 @@ export default {
   @include unsetAll();
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .articleCategory {
@@ -44,6 +42,7 @@ export default {
   list-style: none;
   text-decoration: none;
   @include text(10px, 700);
+  text-transform: uppercase;
 }
 
 .articleItem__category--card {

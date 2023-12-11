@@ -1,15 +1,12 @@
 <script setup>
 import ArticleItem from '@/components/article/ArticleItem.vue'
 import HomeCategories from '@/components/homepage/HomeCategories.vue'
-import { onMounted, ref } from 'vue'
-import Articles from '@/api/Articles'
+import { articlesStore } from '@/stores/articles'
+import PaginationComponent from '@/components/general/PaginationComponent.vue'
 
-let articles = ref([])
+const articles = articlesStore()
 
-onMounted(async () => {
-  let response = await Articles.index()
-  articles.value = response.data.data.data
-})
+await articles.fetchArticles()
 </script>
 
 <template>
@@ -19,12 +16,13 @@ onMounted(async () => {
         <HomeCategories />
         <div class="articles">
           <ArticleItem
-            v-for="article in articles"
+            v-for="article in articles.articles"
             :article="article"
             :key="article.id"
           />
         </div>
       </div>
+      <PaginationComponent :items="articles.pages" />
     </section>
   </main>
 </template>

@@ -1,13 +1,13 @@
 <script setup>
-import { appStore } from '../../stores/app'
+import { modalStore } from '../../stores/modal'
 
-const app = appStore()
+const modal = modalStore()
 </script>
 <template>
   <div class="modalComponent__wrapper">
     <div class="modalComponent">
       <div class="modalComponent__form">
-        <button @click="app.closeModal" class="modalComponent__closeButton">
+        <button @click="modal.closeModal" class="modalComponent__closeButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="38"

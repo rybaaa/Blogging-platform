@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { appStore } from '../../stores/app'
+import { userStore } from '../../stores/user'
+import { modalStore } from '../../stores/modal'
 
-const app = appStore()
+const modal = modalStore()
+const user = userStore()
 </script>
 
 <template>
@@ -22,13 +24,30 @@ const app = appStore()
             >
           </li>
           <li class="header__nav-item">
-            <a class="header__nav-itemLink" @click="app.openRegisterModal"
+            <RouterLink
+              class="header__nav-itemLink"
+              :to="{ name: 'premium-articles' }"
+              >Premium</RouterLink
+            >
+          </li>
+          <li v-if="!user.isLoggedIn" class="header__nav-item">
+            <a class="header__nav-itemLink" @click="modal.openRegisterModal"
               >Register</a
             >
           </li>
-          <li class="header__nav-item">
-            <a class="header__nav-itemLink" @click="app.openLoginModal"
+          <li v-if="!user.isLoggedIn" class="header__nav-item">
+            <a class="header__nav-itemLink" @click="modal.openLoginModal"
               >Sign in</a
+            >
+          </li>
+          <li v-if="user.isLoggedIn" class="header__nav-item">
+            <RouterLink class="header__nav-itemLink" :to="{ name: 'profile' }"
+              >Profile</RouterLink
+            >
+          </li>
+          <li v-if="user.isLoggedIn" class="header__nav-item">
+            <a class="header__nav-itemLink" @click.prevent="user.logout"
+              >Logout</a
             >
           </li>
         </ul>

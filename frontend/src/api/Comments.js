@@ -1,7 +1,7 @@
 import http from './Http'
 
-export default{
-    async store(params){
-        return await http.post('comments', params)
-    },
+export default {
+  store(params) {
+    return http.post('comments', params)
+  },
 }

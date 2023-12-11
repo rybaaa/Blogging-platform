@@ -50,4 +50,10 @@ class User extends Authenticatable
             get: fn (?string $avatar) => $avatar ? asset($avatar) : null
         );
     }
+
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }
