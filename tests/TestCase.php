@@ -11,3 +11,8 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
 }
+
+abstract class PremiumArticlesTestCase extends BaseTestCase
+{
+    use CreatesApplication;
+}

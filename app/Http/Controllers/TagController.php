@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
 
 class TagController extends Controller
 {
@@ -24,6 +25,11 @@ class TagController extends Controller
                 function ($query, $authorId) {
                     $query->where('author_id', $authorId);
                 }
+            )
+            ->when(
+                request('search'),
+                fn (Builder $q, string $searchTerm) => $q
+                    ->where('title', 'ILIKE', "%$searchTerm%")
             )
             ->paginate();
         return response()->json([
