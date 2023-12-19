@@ -3,6 +3,8 @@ import ArticleCategories from './ArticleCategories.vue'
 import ArticleAuthor from './ArticleAuthor.vue'
 import { format } from 'date-fns'
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
+import update from '@/assets/images/Vector.svg'
 
 const props = defineProps({
   article: {
@@ -12,6 +14,7 @@ const props = defineProps({
 })
 
 const articles = articlesStore()
+const user = userStore()
 </script>
 
 <template>
@@ -19,12 +22,26 @@ const articles = articlesStore()
     class="articleItem-link"
     :to="{ name: 'article', params: { id: article.id } }"
     ><div class="articleItem">
-      <div class="articleItem__image-container">
-        <img
-          :src="article.cover_url ? article.cover_url : articles.defaultCover"
-          alt="article picture"
-          class="articleItem__image"
-        />
+      <div
+        class="articleItem__image-container"
+        :style="{
+          background: article.cover_url
+            ? `url(${article.cover_url}) center center`
+            : `url(${articles.defaultCover}) center center`,
+          'background-size': 'cover',
+        }"
+      >
+        <RouterLink
+          class="articleItem-link"
+          :to="{ name: 'edit article', params: { id: article.id } }"
+        >
+          <img
+            v-if="user.user.id === props.article.author.id"
+            :src="update"
+            alt="update article"
+            class="articleItem__image-update"
+          />
+        </RouterLink>
         <ArticleCategories
           :tags="props.article.tags"
           class="articleItem__category--card"
@@ -69,14 +86,24 @@ const articles = articlesStore()
 }
 .articleItem__image-container {
   position: relative;
-  background: #000;
+  background-size: cover;
   opacity: 0.9;
-}
-.articleItem__image {
+  height: 350px;
   width: 100%;
-  height: 280px;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+  }
 }
-
+.articleItem__image-update {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  &:hover {
+    filter: invert(79%) sepia(7%) saturate(2281%) hue-rotate(342deg)
+      brightness(87%) contrast(90%);
+  }
+}
 .articleItem__content {
   padding: 20px;
 }
