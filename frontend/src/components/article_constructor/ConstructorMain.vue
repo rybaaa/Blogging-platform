@@ -64,7 +64,7 @@ const handleSubmit = () => {
   } else {
     errors.validateArticleTitle(form.value.title)
     if (errors.validateAll()) {
-      articles.createArticle(articleData)
+      articles.updateArticle(props.article.id, articleData)
     }
   }
 }
