@@ -2,6 +2,7 @@
 import { format } from 'date-fns'
 import update from '@/assets/images/Vector.svg'
 import { articlesStore } from '@/stores/articles'
+import { userStore } from '@/stores/user'
 import ArticleCategories from '@/components/article/ArticleCategories.vue'
 
 const props = defineProps({
@@ -12,6 +13,7 @@ const props = defineProps({
   type: String,
 })
 const articles = articlesStore()
+const user = userStore()
 </script>
 
 <template>
@@ -34,7 +36,7 @@ const articles = articlesStore()
           :to="{ name: 'edit article', params: { id: article.id } }"
         >
           <img
-            v-if="type === 'profile'"
+            v-if="user.user.id === props.article.author.id"
             :src="update"
             alt="update article"
             class="editorArticle__image-update"
